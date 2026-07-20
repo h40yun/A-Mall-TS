@@ -62,7 +62,7 @@ export function renderProductPage(): void {
           <button class="btn btn-outline btn-sm" id="wishlistBtn">${wishlisted ? '♥ In Wishlist' : '♡ Wishlist'}</button>
           <button class="btn btn-outline btn-sm" id="compareBtn">${inComparison ? '✓ Comparing' : '⚖ Compare'}</button>
           <button class="btn btn-outline btn-sm" id="shareBtn">🔗 Share</button>
-          <a href="/messages" class="btn btn-outline btn-sm">💬 Chat</a>
+          <button class="btn btn-outline btn-sm" id="chatSellerBtn">💬 Chat</button>
         </div>
         <div class="seller-card">
           <div class="seller-avatar">${product.seller[0]}</div>
@@ -226,11 +226,23 @@ export function renderProductPage(): void {
   // Add All to Cart
   document.getElementById('addAllBtn')?.addEventListener('click', () => { addToCart(product.id, 1); freqBought.forEach(p => addToCart(p.id, 1)); updateCartBadge(); showToast('All items added to cart!') })
 
+  // Chat button
+  document.getElementById('chatSellerBtn')?.addEventListener('click', () => {
+    const u = getCurrentUser()
+    if (!u) { showToast('Login to chat with seller', 'info'); navigate('/auth'); return }
+    navigate('/messages?product=' + product.id)
+  })
+
   // Review form
   let selectedRating = 0
-  container.querySelectorAll('#starInput .star').forEach(star => star.addEventListener('click', function(this: HTMLElement) { selectedRating = Number(this.dataset.val); container.querySelectorAll('#starInput .star').forEach((s, i) => { s.textContent = i < selectedRating ? '★' : '☆'; s.classList.toggle('active', i < selectedRating) }) }))
+  const user = getCurrentUser()
+  container.querySelectorAll('#starInput .star').forEach(star => star.addEventListener('click', function(this: HTMLElement) {
+    if (!user) { showToast('Login to write a review', 'info'); navigate('/auth'); return }
+    selectedRating = Number(this.dataset.val)
+    container.querySelectorAll('#starInput .star').forEach((s, i) => { s.textContent = i < selectedRating ? '★' : '☆'; s.classList.toggle('active', i < selectedRating) })
+  }))
   document.getElementById('submitReview')?.addEventListener('click', () => {
-    const user = getCurrentUser(); if (!user) { showToast('Login required', 'error'); navigate('/auth'); return }
+    if (!user) { showToast('Login to write a review', 'info'); navigate('/auth'); return }
     if (!selectedRating) { showToast('Select rating', 'error'); return }
     const text = (document.getElementById('reviewText') as HTMLTextAreaElement)?.value.trim(); if (!text) { showToast('Write review', 'error'); return }
     const all = getReviews(); all.push({ id: Date.now(), productId: product.id, userId: Number(user.id), userName: user.name, rating: selectedRating, text, date: new Date().toISOString(), helpful: 0, sellerReply: '' }); localStorage.setItem('am_reviews', JSON.stringify(all)); showToast('Review submitted!'); setTimeout(() => location.reload(), 500)

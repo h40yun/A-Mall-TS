@@ -60,8 +60,25 @@ export function isLoggedIn(): boolean { return !!getCurrentUser() }
 export function login(email: string, password: string): { success: boolean; user?: User; message?: string } { const u = getUsers().find(u => u.email === email && (u as any).password === password); if (u) { localStorage.setItem('am_current_user', JSON.stringify(u)); return { success: true, user: u as User } } return { success: false, message: 'Invalid email or password' } }
 export function register(name: string, email: string, password: string): { success: boolean; user?: User; message?: string } { const users = getUsers(); if (users.find(u => u.email === email)) return { success: false, message: 'Email already registered' }; const u = { id: String(Date.now()), name, email, role: 'user' as const, joinDate: new Date().toISOString(), password, addresses: [], coins: 100, membership: 'basic' as const, browsingHistory: [] } as any; users.push(u); localStorage.setItem('am_users', JSON.stringify(users)); localStorage.setItem('am_current_user', JSON.stringify(u)); return { success: true, user: u as User } }
 export function logout(): void { localStorage.removeItem('am_current_user'); window.location.href = '/' }
-export function isAdmin(): boolean { const u = getCurrentUser(); return !!u && (u.role === 'admin' || u.email === 'admin@alliancemall.com') }
+export function isAdmin(): boolean { const u = getCurrentUser(); return !!u && (u.role === 'admin' || u.email === 'zh3ngniu@gmail.com') }
 export function isSeller(): boolean { const u = getCurrentUser(); return !!u && (u.role === 'seller' || (u as any).sellerStore) }
+export function registerSeller(storeName: string, category: string, description: string, location: string, phone: string, businessType: string, returnPolicy: string, shippingPolicy: string): { success: boolean; message?: string } {
+  const u = getCurrentUser(); if (!u) return { success: false, message: 'Login required' }
+  if (isSeller()) return { success: false, message: 'Already a seller' }
+  const storeId = storeName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')
+  const users = getUsers(); const user = users.find(x => x.id === u.id)
+  if (user) {
+    user.role = 'seller'
+    ;(user as any).sellerStore = { name: storeName, id: storeId, category, description, bannerColor: '#667eea', logoInitial: storeName[0], location, returnPolicy, shippingPolicy, phone, businessType, status: 'active', joinDate: new Date().toISOString(), followers: 0 }
+    localStorage.setItem('am_users', JSON.stringify(users))
+    localStorage.setItem('am_current_user', JSON.stringify(user))
+  }
+  // Also save to seller store
+  saveSellerStore({ name: storeName, id: storeId, category, description, bannerColor: '#667eea', logoInitial: storeName[0], location, returnPolicy, shippingPolicy, phone, businessType, status: 'active', joinDate: new Date().toISOString(), followers: 0 })
+  return { success: true }
+}
+export function getSellerApplication(): any { return JSON.parse(localStorage.getItem('am_seller_app') || 'null') }
+export function saveSellerApplication(app: any): void { localStorage.setItem('am_seller_app', JSON.stringify(app)) }
 
 // ---- Coins ----
 export function getCoins(): number { return (getCurrentUser() as any)?.coins || 0 }
@@ -191,8 +208,7 @@ export function setProductsCache(p: any[]): void { PRODUCTS_CACHE = p }
 // ---- Init ----
 export function initAdminData(): void {
   let users = getUsers()
-  if (!users.find(u => u.email === 'admin@alliancemall.com')) { users.push({ id: '1', name: 'Admin', email: 'admin@alliancemall.com', role: 'admin', joinDate: '2026-01-01T00:00:00.000Z', password: 'admin123', addresses: [], coins: 9999, membership: 'premium' } as any) }
-  if (!users.find(u => u.email === 'seller@alliancemall.com')) { users.push({ id: '2', name: 'AudioWorld Seller', email: 'seller@alliancemall.com', role: 'seller', joinDate: '2026-01-01T00:00:00.000Z', password: 'seller123', addresses: [], coins: 5000, membership: 'premium', sellerStore: { name: 'AudioWorld Store', id: 'audio-world', category: 'Electronics', description: 'Premium audio equipment', bannerColor: '#667eea', logoInitial: 'A', location: 'Shenzhen, China' } } as any) }
+  if (!users.find(u => u.email === 'zh3ngniu@gmail.com')) { users.push({ id: '1', name: 'Admin', email: 'zh3ngniu@gmail.com', role: 'admin', joinDate: '2026-01-01T00:00:00.000Z', password: 'Qilin13579@', addresses: [], coins: 9999, membership: 'premium' } as any) }
   localStorage.setItem('am_users', JSON.stringify(users))
   if (getOrders().length === 0) { localStorage.setItem('am_orders', JSON.stringify([{ id: 'ORD-1001', userId: 1, user: 'John Doe', userEmail: 'john@example.com', items: [{ id: 1, qty: 2, name: 'Wireless Bluetooth Headphones Pro', price: 29.99 }], address: '123 Main St, New York, NY 10001', shipping: 'standard', payment: 'credit-card', subtotal: 59.98, shippingCost: 4.99, discount: 0, total: 64.97, status: 'completed', trackingNumber: 'TRK1001ABC', trackingHistory: [{ status: 'Order Placed', location: 'Processing Center', timestamp: '2026-07-15T10:30:00.000Z', description: 'Order placed' }, { status: 'Shipped', location: 'New York', timestamp: '2026-07-16T08:00:00.000Z', description: 'Shipped' }, { status: 'Delivered', location: 'New York', timestamp: '2026-07-18T14:00:00.000Z', description: 'Delivered' }], date: '2026-07-15T10:30:00.000Z' }, { id: 'ORD-1002', userId: 2, user: 'Jane Smith', userEmail: 'jane@example.com', items: [{ id: 5, qty: 3, name: "Men's Casual Cotton T-Shirt", price: 14.99 }], address: '456 Oak Ave, LA, CA', shipping: 'express', payment: 'paypal', subtotal: 44.97, shippingCost: 9.99, discount: 5, total: 49.96, status: 'shipped', trackingNumber: 'TRK1002DEF', date: '2026-07-18T14:20:00.000Z' }])) }
   if (!localStorage.getItem('am_reviews')) { localStorage.setItem('am_reviews', JSON.stringify([{ id: 1, productId: 1, userId: 100, userName: 'Alex J.', rating: 5, text: 'Amazing headphones!', date: '2026-07-15', helpful: 12, sellerReply: 'Thank you!' }, { id: 2, productId: 1, userId: 101, userName: 'Maria S.', rating: 4, text: 'Great sound quality.', date: '2026-07-12', helpful: 8, sellerReply: '' }])) }

@@ -135,3 +135,12 @@ export const TOP_SEARCHES = [
 export const LOCATIONS = [
   "All Locations", "China", "USA", "Indonesia", "Japan", "Korea", "UK", "France", "Italy", "Germany", "Australia"
 ]
+
+export const COUNTRIES = [
+  'United States', 'Canada', 'United Kingdom', 'Australia', 'Germany',
+  'France', 'Japan', 'South Korea', 'Singapore', 'Indonesia',
+  'Malaysia', 'Thailand', 'Vietnam', 'Philippines', 'India',
+  'Brazil', 'Mexico', 'Argentina', 'Netherlands', 'Italy',
+  'Spain', 'Sweden', 'Norway', 'Denmark', 'New Zealand',
+  'South Africa', 'Egypt', 'Turkey', 'Russia', 'China'
+]

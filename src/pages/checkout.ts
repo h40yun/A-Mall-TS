@@ -1,5 +1,5 @@
 // ==================== CHECKOUT PAGE ====================
-import { PRODUCTS, COUPONS } from '../utils/data'
+import { PRODUCTS, COUPONS, COUNTRIES } from '../utils/data'
 import { getCart, formatPrice, createOrder, saveCart, showToast, getProductInitials, getProductColor, getProductImage, getCurrentUser, getAddresses, applyVoucher, getCoins, useCoins } from '../utils/helpers'
 import { renderPage } from '../components'
 import { navigate } from '../router'
@@ -23,7 +23,7 @@ export function renderCheckoutPage(): void {
         <div class="form-row"><div class="form-group"><label>Full Name</label><input type="text" class="form-control" id="shipName" placeholder="John Doe" value="${user?.name || ''}"></div><div class="form-group"><label>Phone</label><input type="tel" class="form-control" id="shipPhone" placeholder="+1 234 567 8900"></div></div>
         <div class="form-group"><label>Address</label><input type="text" class="form-control" id="shipAddress" placeholder="123 Main Street"></div>
         <div class="form-row"><div class="form-group"><label>City</label><input type="text" class="form-control" id="shipCity" placeholder="New York"></div><div class="form-group"><label>State</label><input type="text" class="form-control" id="shipState" placeholder="NY"></div></div>
-        <div class="form-row"><div class="form-group"><label>ZIP Code</label><input type="text" class="form-control" id="shipZip" placeholder="10001"></div><div class="form-group"><label>Country</label><select class="form-control" id="shipCountry"><option>United States</option><option>Canada</option><option>United Kingdom</option><option>Australia</option></select></div></div>
+        <div class="form-row"><div class="form-group"><label>ZIP Code</label><input type="text" class="form-control" id="shipZip" placeholder="10001"></div><div class="form-group"><label>Country</label><select class="form-control" id="shipCountry">${COUNTRIES.map(c => `<option>${c}</option>`).join('')}</select></div></div>
       </div>
       <div class="checkout-section"><h2>🚚 Shipping Method</h2>
         <div class="shipping-option active" data-method="free" data-cost="0"><input type="radio" name="shipping" value="free" checked><div class="ship-info"><h4>Free Shipping</h4><p>7-14 business days</p></div><div class="ship-price">FREE</div></div>

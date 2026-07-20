@@ -34,8 +34,11 @@ export function handleRoute(): void {
     }
   }
 
-  // Default: home
-  if (routes.has('/')) {
+  // Default: 404
+  if (routes.has('/404')) {
+    currentRoute = '/404'
+    routes.get('/404')!()
+  } else if (routes.has('/')) {
     currentRoute = '/'
     routes.get('/')!()
   }

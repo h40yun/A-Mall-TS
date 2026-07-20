@@ -21,6 +21,7 @@ export function renderHeader(): HTMLElement {
   header.className = 'header'
   header.innerHTML = `
     <div class="header-top">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
       <a href="/" class="logo">ALLIANCE MALL<span>TK</span></a>
       <div class="search-wrapper">
         <div class="search-bar">
@@ -72,7 +73,8 @@ export function renderHeader(): HTMLElement {
           <a href="/auth">👤 <span class="text">Login</span></a>
           <a href="/auth?tab=register" class="sell-link" style="background:rgba(255,255,255,0.2)">Register</a>
         `}
-        <a href="/sell" class="sell-link">🏷️ <span class="text">Sell</span></a>
+        <a href="/seller/login" class="sell-link">🏷️ <span class="text">Sell</span></a>
+        <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">${document.body.classList.contains('dark-mode') ? '☀️' : '🌙'}</button>
       </div>
     </div>
   `
@@ -155,7 +157,7 @@ export function renderFooter(): HTMLElement {
         <a href="/about">About Us</a>
         <a href="/blog">Blog</a>
         <a href="/stores">All Stores</a>
-        <a href="/sell">Become a Seller</a>
+        <a href="/seller/login">Become a Seller</a>
         <a href="/deals">Deals & Promotions</a>
       </div>
       <div class="footer-col">
@@ -229,4 +231,37 @@ export function renderSection(title: string, linkText: string, linkHref: string,
   section.innerHTML = `<div class="section-header"><h2 class="section-title">${title}</h2>${linkText ? `<a href="${linkHref}" class="section-link">${linkText} &gt;</a>` : ''}</div>`
   section.appendChild(content)
   return section
+}
+
+// ==================== SKELETON COMPONENTS ====================
+export function renderProductCardSkeleton(): HTMLElement {
+  const card = document.createElement('div')
+  card.className = 'card product-card skeleton-card'
+  card.innerHTML = `
+    <div class="skeleton" style="width:100%;aspect-ratio:1;border-radius:8px 8px 0 0"></div>
+    <div style="padding:12px">
+      <div class="skeleton" style="height:14px;width:80%;margin-bottom:8px;border-radius:4px"></div>
+      <div class="skeleton" style="height:14px;width:60%;margin-bottom:8px;border-radius:4px"></div>
+      <div class="skeleton" style="height:18px;width:40%;margin-bottom:6px;border-radius:4px"></div>
+      <div class="skeleton" style="height:12px;width:50%;border-radius:4px"></div>
+    </div>
+  `
+  return card
+}
+
+export function renderProductGridSkeleton(count = 6): HTMLElement {
+  const grid = document.createElement('div')
+  grid.className = 'product-grid'
+  for (let i = 0; i < count; i++) grid.appendChild(renderProductCardSkeleton())
+  return grid
+}
+
+export function renderTextSkeleton(lines = 3): HTMLElement {
+  const div = document.createElement('div')
+  div.style.padding = '20px'
+  for (let i = 0; i < lines; i++) {
+    const w = 60 + Math.floor(Math.random() * 40)
+    div.innerHTML += '<div class="skeleton" style="height:14px;width:' + w + '%;margin-bottom:12px;border-radius:4px"></div>'
+  }
+  return div
 }

@@ -13,7 +13,7 @@ export function renderMessagesPage(): void {
   container.innerHTML = `
     <div class="section">
       <div class="breadcrumb"><a href="/">Home</a> / <span>Messages</span></div>
-      <div style="display:grid;grid-template-columns:320px 1fr;gap:0;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);overflow:hidden;min-height:500px">
+      <div style="display:grid;grid-template-columns:320px 1fr;gap:0;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);overflow:hidden;min-height:500px" class="messages-grid">
         <!-- Conversation List -->
         <div style="border-right:1px solid #e0e0e0;overflow-y:auto" id="convList">
           <div style="padding:16px;border-bottom:1px solid #e0e0e0"><h3 style="font-size:16px;font-weight:700">💬 Messages</h3></div>

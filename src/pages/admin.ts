@@ -30,9 +30,9 @@ export function renderAdminPage(): void {
 
   const container = document.createElement('div')
   container.innerHTML = `
-    <div style="display:flex;min-height:100vh">
+    <div style="display:flex;min-height:100vh" class="admin-layout">
       <!-- Admin Sidebar -->
-      <aside style="width:240px;background:#1a1a2e;color:#fff;padding:20px 0;flex-shrink:0">
+      <aside style="width:240px;background:#1a1a2e;color:#fff;padding:20px 0;flex-shrink:0" class="admin-sidebar">
         <div style="padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:16px">
           <h2 style="font-size:16px;color:#ff7356">🛡️ Admin Panel</h2>
           <p style="font-size:11px;color:#666">ALLIANCE MALL TK</p>
@@ -56,7 +56,7 @@ export function renderAdminPage(): void {
       </aside>
 
       <!-- Main Content -->
-      <main style="flex:1;padding:24px;overflow-y:auto;background:#f5f5f5">
+      <main style="flex:1;padding:24px;overflow-y:auto;background:#f5f5f5" class="admin-main">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
           <h1 id="adminTitle" style="font-size:22px;font-weight:700">Admin Dashboard</h1>
           <div style="display:flex;gap:8px;align-items:center">

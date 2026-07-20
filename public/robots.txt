@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /seller
+Disallow: /profile
+Disallow: /messages
+Disallow: /checkout
+Disallow: /cart
+
+Sitemap: https://alliancemall.com/sitemap.xml

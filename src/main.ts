@@ -14,6 +14,8 @@ import { renderTrackOrderPage } from './pages/track-order'
 import { renderMessagesPage } from './pages/messages'
 import { renderSellerDashboardPage } from './pages/seller'
 import { renderAdminPage } from './pages/admin'
+import { renderNotFoundPage } from './pages/not-found'
+import { renderSellerLoginPage } from './pages/seller-auth'
 import {
   renderAboutPage, renderContactPage, renderHelpPage, renderHowToBuyPage,
   renderShippingPage, renderReturnPolicyPage, renderPaymentMethodsPage,
@@ -41,6 +43,7 @@ route('/wishlist', renderWishlistPage)
 route('/track-order', renderTrackOrderPage)
 route('/messages', renderMessagesPage)
 route('/seller', renderSellerDashboardPage)
+route('/seller/login', renderSellerLoginPage)
 route('/comparison', renderComparisonPage)
 route('/about', renderAboutPage)
 route('/contact', renderContactPage)
@@ -58,6 +61,7 @@ route('/notifications', renderNotificationsPage)
 route('/sell', renderSellPage)
 route('/store/:id', renderStoreDetailPage)
 route('/admin', renderAdminPage)
+route('/404', renderNotFoundPage)
 
 initRouter()
 handleRoute()

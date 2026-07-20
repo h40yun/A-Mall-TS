@@ -142,10 +142,20 @@ export function renderCategoryPage(): void {
     // Update chips
     const chipsEl = container.querySelector('#activeFilters')!
     chipsEl.innerHTML = ''
-    if (cat) chipsEl.innerHTML += `<span class="chip">${cat} <button onclick="document.querySelector('input[name=cat][value=]').checked=true">×</button></span>`
-    if (sub) chipsEl.innerHTML += `<span class="chip">${sub} <button onclick="document.querySelector('input[name=sub][value=]').checked=true">×</button></span>`
-    if (freeShipOnly) chipsEl.innerHTML += `<span class="chip">Free Shipping <button onclick="document.getElementById('freeShipFilter').checked=false">×</button></span>`
-    if (location) chipsEl.innerHTML += `<span class="chip">📍 ${location} <button onclick="document.getElementById('locationFilter').value=''">×</button></span>`
+    if (cat) chipsEl.innerHTML += `<span class="chip">${cat} <button class="chip-remove" data-filter="cat">×</button></span>`
+    if (sub) chipsEl.innerHTML += `<span class="chip">${sub} <button class="chip-remove" data-filter="sub">×</button></span>`
+    if (freeShipOnly) chipsEl.innerHTML += `<span class="chip">Free Shipping <button class="chip-remove" data-filter="freeship">×</button></span>`
+    if (location) chipsEl.innerHTML += `<span class="chip">📍 ${location} <button class="chip-remove" data-filter="location">×</button></span>`
+
+    // Chip remove handlers
+    chipsEl.querySelectorAll('.chip-remove').forEach(btn => btn.addEventListener('click', function(this: HTMLElement) {
+      const filter = this.dataset.filter
+      if (filter === 'cat') { const r = container.querySelector('input[name="cat"][value=""]') as HTMLInputElement; if (r) r.checked = true }
+      if (filter === 'sub') { const r = container.querySelector('input[name="sub"][value=""]') as HTMLInputElement; if (r) r.checked = true }
+      if (filter === 'freeship') { const r = container.querySelector('#freeShipFilter') as HTMLInputElement; if (r) r.checked = false }
+      if (filter === 'location') { const r = container.querySelector('#locationFilter') as HTMLSelectElement; if (r) r.value = '' }
+      applyFilters()
+    }))
 
     currentPage = 1
     renderProducts()
