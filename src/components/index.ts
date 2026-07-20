@@ -2,6 +2,7 @@
 import { getCurrentUser, getCartCount, isAdmin, isSeller, logout, formatPrice, renderStars, getDiscount, getProductImage, getProductInitials, getProductColor, isInWishlist, toggleWishlist, updateCartBadge, getSearchHistory, addSearchHistory, searchProducts, isLoggedIn, getUnreadMessageCount, getUnreadNotificationCount } from '../utils/helpers'
 import { PRODUCTS, CATEGORIES } from '../utils/data'
 import { navigate } from '../router'
+import { LANGUAGES, getCurrentLanguage, setLanguage } from '../utils/i18n'
 import type { Product } from '../types'
 
 export function renderFreeShippingBanner(): HTMLElement {
@@ -75,6 +76,12 @@ export function renderHeader(): HTMLElement {
         `}
         <a href="/seller/login" class="sell-link">🏷️ <span class="text">Sell</span></a>
         <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">${document.body.classList.contains('dark-mode') ? '☀️' : '🌙'}</button>
+        <div class="lang-selector" style="position:relative">
+          <button class="dark-mode-toggle" id="langToggle" title="Language" style="font-size:14px">${LANGUAGES.find(l => l.code === getCurrentLanguage())?.flag || '🌐'}</button>
+          <div class="lang-dropdown" id="langDropdown" style="display:none;position:absolute;right:0;top:100%;background:#fff;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.15);min-width:200px;max-height:400px;overflow-y:auto;z-index:9999;padding:8px 0">
+            ${LANGUAGES.map(l => `<button class="lang-option" data-code="${l.code}" style="display:flex;align-items:center;gap:10px;width:100%;padding:8px 16px;border:none;background:${l.code === getCurrentLanguage() ? '#fff5f3' : 'transparent'};cursor:pointer;font-size:13px;text-align:left;transition:background 0.2s"><span style="font-size:18px">${l.flag}</span><span style="flex:1">${l.nativeName}</span>${l.code === getCurrentLanguage() ? '<span style="color:#ee4d2d;font-weight:700">✓</span>' : ''}</button>`).join('')}
+          </div>
+        </div>
       </div>
     </div>
   `
@@ -102,6 +109,27 @@ export function renderHeader(): HTMLElement {
 
   const logoutBtn = header.querySelector('#logoutBtn')
   if (logoutBtn) logoutBtn.addEventListener('click', (e) => { e.preventDefault(); logout() })
+
+  // Language selector
+  const langToggle = header.querySelector('#langToggle')
+  const langDropdown = header.querySelector('#langDropdown') as HTMLElement
+  if (langToggle && langDropdown) {
+    langToggle.addEventListener('click', (e) => {
+      e.stopPropagation()
+      langDropdown.style.display = langDropdown.style.display === 'none' ? 'block' : 'none'
+    })
+    langDropdown.querySelectorAll('.lang-option').forEach(btn => {
+      btn.addEventListener('click', function(this: HTMLElement) {
+        const code = this.dataset.code
+        if (code) {
+          setLanguage(code)
+          langDropdown.style.display = 'none'
+          location.reload()
+        }
+      })
+    })
+    document.addEventListener('click', () => { langDropdown.style.display = 'none' })
+  }
 
   return header
 }

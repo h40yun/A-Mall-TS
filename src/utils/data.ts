@@ -35,69 +35,246 @@ export const PRODUCTS: Product[] = [
 ]
 
 export const CATEGORIES: Category[] = [
+
   {name:"Electronics",icon:"📱",color:"#3498db",promoted:true,subcategories:[
-    {name:"Audio",items:["Headphones","Speakers","Earbuds","Soundbars"]},
-    {name:"Wearables",items:["Smartwatches","Fitness Trackers","Smart Rings"]},
-    {name:"Peripherals",items:["Keyboards","Mice","Webcams","Monitors"]},
-    {name:"Accessories",items:["Cables","Chargers","Cases","Screen Protectors"]},
-    {name:"Cameras",items:["DSLR","Mirrorless","Action Cameras","Drones"]},
-    {name:"Gaming",items:["Consoles","Controllers","Gaming Chairs","VR Headsets"]}
+    {name:"Audio",items:["Headphones","Speakers","Earbuds","Soundbars","Amplifiers"]},
+    {name:"Wearables",items:["Smartwatches","Fitness Trackers","Smart Rings","VR Headsets"]},
+    {name:"Peripherals",items:["Keyboards","Mice","Webcams","Monitors","USB Hubs"]},
+    {name:"Accessories",items:["Cables","Chargers","Cases","Screen Protectors","Power Banks"]},
+    {name:"Cameras",items:["DSLR","Mirrorless","Action Cameras","Drones","Lenses"]},
+    {name:"Gaming",items:["Consoles","Controllers","Gaming Chairs","VR Headsets","RGB Lighting"]}
+  ]},
+  {name:"Phones & Accessories",icon:"📲",color:"#00bcd4",promoted:true,subcategories:[
+    {name:"Smartphones",items:["Android","iOS","Foldable","Rugged"]},
+    {name:"Phone Cases",items:["Silicone","Leather","Clear","Wallet","Armor"]},
+    {name:"Screen Protectors",items:["Tempered Glass","Privacy","Anti-Glare"]},
+    {name:"Chargers",items:["Wireless","Car","Wall","Portable"]},
+    {name:"Holders & Mounts",items:["Car Mount","Ring Holder","Stand","Armband"]},
+    {name:"SIM & Memory",items:["SIM Cards","Memory Cards","SIM Tools"]}
+  ]},
+  {name:"Computers & Tablets",icon:"💻",color:"#607d8b",promoted:true,subcategories:[
+    {name:"Laptops",items:["Gaming","Ultrabook","Business","2-in-1","Chromebook"]},
+    {name:"Desktops",items:["Gaming PC","Workstation","Mini PC","All-in-One"]},
+    {name:"Tablets",items:["Android","iOS","Drawing","Kids"]},
+    {name:"Monitors",items:["Gaming","4K","Ultrawide","Portable"]},
+    {name:"Storage",items:["SSD","HDD","USB Flash","Memory Cards","NAS"]},
+    {name:"Networking",items:["Router","Mesh","WiFi Extender","Ethernet","Modem"]}
   ]},
   {name:"Fashion",icon:"👗",color:"#e91e63",promoted:true,subcategories:[
-    {name:"Men's Clothing",items:["T-Shirts","Pants","Jackets","Suits"]},
-    {name:"Women's Clothing",items:["Dresses","Tops","Skirts","Activewear"]},
-    {name:"Shoes",items:["Sneakers","Sandals","Boots","Formal"]},
-    {name:"Bags",items:["Handbags","Backpacks","Wallets","Luggage"]},
-    {name:"Jewelry",items:["Necklaces","Rings","Bracelets","Earrings"]},
-    {name:"Accessories",items:["Watches","Sunglasses","Hats","Scarves"]}
+    {name:"Men's Clothing",items:["T-Shirts","Pants","Jackets","Suits","Hoodies"]},
+    {name:"Women's Clothing",items:["Dresses","Tops","Skirts","Activewear","Blouses"]},
+    {name:"Shoes",items:["Sneakers","Sandals","Boots","Formal","Slippers"]},
+    {name:"Bags",items:["Handbags","Backpacks","Wallets","Luggage","Crossbody"]},
+    {name:"Jewelry",items:["Necklaces","Rings","Bracelets","Earrings","Anklets"]},
+    {name:"Accessories",items:["Watches","Sunglasses","Hats","Scarves","Belts"]}
   ]},
-  {name:"Home",icon:"🏠",color:"#4caf50",promoted:false,subcategories:[
-    {name:"Kitchen & Dining",items:["Cookware","Utensils","Storage","Appliances"]},
-    {name:"Lighting",items:["Lamps","LED Strips","Ceiling Lights","Smart Lights"]},
-    {name:"Home Decor",items:["Candles","Vases","Wall Art","Rugs"]},
-    {name:"Furniture",items:["Chairs","Tables","Shelves","Beds"]},
-    {name:"Storage",items:["Bins","Organizers","Hooks","Shoe Racks"]},
-    {name:"Bedding",items:["Sheets","Pillows","Blankets","Mattress Toppers"]}
+  {name:"Home & Kitchen",icon:"🏠",color:"#4caf50",promoted:false,subcategories:[
+    {name:"Kitchen & Dining",items:["Cookware","Utensils","Storage","Appliances","Bakeware"]},
+    {name:"Lighting",items:["Lamps","LED Strips","Ceiling Lights","Smart Lights","Outdoor"]},
+    {name:"Home Decor",items:["Candles","Vases","Wall Art","Rugs","Clocks"]},
+    {name:"Furniture",items:["Chairs","Tables","Shelves","Beds","Sofas"]},
+    {name:"Storage",items:["Bins","Organizers","Hooks","Shoe Racks","Closet"]},
+    {name:"Bedding",items:["Sheets","Pillows","Blankets","Mattress Toppers","Duvet"]}
   ]},
-  {name:"Beauty",icon:"💄",color:"#9c27b0",promoted:true,subcategories:[
-    {name:"Skincare",items:["Serums","Moisturizers","Cleansers","Sunscreen"]},
-    {name:"Makeup",items:["Foundation","Lipstick","Mascara","Eyeshadow"]},
-    {name:"Hair Care",items:["Shampoo","Conditioner","Styling Tools","Hair Color"]},
-    {name:"Fragrance",items:["Perfume","Body Mist","Cologne","Gift Sets"]},
-    {name:"Tools",items:["Brushes","Mirrors","Hair Dryers","Straighteners"]},
-    {name:"Bath & Body",items:["Body Wash","Lotion","Scrubs","Bath Bombs"]}
+  {name:"Beauty & Personal Care",icon:"💄",color:"#9c27b0",promoted:true,subcategories:[
+    {name:"Skincare",items:["Serums","Moisturizers","Cleansers","Sunscreen","Masks"]},
+    {name:"Makeup",items:["Foundation","Lipstick","Mascara","Eyeshadow","Blush"]},
+    {name:"Hair Care",items:["Shampoo","Conditioner","Styling Tools","Hair Color","Oil"]},
+    {name:"Fragrance",items:["Perfume","Body Mist","Cologne","Gift Sets","Roll-On"]},
+    {name:"Tools",items:["Brushes","Mirrors","Hair Dryers","Straighteners","Curlers"]},
+    {name:"Bath & Body",items:["Body Wash","Lotion","Scrubs","Bath Bombs","Deodorant"]}
   ]},
-  {name:"Sports",icon:"⚽",color:"#ff9800",promoted:false,subcategories:[
-    {name:"Yoga",items:["Mats","Blocks","Straps","Clothing"]},
-    {name:"Fitness",items:["Resistance Bands","Dumbbells","Jump Ropes","Kettlebells"]},
-    {name:"Outdoor",items:["Tents","Backpacks","Water Bottles","Camping Gear"]},
-    {name:"Running",items:["Shoes","Socks","Armbands","Hydration"]},
-    {name:"Swimming",items:["Goggles","Swimsuits","Fins","Pool Accessories"]},
-    {name:"Cycling",items:["Bikes","Helmets","Lights","Locks"]}
+  {name:"Health & Wellness",icon:"💊",color:"#009688",promoted:false,subcategories:[
+    {name:"Supplements",items:["Vitamins","Protein","Collagen","Probiotics","Omega"]},
+    {name:"Medical Supplies",items:["First Aid","Thermometers","Masks","Gloves","BP Monitor"]},
+    {name:"Fitness Nutrition",items:["Protein Powder","BCAA","Pre-Workout","Creatine"]},
+    {name:"Wellness",items:["Essential Oils","Aromatherapy","Massage","Acupuncture"]},
+    {name:"Vision Care",items:["Glasses","Contact Lens","Eye Drops","Reading Glasses"]},
+    {name:"Oral Care",items:["Toothbrush","Toothpaste","Mouthwash","Floss","Whitening"]}
   ]},
-  {name:"Toys",icon:"🧸",color:"#f44336",promoted:false,subcategories:[
-    {name:"Building Sets",items:["Blocks","LEGO","Magnetic Tiles"]},
-    {name:"RC Vehicles",items:["Cars","Drones","Boats","Helicopters"]},
-    {name:"Puzzles",items:["Jigsaw","3D Puzzles","Brain Teasers"]},
-    {name:"Board Games",items:["Strategy","Party","Card Games","Educational"]},
-    {name:"Dolls",items:["Action Figures","Plush","Fashion Dolls"]},
-    {name:"Educational",items:["STEM Kits","Science Sets","Art Supplies"]}
+  {name:"Sports & Outdoors",icon:"⚽",color:"#ff9800",promoted:false,subcategories:[
+    {name:"Yoga",items:["Mats","Blocks","Straps","Clothing","Wheels"]},
+    {name:"Fitness",items:["Resistance Bands","Dumbbells","Jump Ropes","Kettlebells","Treadmills"]},
+    {name:"Outdoor",items:["Tents","Backpacks","Water Bottles","Camping Gear","Hammocks"]},
+    {name:"Running",items:["Shoes","Socks","Armbands","Hydration","GPS Watch"]},
+    {name:"Swimming",items:["Goggles","Swimsuits","Fins","Pool Accessories","Snorkel"]},
+    {name:"Cycling",items:["Bikes","Helmets","Lights","Locks","Jerseys"]}
   ]},
-  {name:"Books",icon:"📚",color:"#795548",promoted:false,subcategories:[
-    {name:"Fiction",items:["Romance","Thriller","Fantasy","Sci-Fi"]},
-    {name:"Technology",items:["Programming","AI","Web Dev","Data Science"]},
-    {name:"Cooking",items:["Recipes","Baking","Healthy Eating","World Cuisine"]},
-    {name:"Self-Help",items:["Productivity","Mindfulness","Finance","Health"]},
-    {name:"Children",items:["Picture Books","Early Learning","Activity Books"]},
-    {name:"Comics",items:["Manga","Graphic Novels","Superhero","Webtoons"]}
+  {name:"Toys & Games",icon:"🧸",color:"#f44336",promoted:false,subcategories:[
+    {name:"Building Sets",items:["Blocks","LEGO","Magnetic Tiles","K'Nex"]},
+    {name:"RC Vehicles",items:["Cars","Drones","Boats","Helicopters","Planes"]},
+    {name:"Puzzles",items:["Jigsaw","3D Puzzles","Brain Teasers","Rubik's Cube"]},
+    {name:"Board Games",items:["Strategy","Party","Card Games","Educational","Chess"]},
+    {name:"Dolls",items:["Action Figures","Plush","Fashion Dolls","Collectibles"]},
+    {name:"Educational",items:["STEM Kits","Science Sets","Art Supplies","Coding Toys"]}
   ]},
-  {name:"Food",icon:"🍕",color:"#ff5722",promoted:false,subcategories:[
-    {name:"Tea",items:["Green Tea","Black Tea","Herbal Tea","Matcha"]},
-    {name:"Snacks",items:["Chips","Cookies","Protein Bars","Dried Fruit"]},
-    {name:"Nuts",items:["Almonds","Cashews","Mixed Nuts","Trail Mix"]},
-    {name:"Coffee",items:["Ground","Beans","Instant","Cold Brew"]},
-    {name:"Chocolate",items:["Dark","Milk","White","Gift Boxes"]},
-    {name:"Organic",items:["Superfoods","Supplements","Honey","Spices"]}
+  {name:"Books & Media",icon:"📚",color:"#795548",promoted:false,subcategories:[
+    {name:"Fiction",items:["Romance","Thriller","Fantasy","Sci-Fi","Mystery"]},
+    {name:"Non-Fiction",items:["Biography","Self-Help","History","Science","Business"]},
+    {name:"Technology",items:["Programming","AI","Web Dev","Data Science","Cybersecurity"]},
+    {name:"Children",items:["Picture Books","Early Learning","Activity Books","Comics"]},
+    {name:"Textbooks",items:["Math","Science","Language","Engineering","Medical"]},
+    {name:"Digital",items:["E-Books","Audiobooks","Magazines","Comics","PDF"]}
+  ]},
+  {name:"Food & Grocery",icon:"🍕",color:"#ff5722",promoted:false,subcategories:[
+    {name:"Tea & Coffee",items:["Green Tea","Black Tea","Matcha","Ground Coffee","Instant"]},
+    {name:"Snacks",items:["Chips","Cookies","Protein Bars","Dried Fruit","Nuts"]},
+    {name:"Pantry",items:["Rice","Pasta","Oil","Sauce","Spices"]},
+    {name:"Beverages",items:["Juice","Soda","Energy Drinks","Water","Smoothie"]},
+    {name:"Organic",items:["Superfoods","Honey","Seeds","Grains","Gluten-Free"]},
+    {name:"International",items:["Asian","Mexican","Italian","Indian","Mediterranean"]}
+  ]},
+  {name:"Automotive",icon:"🚗",color:"#455a64",promoted:false,subcategories:[
+    {name:"Car Electronics",items:["Dash Cam","GPS","Car Charger","Bluetooth FM","OBD2"]},
+    {name:"Interior",items:["Seat Covers","Floor Mats","Steering Wheel","Air Freshener"]},
+    {name:"Exterior",items:["Car Wax","Polish","Scratch Repair","Car Cover","Tire"]},
+    {name:"Tools",items:["Wrench Set","Jack","Jump Starter","Tire Inflator","OBD Scanner"]},
+    {name:"Motorcycle",items:["Helmets","Gloves","Jackets","Accessories","Parts"]},
+    {name:"Car Parts",items:["Brake Pads","Filters","Spark Plugs","Belt","Battery"]}
+  ]},
+  {name:"Baby & Kids",icon:"👶",color:"#e91e63",promoted:false,subcategories:[
+    {name:"Diapers & Wipes",items:["Diapers","Baby Wipes","Diaper Cream","Changing Pad"]},
+    {name:"Feeding",items:["Bottles","Formula","High Chair","Bibs","Sippy Cups"]},
+    {name:"Strollers",items:["Umbrella Stroller","Travel System","Jogging Stroller","Double"]},
+    {name:"Car Seats",items:["Infant","Convertible","Booster","All-in-One"]},
+    {name:"Nursery",items:["Crib","Changing Table","Glider","Mobile","Night Light"]},
+    {name:"Kids Fashion",items:["Boys","Girls","Shoes","Accessories","School Uniform"]}
+  ]},
+  {name:"Pet Supplies",icon:"🐾",color:"#795548",promoted:false,subcategories:[
+    {name:"Dogs",items:["Food","Treats","Toys","Beds","Collars"]},
+    {name:"Cats",items:["Food","Litter","Toys","Scratchers","Beds"]},
+    {name:"Fish",items:["Aquarium","Food","Filters","Plants","Decorations"]},
+    {name:"Birds",items:["Cages","Food","Toys","Perches","Nesting"]},
+    {name:"Small Animals",items:["Hamster","Rabbit","Guinea Pig","Food","Cages"]},
+    {name:"Reptiles",items:["Terrarium","Heating","Lighting","Food","Substrate"]}
+  ]},
+  {name:"Garden & Outdoor",icon:"🌿",color:"#4caf50",promoted:false,subcategories:[
+    {name:"Plants",items:["Indoor","Outdoor","Seeds","Succulents","Herbs"]},
+    {name:"Garden Tools",items:["Shovel","Rake","Pruner","Hose","Gloves"]},
+    {name:"Outdoor Furniture",items:["Patio Set","Hammock","Umbrella","Grill","Fire Pit"]},
+    {name:"Planters",items:["Hanging","Ceramic","Plastic","Self-Watering","Raised Bed"]},
+    {name:"Watering",items:["Sprinkler","Drip Irrigation","Watering Can","Rain Barrel"]},
+    {name:"Decor",items:["Solar Lights","Wind Chimes","Statues","Fountains","Bird Feeder"]}
+  ]},
+  {name:"Office Supplies",icon:"📎",color:"#607d8b",promoted:false,subcategories:[
+    {name:"Paper",items:["Printer Paper","Notebooks","Sticky Notes","Envelopes","Cardstock"]},
+    {name:"Writing",items:["Pens","Pencils","Markers","Highlighters","Erasers"]},
+    {name:"Desk Accessories",items:["Organizer","Lamp","Mouse Pad","Monitor Stand","Cup"]},
+    {name:"Filing",items:["Folders","Binders","Labels","File Cabinet","Sheet Protectors"]},
+    {name:"Technology",items:["Printer","Scanner","Shredder","Laminator","Calculator"]},
+    {name:"Breakroom",items:["Coffee Maker","Mugs","Snacks","Water Cooler","Plates"]}
+  ]},
+  {name:"Tools & Hardware",icon:"🔧",color:"#ff9800",promoted:false,subcategories:[
+    {name:"Hand Tools",items:["Hammer","Screwdriver","Pliers","Wrench","Tape Measure"]},
+    {name:"Power Tools",items:["Drill","Saw","Sander","Grinder","Router"]},
+    {name:"Electrical",items:["Wire","Switches","Outlets","Circuit Breaker","LED Bulbs"]},
+    {name:"Plumbing",items:["Pipes","Faucets","Shower Head","Toilet Parts","Drain"]},
+    {name:"Safety",items:["Goggles","Gloves","Helmets","Ear Protection","Masks"]},
+    {name:"Storage",items:["Toolbox","Workbench","Pegboard","Shelving","Cabinet"]}
+  ]},
+  {name:"Musical Instruments",icon:"🎸",color:"#9c27b0",promoted:false,subcategories:[
+    {name:"Guitar",items:["Acoustic","Electric","Bass","Ukulele","Strings"]},
+    {name:"Keyboard",items:["Piano","Synthesizer","MIDI","Organ","Accordion"]},
+    {name:"Drums",items:["Acoustic","Electronic","Cymbals","Sticks","Percussion"]},
+    {name:"Wind",items:["Flute","Saxophone","Trumpet","Clarinet","Harmonica"]},
+    {name:"DJ Equipment",items:["Controller","Turntable","Mixer","Headphones","Speakers"]},
+    {name:"Recording",items:["Microphone","Audio Interface","Mixer","Studio Monitor","Pop Filter"]}
+  ]},
+  {name:"Movies & TV",icon:"🎬",color:"#f44336",promoted:false,subcategories:[
+    {name:"Movies",items:["Action","Comedy","Drama","Horror","Sci-Fi"]},
+    {name:"TV Series",items:["Box Sets","Complete Series","New Releases","Classics"]},
+    {name:"Anime",items:["Series","Movies","Manga","Figures","Merchandise"]},
+    {name:"Documentary",items:["Nature","History","Science","Crime","Sports"]},
+    {name:"Fitness",items:["Yoga","Workout","Dance","Martial Arts","Meditation"]},
+    {name:"Kids",items:["Cartoons","Educational","Disney","Pixar","DreamWorks"]}
+  ]},
+  {name:"Video Games",icon:"🎮",color:"#3f51b5",promoted:false,subcategories:[
+    {name:"Console Games",items:["PlayStation","Xbox","Nintendo","Retro"]},
+    {name:"PC Games",items:["Steam","Epic","GOG","MMO","Indie"]},
+    {name:"Gaming Gear",items:["Headset","Mouse","Keyboard","Controller","Chair"]},
+    {name:"Gaming Chairs",items:["Racing","Ergonomic","Rocking","Bean Bag","Floor"]},
+    {name:"Collectibles",items:["Figures","Posters","Clothing","Keychains","Art"]},
+    {name:"Gift Cards",items:["Steam","PlayStation","Xbox","Nintendo","Roblox"]}
+  ]},
+  {name:"Luggage & Travel",icon:"✈️",color:"#00bcd4",promoted:false,subcategories:[
+    {name:"Suitcases",items:["Carry-On","Checked","Hardside","Softside","Spinner"]},
+    {name:"Bags",items:["Duffel","Backpack","Messenger","Garment","Weekend"]},
+    {name:"Travel Accessories",items:["Pillow","Eye Mask","Packing Cubes","Lock","Tag"]},
+    {name:"Business Travel",items:["Laptop Bag","Briefcase","Rolling Bag","Portfolio"]},
+    {name:"Outdoor Travel",items:["Hiking Backpack","Travel Backpack","Daypack","Hydration"]},
+    {name:"Kids Travel",items:["Kids Suitcase","Travel Activity","Car Seat","Stroller"]}
+  ]},
+  {name:"Arts & Crafts",icon:"🎨",color:"#e91e63",promoted:false,subcategories:[
+    {name:"Painting",items:["Acrylic","Oil","Watercolor","Canvas","Brushes"]},
+    {name:"Drawing",items:["Pencils","Sketchbook","Charcoal","Pastels","Markers"]},
+    {name:"Crafting",items:["Glue Gun","Scissors","Tape","Beads","Fabric"]},
+    {name:"Sewing",items:["Machine","Thread","Needles","Patterns","Fabric"]},
+    {name:"Knitting",items:["Yarn","Needles","Hooks","Patterns","Accessories"]},
+    {name:"Scrapbooking",items:["Paper","Stickers","Albums","Tools","Embellishments"]}
+  ]},
+  {name:"Industrial & Scientific",icon:"🔬",color:"#607d8b",promoted:false,subcategories:[
+    {name:"Lab Equipment",items:["Microscope","Centrifuge","Pipette","Beaker","Scale"]},
+    {name:"Safety",items:["Goggles","Gloves","Lab Coat","Face Shield","Respirator"]},
+    {name:"Measurement",items:["Caliper","Micrometer","Thermometer","Multimeter","Ruler"]},
+    {name:"Raw Materials",items:["Metal","Wood","Plastic","Rubber","Glass"]},
+    {name:"Adhesives",items:["Epoxy","Super Glue","Tape","Silicone","Cement"]},
+    {name:"Electrical",items:["Wire","Solder","PCB","Components","Tools"]}
+  ]},
+  {name:"Collectibles & Fine Art",icon:"🖼️",color:"#795548",promoted:false,subcategories:[
+    {name:"Coins",items:["Gold","Silver","Commemorative","Ancient","Sets"]},
+    {name:"Stamps",items:["Vintage","Modern","Collections","Supplies","Albums"]},
+    {name:"Art",items:["Paintings","Prints","Sculptures","Photography","Digital"]},
+    {name:"Antiques",items:["Furniture","Jewelry","Toys","Books","Pottery"]},
+    {name:"Trading Cards",items:["Sports","Pokemon","Magic","Yu-Gi-Oh","Lorcana"]},
+    {name:"Memorabilia",items:["Movie","Music","Sports","Historical","Celebrity"]}
+  ]},
+  {name:"Gift Cards & Vouchers",icon:"🎁",color:"#f39c12",promoted:false,subcategories:[
+    {name:"Digital Gift Cards",items:["Amazon","iTunes","Google Play","Steam","Netflix"]},
+    {name:"Restaurant",items:["Starbucks","McDonald's","Subway","Pizza","Sushi"]},
+    {name:"Retail",items:["Walmart","Target","Best Buy","Home Depot","Macy's"]},
+    {name:"Experience",items:["Spa","Travel","Adventure","Dining","Concert"]},
+    {name:"Prepaid Cards",items:["Visa","Mastercard","Amex","Discover","Vanilla"]},
+    {name:"Gaming",items:["PlayStation","Xbox","Nintendo","Roblox","Fortnite"]}
+  ]},
+  {name:"Smart Home",icon:"🏡",color:"#4caf50",promoted:false,subcategories:[
+    {name:"Voice Assistants",items:["Alexa","Google Home","Siri","Smart Display"]},
+    {name:"Security",items:["Camera","Doorbell","Lock","Alarm","Sensor"]},
+    {name:"Lighting",items:["Smart Bulb","LED Strip","Switch","Dimmer","Motion"]},
+    {name:"Climate",items:["Thermostat","Heater","Fan","Humidifier","Purifier"]},
+    {name:"Cleaning",items:["Robot Vacuum","Mop","Air Purifier","Water Filter"]},
+    {name:"Entertainment",items:["Smart TV","Streaming","Speaker","Projector","Remote"]}
+  ]},
+  {name:"Costumes & Party",icon:"🎉",color:"#9c27b0",promoted:false,subcategories:[
+    {name:"Costumes",items:["Halloween","Cosplay","Historical","Animal","Superhero"]},
+    {name:"Party Supplies",items:["Balloons","Banners","Tableware","Candles","Confetti"]},
+    {name:"Decoration",items:["Backdrop","Lights","Garland","Centerpiece","Signs"]},
+    {name:"Wedding",items:["Dress","Suit","Decoration","Favors","Cake Topper"]},
+    {name:"Birthday",items:["Cake Topper","Candles","Party Hats","Banners","Games"]},
+    {name:"Holiday",items:["Christmas","Easter","Valentine","Thanksgiving","New Year"]}
+  ]},
+  {name:"Seasonal",icon:"🎄",color:"#f44336",promoted:false,subcategories:[
+    {name:"Summer",items:["Swimwear","Beach Gear","Cooler","Sunscreen","Sunglasses"]},
+    {name:"Winter",items:["Coat","Gloves","Scarf","Boots","Heater"]},
+    {name:"Spring",items:["Rain Jacket","Umbrella","Garden","Allergy","Light Layers"]},
+    {name:"Fall",items:["Sweater","Boots","Pumpkin","Candle","Warm Drinks"]},
+    {name:"Back to School",items:["Backpack","Supplies","Lunch Box","Uniform","Shoes"]},
+    {name:"Holiday Shopping",items:["Gift Sets","Stocking Stuffers","Decor","Wrapping","Cards"]}
+  ]},
+  {name:"Watches & Luxury",icon:"⌚",color:"#ffc107",promoted:false,subcategories:[
+    {name:"Smartwatches",items:["Apple","Samsung","Garmin","Fitbit","Amazfit"]},
+    {name:"Luxury",items:["Rolex","Omega","Tag Heuer","Cartier","Breitling"]},
+    {name:"Fashion",items:["Casio","Fossil","Michael Kors","Seiko","Citizen"]},
+    {name:"Sports",items:["GPS Watch","Dive Watch","Running Watch","Heart Rate"]},
+    {name:"Accessories",items:["Watch Bands","Watch Boxes","Watch Tools","Watch Winder"]},
+    {name:"Kids",items:["Digital","Analog","Character","Fitness","Educational"]}
+  ]},
+  {name:"Digital Products",icon:"💾",color:"#2196f3",promoted:false,subcategories:[
+    {name:"Software",items:["Antivirus","Office","Design","Development","Utility"]},
+    {name:"E-Books",items:["Fiction","Non-Fiction","Textbooks","Comics","Audio"]},
+    {name:"Online Courses",items:["Programming","Business","Design","Language","Music"]},
+    {name:"Templates",items:["Website","Resume","Presentation","Social Media","Email"]},
+    {name:"Stock Media",items:["Photos","Videos","Music","Graphics","Fonts"]},
+    {name:"Game Items",items:["In-Game Currency","Skins","DLC","Gift Cards","Subscriptions"]}
   ]}
 ]
 
