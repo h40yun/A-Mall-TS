@@ -1,7 +1,7 @@
 // ==================== STATIC PAGES ====================
-import { renderPage, renderProductCard } from '../components'
+import { getComparisonItems, clearComparison, formatPrice, renderStars, toggleComparison, showToast, getCurrentUser, getOrders, getAddresses, saveAddress, isAdmin } from '../utils/helpers'
 import { PRODUCTS, CATEGORIES, COUPONS, VOUCHERS } from '../utils/data'
-import { getCurrentUser, formatPrice, getOrders, showToast, getAddresses, saveAddress, isAdmin } from '../utils/helpers'
+import { renderPage, renderProductCard } from '../components'
 import { navigate } from '../router'
 import type { Address } from '../types'
 
@@ -237,4 +237,34 @@ export function renderSellPage(): void {
     </div>
   `
   renderPage(container)
+}
+
+export function renderComparisonPage(): void {
+  const ids = getComparisonItems()
+  const products = PRODUCTS.filter((p: any) => ids.includes(p.id))
+  const container = document.createElement('div')
+  container.className = 'section'
+  if (!products.length) {
+    container.innerHTML = '<div class="breadcrumb"><a href="/">Home</a> / <span>Comparison</span></div><div class="empty-state"><div class="icon">⚖️</div><h3>No items to compare</h3><p>Add products to compare from product pages</p><a href="/category" class="btn btn-primary">Browse Products</a></div>'
+    renderPage(container)
+    return
+  }
+  const attrs = ['price', 'originalPrice', 'rating', 'sold', 'brand', 'category', 'stock', 'weight', 'freeShipping', 'returnPolicy']
+  const labels: Record<string, string> = { price: 'Price', originalPrice: 'Original Price', rating: 'Rating', sold: 'Sold', brand: 'Brand', category: 'Category', stock: 'Stock', weight: 'Weight', freeShipping: 'Free Shipping', returnPolicy: 'Return Policy' }
+  container.innerHTML = `
+    <div class="breadcrumb"><a href="/">Home</a> / <span>Product Comparison</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h2 style="font-size:22px;font-weight:700">⚖️ Product Comparison (${products.length})</h2>
+      <button class="btn btn-outline btn-sm" id="clearCompare">Clear All</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
+        <tr><th style="padding:12px;text-align:left;background:#f8f8f8;font-size:13px;min-width:120px">Product</th>${products.map((p: any) => `<td style="padding:16px;text-align:center;min-width:180px"><img src="${p.images?.[0] || ''}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;margin-bottom:8px"><div style="font-size:13px;font-weight:600"><a href="/product/${p.id}" style="color:#333">${p.name}</a></div><button class="btn btn-sm btn-outline remove-compare" data-id="${p.id}" style="margin-top:8px">Remove</button></td>`).join('')}</tr>
+        ${attrs.map(attr => `<tr><td style="padding:10px 12px;font-size:13px;font-weight:600;background:#fafafa;border-top:1px solid #e0e0e0">${labels[attr]}</td>${products.map((p: any) => { let val = (p as any)[attr]; if (attr === 'price' || attr === 'originalPrice') val = formatPrice(val); else if (attr === 'rating') val = '★'.repeat(Math.floor(val)) + '☆'.repeat(5 - Math.floor(val)) + ' ' + val; else if (attr === 'sold') val = val.toLocaleString() + ' sold'; else if (attr === 'freeShipping') val = val ? '✅ Yes' : '❌ No'; else if (attr === 'returnPolicy') val = val || 'N/A'; return `<td style="padding:10px 12px;font-size:13px;border-top:1px solid #e0e0e0;text-align:center">${val}</td>` }).join('')}</tr>`).join('')}
+      </table>
+    </div>
+  `
+  renderPage(container)
+  container.querySelector('#clearCompare')?.addEventListener('click', () => { clearComparison(); showToast('Comparison cleared'); setTimeout(() => location.reload(), 500) })
+  container.querySelectorAll('.remove-compare').forEach(btn => btn.addEventListener('click', function(this: HTMLElement) { toggleComparison(Number(this.dataset.id)); setTimeout(() => location.reload(), 500) }))
 }

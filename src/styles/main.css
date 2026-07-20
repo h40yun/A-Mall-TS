@@ -626,3 +626,76 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   .zoom-prev { left: 10px; }
   .zoom-next { right: 10px; }
 }
+
+/* ==================== ALL NEW FEATURES STYLES ==================== */
+
+/* Voucher Banner */
+.voucher-banner { display:flex; justify-content:space-between; align-items:center; background:linear-gradient(135deg,#fff5f3,#ffe8e0); border:1px solid #ee4d2d; border-radius:8px; padding:12px 20px; margin-bottom:16px; }
+.voucher-banner-left { display:flex; align-items:center; gap:12px; }
+.voucher-icon { font-size:24px; }
+.voucher-banner strong { font-size:14px; }
+.voucher-banner p { font-size:12px; color:#666; margin:0; }
+
+/* Top Searches */
+.top-searches { background:#fff; border-radius:8px; padding:16px 20px; box-shadow:0 2px 8px rgba(0,0,0,0.08); margin-bottom:16px; }
+.top-searches h3 { font-size:14px; font-weight:700; margin-bottom:12px; }
+.top-search-tags { display:flex; flex-wrap:wrap; gap:8px; }
+.search-tag { padding:6px 14px; background:#f5f5f5; border-radius:20px; font-size:12px; color:#333; transition:all 0.2s; }
+.search-tag:hover { background:#ee4d2d; color:#fff; }
+
+/* Brand Stories */
+.brand-stories-scroll { display:flex; gap:12px; overflow-x:auto; padding-bottom:8px; }
+.brand-story-card { flex-shrink:0; width:180px; border-radius:8px; overflow:hidden; }
+.brand-story-bg { height:120px; background-size:cover; background-position:center; position:relative; }
+.brand-story-overlay { position:absolute; inset:0; background:linear-gradient(transparent 40%,rgba(0,0,0,0.7)); display:flex; flex-direction:column; justify-content:flex-end; padding:12px; color:#fff; }
+.brand-story-logo { font-size:20px; }
+.brand-story-overlay strong { font-size:12px; }
+.brand-story-overlay p { font-size:10px; opacity:0.9; margin:0; }
+
+/* Voucher Grid */
+.voucher-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; }
+.voucher-card { display:flex; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+.voucher-card.percentage .voucher-left { background:linear-gradient(135deg,#ee4d2d,#f97316); }
+.voucher-card.fixed .voucher-left { background:linear-gradient(135deg,#667eea,#764ba2); }
+.voucher-card.free_shipping .voucher-left { background:linear-gradient(135deg,#28a745,#20c997); }
+.voucher-left { padding:16px; color:#fff; text-align:center; min-width:90px; display:flex; flex-direction:column; justify-content:center; }
+.voucher-value { font-size:24px; font-weight:800; }
+.voucher-type { font-size:11px; opacity:0.9; }
+.voucher-right { flex:1; padding:12px 16px; background:#fff; display:flex; flex-direction:column; justify-content:center; }
+.voucher-desc { font-size:13px; font-weight:600; }
+.voucher-min { font-size:11px; color:#999; margin:4px 0 8px; }
+
+/* Frequency Bought Together */
+.freq-bought-card { background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); padding:20px; }
+.freq-bought-items { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+.freq-bought-item { display:flex; gap:10px; align-items:center; }
+.freq-bought-item img { width:60px; height:60px; border-radius:8px; object-fit:cover; }
+.freq-bought-name { font-size:12px; font-weight:600; max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.freq-bought-price { font-size:13px; color:#ee4d2d; font-weight:700; }
+.freq-bought-plus { font-size:20px; font-weight:700; color:#999; }
+.freq-bought-summary { border-top:1px solid #e0e0e0; padding-top:16px; display:flex; justify-content:space-between; align-items:center; }
+.freq-bought-total { font-size:16px; }
+
+/* Video Play Button */
+.video-play-btn { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.6); border:none; color:#fff; width:56px; height:56px; border-radius:50%; font-size:24px; cursor:pointer; z-index:2; }
+.video-thumb { display:flex; align-items:center; justify-content:center; width:72px; height:72px; border-radius:8px; background:#f0f0f0; cursor:pointer; font-size:12px; color:#666; border:2px solid transparent; }
+.video-thumb.active { border-color:#ee4d2d; }
+
+/* Filter Count Badges */
+.filter-count { font-size:11px; color:#999; margin-left:4px; }
+
+/* Membership Badge */
+.badge-premium { background:rgba(220,53,69,0.1); color:#dc3545; }
+.badge-prime { background:rgba(255,193,7,0.1); color:#b8860b; }
+
+/* Checkout Gift */
+.gift-option { background:#f8f8f8; border-radius:8px; padding:16px; }
+
+/* Responsive */
+@media (max-width:768px) {
+  .brand-stories-scroll { gap:8px; }
+  .brand-story-card { width:140px; }
+  .voucher-grid { grid-template-columns:1fr; }
+  .freq-bought-items { flex-direction:column; }
+  .freq-bought-plus { transform:rotate(90deg); }
+}

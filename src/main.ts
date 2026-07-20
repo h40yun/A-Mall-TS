@@ -15,15 +15,13 @@ import {
   renderShippingPage, renderReturnPolicyPage, renderPaymentMethodsPage,
   renderTermsPage, renderPrivacyPage, renderDealsPage, renderBlogPage,
   renderStoresPage, renderNotificationsPage, renderMessagesPage, renderStoreDetailPage,
-  renderSellerDashboardPage, renderAdminPage, renderSellPage
+  renderSellerDashboardPage, renderAdminPage, renderSellPage, renderComparisonPage
 } from './pages/static'
 import { ensureToastContainer } from './components'
 
-// Init
 initAdminData()
 ensureToastContainer()
 
-// Define Routes
 route('/', renderHomePage)
 route('/product/:id', renderProductPage)
 route('/cart', renderCartPage)
@@ -34,6 +32,7 @@ route('/search', renderCategoryPage)
 route('/profile', renderProfilePage)
 route('/wishlist', renderWishlistPage)
 route('/track-order', renderTrackOrderPage)
+route('/comparison', renderComparisonPage)
 route('/about', renderAboutPage)
 route('/contact', renderContactPage)
 route('/help', renderHelpPage)
@@ -53,6 +52,5 @@ route('/store/:id', renderStoreDetailPage)
 route('/admin', renderAdminPage)
 route('/seller', renderSellerDashboardPage)
 
-// Start Router
 initRouter()
 handleRoute()

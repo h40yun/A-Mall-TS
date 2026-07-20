@@ -164,7 +164,7 @@ export function renderCategoryNav(): HTMLElement {
             <div class="mega-col">
               <h4>${cat.icon} ${cat.name}</h4>
               <a href="/category?cat=${encodeURIComponent(cat.name)}">All ${cat.name}</a>
-              ${(cat.subcategories || []).map(sub => `<a href="/category?cat=${encodeURIComponent(cat.name)}&sub=${encodeURIComponent(sub)}">${sub}</a>`).join('')}
+              ${(cat.subcategories || []).map(sub => `<a href="/category?cat=${encodeURIComponent(cat.name)}&sub=${encodeURIComponent(sub.name)}">${sub.name}</a>`).join('')}
             </div>
           `).join('')}
         </div>

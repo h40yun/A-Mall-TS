@@ -20,10 +20,12 @@ export interface Product {
   stock: number
   sku?: string
   images: string[]
+  video?: string
   weight?: string
   returnPolicy?: string
   freeShipping?: boolean
   minOrder?: number
+  location?: string
 }
 
 export interface CartItem {
@@ -42,6 +44,10 @@ export interface User {
   joinDate: string
   avatar?: string
   addresses?: Address[]
+  coins?: number
+  membership?: 'basic' | 'prime' | 'premium'
+  browsingHistory?: number[]
+  reviewsHistory?: number[]
 }
 
 export interface Address {
@@ -75,7 +81,10 @@ export interface Order {
   trackingHistory?: TrackingEvent[]
   notes?: string
   voucherCode?: string
+  giftWrap?: boolean
+  giftMessage?: string
   date: string
+  returnRequest?: ReturnRequest
 }
 
 export interface OrderItem {
@@ -92,6 +101,15 @@ export interface TrackingEvent {
   location: string
   timestamp: string
   description: string
+}
+
+export interface ReturnRequest {
+  id: string
+  orderId: string
+  reason: string
+  description: string
+  status: 'pending' | 'approved' | 'rejected' | 'completed'
+  date: string
 }
 
 export interface Review {
@@ -132,7 +150,14 @@ export interface Category {
   name: string
   icon: string
   color: string
-  subcategories?: string[]
+  subcategories?: SubCategory[]
+  promoted?: boolean
+}
+
+export interface SubCategory {
+  name: string
+  icon?: string
+  items?: string[]
 }
 
 export interface Coupon {
@@ -212,5 +237,29 @@ export interface Notification {
 
 export interface SavedItem {
   id: number
+  addedAt: string
+}
+
+export interface PaymentMethod {
+  id: string
+  type: 'card' | 'paypal' | 'bank'
+  label: string
+  last4?: string
+  brand?: string
+  expiry?: string
+  isDefault: boolean
+}
+
+export interface BrandStory {
+  id: string
+  brand: string
+  logo: string
+  tagline: string
+  image: string
+  link: string
+}
+
+export interface ComparisonItem {
+  productId: number
   addedAt: string
 }
