@@ -1,21 +1,21 @@
 // ==================== UI COMPONENTS ====================
-import { getCurrentUser, getCartCount, isAdmin, logout, formatPrice, renderStars, getDiscount, getProductImage, getProductInitials, getProductColor, isInWishlist, toggleWishlist, updateCartBadge, getSearchHistory, addSearchHistory, searchProducts } from '../utils/helpers'
+import { getCurrentUser, getCartCount, isAdmin, isSeller, logout, formatPrice, renderStars, getDiscount, getProductImage, getProductInitials, getProductColor, isInWishlist, toggleWishlist, updateCartBadge, getSearchHistory, addSearchHistory, searchProducts, isLoggedIn, getUnreadMessageCount, getUnreadNotificationCount } from '../utils/helpers'
 import { PRODUCTS, CATEGORIES } from '../utils/data'
 import { navigate } from '../router'
 import type { Product } from '../types'
 
-// ---- Free Shipping Banner ----
 export function renderFreeShippingBanner(): HTMLElement {
   const banner = document.createElement('div')
   banner.className = 'free-shipping-banner'
-  banner.innerHTML = `<span>🚚 FREE SHIPPING on orders over $50</span><span> | </span><a href="/category">Shop Now</a>`
+  banner.innerHTML = `<span>🚚 FREE SHIPPING on orders over $50</span><span> | </span><a href="/deals">Vouchers</a><span> | </span><a href="/sell">Sell on Alliance Mall</a>`
   return banner
 }
 
-// ---- Header ----
 export function renderHeader(): HTMLElement {
   const user = getCurrentUser()
   const cartCount = getCartCount()
+  const unreadMsgs = isLoggedIn() ? getUnreadMessageCount() : 0
+  const unreadNotifs = isLoggedIn() ? getUnreadNotificationCount() : 0
 
   const header = document.createElement('header')
   header.className = 'header'
@@ -25,124 +25,78 @@ export function renderHeader(): HTMLElement {
       <div class="search-wrapper">
         <div class="search-bar">
           <select class="search-cat-select" id="searchCatSelect">
-            <option value="">All Categories</option>
+            <option value="">All</option>
             ${CATEGORIES.map(c => `<option value="${c.name}">${c.icon} ${c.name}</option>`).join('')}
           </select>
-          <input type="text" id="searchInput" placeholder="Search for products, brands, and more..." autocomplete="off">
+          <input type="text" id="searchInput" placeholder="Search for products, brands..." autocomplete="off">
           <button id="searchBtn">Search</button>
         </div>
         <div class="search-suggestions" id="searchSuggestions" style="display:none"></div>
       </div>
       <div class="header-actions">
         <a href="/track-order" title="Track Order">📦 <span class="text">Track</span></a>
-        <a href="/messages" title="Messages">💬 <span class="text">Messages</span></a>
-        <a href="/notifications" title="Notifications">🔔 <span class="text">Notifications</span></a>
+        ${isLoggedIn() ? `
+          <a href="/messages" title="Messages">💬 <span class="text">Messages</span>${unreadMsgs > 0 ? `<span class="notif-badge">${unreadMsgs}</span>` : ''}</a>
+          <a href="/notifications" title="Notifications">🔔 <span class="text">Notifications</span>${unreadNotifs > 0 ? `<span class="notif-badge">${unreadNotifs}</span>` : ''}</a>
+        ` : `
+          <a href="/auth" title="Messages">💬 <span class="text">Messages</span></a>
+          <a href="/auth" title="Notifications">🔔 <span class="text">Notifications</span></a>
+        `}
         <a href="/cart" title="Cart">🛒 <span class="text">Cart</span><span class="cart-badge" style="display:${cartCount > 0 ? 'flex' : 'none'}">${cartCount}</span></a>
         <a href="/wishlist" title="Wishlist">♥ <span class="text">Wishlist</span></a>
         ${user ? `
           <div class="user-dropdown">
             <a href="/profile">👤 <span class="text">${user.name.split(' ')[0]}</span></a>
             <div class="dropdown-menu">
+              <div style="padding:12px 16px;border-bottom:1px solid #e0e0e0">
+                <strong>${user.name}</strong>
+                <div style="font-size:11px;color:#999">${user.email}</div>
+                ${(user as any).coins !== undefined ? `<div style="font-size:12px;color:#f39c12;margin-top:4px">🪙 ${(user as any).coins || 0} coins</div>` : ''}
+              </div>
               <a href="/profile?tab=orders">📦 My Orders</a>
               <a href="/track-order">🚚 Track Order</a>
               <a href="/wishlist">♥ My Wishlist</a>
               <a href="/profile?tab=addresses">📍 My Addresses</a>
               <a href="/profile?tab=vouchers">🎟️ My Vouchers</a>
+              <a href="/profile?tab=coins">🪙 Coins & Membership</a>
               <a href="/profile?tab=settings">⚙️ Account Settings</a>
+              <hr style="margin:6px 0;border:none;border-top:1px solid #e0e0e0">
               ${isAdmin() ? '<a href="/admin">🛡️ Admin Panel</a>' : ''}
-              <a href="/seller">🏪 Seller Center</a>
+              ${isSeller() || (user as any).sellerStore ? '<a href="/seller">🏪 Seller Dashboard</a>' : '<a href="/sell">🏪 Become a Seller</a>'}
+              ${!isSeller() && !(user as any).sellerStore ? '' : ''}
               <hr style="margin:6px 0;border:none;border-top:1px solid #e0e0e0">
               <a href="#" id="logoutBtn">🚪 Logout</a>
             </div>
           </div>
-        ` : `<a href="/auth">👤 <span class="text">Login</span></a>`}
+        ` : `
+          <a href="/auth">👤 <span class="text">Login</span></a>
+          <a href="/auth?tab=register" class="sell-link" style="background:rgba(255,255,255,0.2)">Register</a>
+        `}
         <a href="/sell" class="sell-link">🏷️ <span class="text">Sell</span></a>
       </div>
     </div>
   `
 
-  // Search functionality
+  // Search
   const searchInput = header.querySelector('#searchInput') as HTMLInputElement
   const searchBtn = header.querySelector('#searchBtn') as HTMLButtonElement
   const searchCatSelect = header.querySelector('#searchCatSelect') as HTMLSelectElement
   const suggestionsEl = header.querySelector('#searchSuggestions') as HTMLElement
 
-  const doSearch = () => {
-    const q = searchInput.value.trim()
-    if (q) {
-      addSearchHistory(q)
-      const cat = searchCatSelect.value
-      navigate(`/search?q=${encodeURIComponent(q)}${cat ? `&cat=${encodeURIComponent(cat)}` : ''}`)
-      suggestionsEl.style.display = 'none'
-    }
-  }
-
+  const doSearch = () => { const q = searchInput.value.trim(); if (q) { addSearchHistory(q); const cat = searchCatSelect.value; navigate(`/search?q=${encodeURIComponent(q)}${cat ? `&cat=${encodeURIComponent(cat)}` : ''}`); suggestionsEl.style.display = 'none' } }
   searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') doSearch() })
   searchBtn.addEventListener('click', doSearch)
 
-  // Autocomplete suggestions
   searchInput.addEventListener('input', () => {
     const q = searchInput.value.trim().toLowerCase()
-    if (q.length < 2) {
-      // Show search history
-      const history = getSearchHistory()
-      if (history.length) {
-        suggestionsEl.innerHTML = `
-          <div class="suggestion-header"><span>Recent Searches</span><a href="#" id="clearHistory">Clear</a></div>
-          ${history.map(h => `<div class="suggestion-item" data-query="${h}"><span class="suggestion-icon">🕐</span>${h}</div>`).join('')}
-        `
-        suggestionsEl.style.display = 'block'
-        header.querySelector('#clearHistory')?.addEventListener('click', (e) => {
-          e.preventDefault()
-          localStorage.removeItem('am_search_history')
-          suggestionsEl.style.display = 'none'
-        })
-      }
-      return
-    }
-
-    const matches = PRODUCTS.filter(p =>
-      p.name.toLowerCase().includes(q) ||
-      p.brand.toLowerCase().includes(q) ||
-      p.category.toLowerCase().includes(q)
-    ).slice(0, 8)
-
-    if (matches.length) {
-      suggestionsEl.innerHTML = matches.map(p => `
-        <div class="suggestion-item" data-id="${p.id}">
-          <img src="${getProductImage(p)}" class="suggestion-img" onerror="this.style.display='none'">
-          <div class="suggestion-info">
-            <div class="suggestion-name">${p.name}</div>
-            <div class="suggestion-price">${formatPrice(p.price)}</div>
-          </div>
-        </div>
-      `).join('')
-      suggestionsEl.style.display = 'block'
-    } else {
-      suggestionsEl.style.display = 'none'
-    }
+    if (q.length < 2) { const history = getSearchHistory(); if (history.length) { suggestionsEl.innerHTML = `<div class="suggestion-header"><span>Recent Searches</span><a href="#" id="clearHistory">Clear</a></div>${history.map(h => `<div class="suggestion-item" data-query="${h}"><span class="suggestion-icon">🕐</span>${h}</div>`).join('')}`; suggestionsEl.style.display = 'block'; header.querySelector('#clearHistory')?.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('am_search_history'); suggestionsEl.style.display = 'none' }) } return }
+    const matches = PRODUCTS.filter(p => p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)).slice(0, 8)
+    if (matches.length) { suggestionsEl.innerHTML = matches.map(p => `<div class="suggestion-item" data-id="${p.id}"><img src="${getProductImage(p)}" class="suggestion-img" onerror="this.style.display='none'"><div class="suggestion-info"><div class="suggestion-name">${p.name}</div><div class="suggestion-price">${formatPrice(p.price)}</div></div></div>`).join(''); suggestionsEl.style.display = 'block' } else suggestionsEl.style.display = 'none'
   })
 
-  // Click on suggestion
-  suggestionsEl.addEventListener('click', (e) => {
-    const item = (e.target as HTMLElement).closest('.suggestion-item') as HTMLElement
-    if (!item) return
-    const id = item.dataset.id
-    const query = item.dataset.query
-    if (id) navigate(`/product/${id}`)
-    else if (query) { searchInput.value = query; doSearch() }
-    suggestionsEl.style.display = 'none'
-  })
-
-  // Hide suggestions on blur
-  searchInput.addEventListener('blur', () => {
-    setTimeout(() => { suggestionsEl.style.display = 'none' }, 200)
-  })
-  searchInput.addEventListener('focus', () => {
-    if (searchInput.value.trim().length >= 2 || getSearchHistory().length) {
-      searchInput.dispatchEvent(new Event('input'))
-    }
-  })
+  suggestionsEl.addEventListener('click', (e) => { const item = (e.target as HTMLElement).closest('.suggestion-item') as HTMLElement; if (!item) return; if (item.dataset.id) navigate(`/product/${item.dataset.id}`); else if (item.dataset.query) { searchInput.value = item.dataset.query; doSearch() } suggestionsEl.style.display = 'none' })
+  searchInput.addEventListener('blur', () => { setTimeout(() => { suggestionsEl.style.display = 'none' }, 200) })
+  searchInput.addEventListener('focus', () => { if (searchInput.value.trim().length >= 2 || getSearchHistory().length) searchInput.dispatchEvent(new Event('input')) })
 
   const logoutBtn = header.querySelector('#logoutBtn')
   if (logoutBtn) logoutBtn.addEventListener('click', (e) => { e.preventDefault(); logout() })
@@ -150,7 +104,6 @@ export function renderHeader(): HTMLElement {
   return header
 }
 
-// ---- Category Nav (with subcategories) ----
 export function renderCategoryNav(): HTMLElement {
   const nav = document.createElement('nav')
   nav.className = 'cat-nav'
@@ -177,7 +130,6 @@ export function renderCategoryNav(): HTMLElement {
   return nav
 }
 
-// ---- Footer ----
 export function renderFooter(): HTMLElement {
   const footer = document.createElement('footer')
   footer.className = 'footer'
@@ -185,10 +137,8 @@ export function renderFooter(): HTMLElement {
     <div class="footer-grid">
       <div class="footer-col">
         <h3>ALLIANCE MALL TK</h3>
-        <p style="font-size:13px;color:#999;line-height:1.6">Your one-stop online marketplace for everything you need. Quality products at the best prices.</p>
-        <div style="display:flex;gap:10px;margin-top:12px">
-          <a href="#">📘</a><a href="#">🐦</a><a href="#">📸</a><a href="#">🎬</a>
-        </div>
+        <p style="font-size:13px;color:#999;line-height:1.6">Your one-stop online marketplace.</p>
+        <div style="display:flex;gap:10px;margin-top:12px"><a href="#">📘</a><a href="#">🐦</a><a href="#">📸</a><a href="#">🎬</a></div>
       </div>
       <div class="footer-col">
         <h3>Customer Service</h3>
@@ -201,48 +151,37 @@ export function renderFooter(): HTMLElement {
         <a href="/contact">Contact Us</a>
       </div>
       <div class="footer-col">
-        <h3>About Alliance Mall</h3>
+        <h3>About</h3>
         <a href="/about">About Us</a>
         <a href="/blog">Blog</a>
         <a href="/stores">All Stores</a>
         <a href="/sell">Become a Seller</a>
         <a href="/deals">Deals & Promotions</a>
-        <a href="#">Careers</a>
-        <a href="#">Affiliate Program</a>
       </div>
       <div class="footer-col">
         <h3>Legal</h3>
         <a href="/terms">Terms & Conditions</a>
         <a href="/privacy">Privacy Policy</a>
-        <a href="#">Cookie Policy</a>
-        <a href="#">Seller Agreement</a>
       </div>
       <div class="footer-col">
-        <h3>Payment Methods</h3>
-        <div class="payment-icons">
-          <span>💳 Visa</span><span>💳 Mastercard</span><span>💳 Amex</span>
-        </div>
-        <div class="payment-icons" style="margin-top:8px">
-          <span>🅿️ PayPal</span><span>📱 Apple Pay</span><span>🟢 Google Pay</span>
-        </div>
+        <h3>Payment</h3>
+        <div class="payment-icons"><span>💳 Visa</span><span>💳 Mastercard</span><span>💳 Amex</span></div>
+        <div class="payment-icons" style="margin-top:8px"><span>🅿️ PayPal</span><span>📱 Apple Pay</span><span>🟢 Google Pay</span></div>
       </div>
     </div>
-    <div class="footer-bottom">© 2026 Alliance Mall TK. All rights reserved. | Built with ♥ | <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="/contact">Contact</a></div>
+    <div class="footer-bottom">© 2026 Alliance Mall TK. All rights reserved. | <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="/contact">Contact</a></div>
   `
   return footer
 }
 
-// ---- Product Card ----
 export function renderProductCard(product: Product): HTMLElement {
   const discount = getDiscount(product.price, product.originalPrice)
   const wishlisted = isInWishlist(product.id)
-
   const card = document.createElement('div')
   card.className = 'card product-card'
   card.innerHTML = `
     <div class="product-img-wrap">
-      <img class="product-img" src="${getProductImage(product)}" alt="${product.name}" loading="lazy"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="display:block">
+      <img class="product-img" src="${getProductImage(product)}" alt="${product.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="display:block">
       <div class="img-placeholder" style="display:none;background:${getProductColor(product)}">${getProductInitials(product)}</div>
       ${discount >= 40 ? `<span class="discount-badge">-${discount}%</span>` : ''}
       ${product.freeShipping ? '<span class="free-ship-badge">Free Ship</span>' : ''}
@@ -257,64 +196,36 @@ export function renderProductCard(product: Product): HTMLElement {
       </div>
     </div>
   `
-
   card.addEventListener('click', (e) => {
-    if ((e.target as HTMLElement).closest('.wishlist-btn')) {
-      e.stopPropagation()
-      const btn = card.querySelector('.wishlist-btn')!
-      const isNow = toggleWishlist(product.id)
-      btn.textContent = isNow ? '♥' : '♡'
-      btn.classList.toggle('active', isNow)
-      return
-    }
+    if ((e.target as HTMLElement).closest('.wishlist-btn')) { e.stopPropagation(); const btn = card.querySelector('.wishlist-btn')!; const isNow = toggleWishlist(product.id); btn.textContent = isNow ? '♥' : '♡'; btn.classList.toggle('active', isNow); return }
     navigate(`/product/${product.id}`)
   })
-
   return card
 }
 
-// ---- Toast Container ----
-export function ensureToastContainer(): void {
-  if (!document.querySelector('.toast-container')) {
-    const container = document.createElement('div')
-    container.className = 'toast-container'
-    document.body.appendChild(container)
-  }
-}
+export function ensureToastContainer(): void { if (!document.querySelector('.toast-container')) { const c = document.createElement('div'); c.className = 'toast-container'; document.body.appendChild(c) } }
 
-// ---- Page Wrapper ----
 export function renderPage(content: HTMLElement | HTMLElement[]): void {
   const app = document.getElementById('app')!
   app.innerHTML = ''
   app.appendChild(renderFreeShippingBanner())
   app.appendChild(renderHeader())
   app.appendChild(renderCategoryNav())
-  const main = document.createElement('div')
-  main.className = 'main-content'
-  if (Array.isArray(content)) content.forEach(c => main.appendChild(c))
-  else main.appendChild(content)
+  const main = document.createElement('div'); main.className = 'main-content'
+  if (Array.isArray(content)) content.forEach(c => main.appendChild(c)); else main.appendChild(content)
   app.appendChild(main)
   app.appendChild(renderFooter())
   updateCartBadge()
 }
 
-// ---- Empty State ----
 export function renderEmptyState(icon: string, title: string, text: string, btnText?: string, btnHref?: string): HTMLElement {
-  const div = document.createElement('div')
-  div.className = 'empty-state'
-  div.innerHTML = `
-    <div class="icon">${icon}</div>
-    <h3>${title}</h3>
-    <p>${text}</p>
-    ${btnText ? `<a href="${btnHref || '/'}" class="btn btn-primary">${btnText}</a>` : ''}
-  `
+  const div = document.createElement('div'); div.className = 'empty-state'
+  div.innerHTML = `<div class="icon">${icon}</div><h3>${title}</h3><p>${text}</p>${btnText ? `<a href="${btnHref || '/'}" class="btn btn-primary">${btnText}</a>` : ''}`
   return div
 }
 
-// ---- Section ----
 export function renderSection(title: string, linkText: string, linkHref: string, content: HTMLElement): HTMLElement {
-  const section = document.createElement('div')
-  section.className = 'section'
+  const section = document.createElement('div'); section.className = 'section'
   section.innerHTML = `<div class="section-header"><h2 class="section-title">${title}</h2>${linkText ? `<a href="${linkHref}" class="section-link">${linkText} &gt;</a>` : ''}</div>`
   section.appendChild(content)
   return section

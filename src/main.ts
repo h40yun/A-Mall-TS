@@ -1,6 +1,7 @@
 // ==================== MAIN ENTRY POINT ====================
 import { route, handleRoute, initRouter } from './router'
-import { initAdminData } from './utils/helpers'
+import { initAdminData, setProductsCache } from './utils/helpers'
+import { PRODUCTS } from './utils/data'
 import { renderHomePage } from './pages/home'
 import { renderProductPage } from './pages/product'
 import { renderCartPage } from './pages/cart'
@@ -10,18 +11,23 @@ import { renderCategoryPage } from './pages/category'
 import { renderProfilePage } from './pages/profile'
 import { renderWishlistPage } from './pages/wishlist'
 import { renderTrackOrderPage } from './pages/track-order'
+import { renderMessagesPage } from './pages/messages'
+import { renderSellerDashboardPage } from './pages/seller'
 import {
   renderAboutPage, renderContactPage, renderHelpPage, renderHowToBuyPage,
   renderShippingPage, renderReturnPolicyPage, renderPaymentMethodsPage,
   renderTermsPage, renderPrivacyPage, renderDealsPage, renderBlogPage,
-  renderStoresPage, renderNotificationsPage, renderMessagesPage, renderStoreDetailPage,
-  renderSellerDashboardPage, renderAdminPage, renderSellPage, renderComparisonPage
+  renderStoresPage, renderNotificationsPage, renderStoreDetailPage,
+  renderAdminPage, renderSellPage, renderComparisonPage
 } from './pages/static'
 import { ensureToastContainer } from './components'
 
+// Init
 initAdminData()
+setProductsCache(PRODUCTS)
 ensureToastContainer()
 
+// Routes
 route('/', renderHomePage)
 route('/product/:id', renderProductPage)
 route('/cart', renderCartPage)
@@ -32,6 +38,8 @@ route('/search', renderCategoryPage)
 route('/profile', renderProfilePage)
 route('/wishlist', renderWishlistPage)
 route('/track-order', renderTrackOrderPage)
+route('/messages', renderMessagesPage)
+route('/seller', renderSellerDashboardPage)
 route('/comparison', renderComparisonPage)
 route('/about', renderAboutPage)
 route('/contact', renderContactPage)
@@ -46,11 +54,9 @@ route('/deals', renderDealsPage)
 route('/blog', renderBlogPage)
 route('/stores', renderStoresPage)
 route('/notifications', renderNotificationsPage)
-route('/messages', renderMessagesPage)
 route('/sell', renderSellPage)
 route('/store/:id', renderStoreDetailPage)
 route('/admin', renderAdminPage)
-route('/seller', renderSellerDashboardPage)
 
 initRouter()
 handleRoute()

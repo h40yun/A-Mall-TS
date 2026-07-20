@@ -186,7 +186,30 @@ export function renderStoresPage(): void {
 }
 
 export function renderNotificationsPage(): void {
-  renderStaticPage('Notifications', `<p>No new notifications.</p>`)
+  // @ts-ignore
+  const { getNotifications, markNotificationRead, isLoggedIn } = require('../utils/helpers')
+  if (!isLoggedIn()) { renderStaticPage('Notifications', `<p><a href="/auth" style="color:#ee4d2d">Login</a> to see notifications.</p>`); return }
+  const notifs = getNotifications()
+  const container = document.createElement('div')
+  container.className = 'section'
+  container.innerHTML = `
+    <div class="breadcrumb"><a href="/">Home</a> / <span>Notifications</span></div>
+    <h2 style="font-size:22px;font-weight:700;margin-bottom:24px">🔔 Notifications</h2>
+    ${notifs.length ? notifs.map((n: any) => `
+      <a href="${n.link || '#'}" style="display:flex;gap:12px;padding:16px;background:${n.isRead ? '#fff' : '#fff5f3'};border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:8px;text-decoration:none;color:inherit;${!n.isRead ? 'border-left:3px solid #ee4d2d' : ''}">
+        <div style="font-size:24px">${n.type === 'order' ? '📦' : n.type === 'promo' ? '🎉' : n.type === 'chat' ? '💬' : '🔔'}</div>
+        <div style="flex:1">
+          <strong style="font-size:14px">${n.title}</strong>
+          <p style="font-size:13px;color:#666;margin-top:4px">${n.message}</p>
+          <div style="font-size:11px;color:#999;margin-top:4px">${new Date(n.createdAt).toLocaleString()}</div>
+        </div>
+        ${!n.isRead ? '<div style="width:8px;height:8px;border-radius:50%;background:#ee4d2d;flex-shrink:0"></div>' : ''}
+      </a>
+    `).join('') : '<div class="empty-state"><div class="icon">🔔</div><h3>No notifications</h3></div>'}
+  `
+  renderPage(container)
+  // Mark all as read
+  notifs.forEach((n: any) => { if (!n.isRead) markNotificationRead(n.id) })
 }
 
 export function renderMessagesPage(): void {
