@@ -13,12 +13,13 @@ import { renderWishlistPage } from './pages/wishlist'
 import { renderTrackOrderPage } from './pages/track-order'
 import { renderMessagesPage } from './pages/messages'
 import { renderSellerDashboardPage } from './pages/seller'
+import { renderAdminPage } from './pages/admin'
 import {
   renderAboutPage, renderContactPage, renderHelpPage, renderHowToBuyPage,
   renderShippingPage, renderReturnPolicyPage, renderPaymentMethodsPage,
   renderTermsPage, renderPrivacyPage, renderDealsPage, renderBlogPage,
   renderStoresPage, renderNotificationsPage, renderStoreDetailPage,
-  renderAdminPage, renderSellPage, renderComparisonPage
+  renderSellPage, renderComparisonPage
 } from './pages/static'
 import { ensureToastContainer } from './components'
 

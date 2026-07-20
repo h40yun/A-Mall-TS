@@ -226,10 +226,6 @@ export function renderSellerDashboardPage(): void {
   renderStaticPage('Seller Center', `<p>Seller dashboard coming soon. Apply to sell <a href="/sell" style="color:#ee4d2d">here</a>.</p>`)
 }
 
-export function renderAdminPage(): void {
-  if (!isAdmin()) { navigate('/'); return }
-  renderStaticPage('Admin Panel', `<p>Admin panel coming soon.</p>`)
-}
 
 export function renderSellPage(): void {
   const container = document.createElement('div')
