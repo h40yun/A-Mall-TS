@@ -1,6 +1,7 @@
 // ==================== ADMIN DASHBOARD ====================
 import { getCurrentUser, isAdmin, getUsers, getOrders, getReviews, getMessages, getNotifications, getSellerStore, getSellerProducts, getReturnRequests, formatPrice, renderStars, showToast, addNotification } from '../utils/helpers'
 import { PRODUCTS, CATEGORIES, COUPONS, VOUCHERS } from '../utils/data'
+import { scrapeProducts, saveScrapedProducts, getScrapedProducts, deleteScrapedProduct, clearScrapedProducts, importToMarketplace, detectPlatform, type ScrapedProduct } from '../utils/scraper'
 import { renderPage } from '../components'
 import { navigate } from '../router'
 
@@ -50,6 +51,7 @@ export function renderAdminPage(): void {
           <a class="admin-nav" data-section="coupons">🏷️ Coupons</a>
           <a class="admin-nav" data-section="notifications">🔔 Notifications</a>
           <a class="admin-nav" data-section="analytics">📈 Analytics</a>
+          <a class="admin-nav" data-section="scraper">🕷️ Scrap Products</a>
           <a class="admin-nav" data-section="settings">⚙️ Settings</a>
           <a href="/" style="display:block;padding:12px 20px;font-size:13px;color:#aaa;margin-top:20px">← Back to Mall</a>
         </nav>
@@ -264,6 +266,85 @@ export function renderAdminPage(): void {
         </div>
 
         <!-- ==================== SETTINGS ==================== -->
+
+        <!-- ==================== SCRAP PRODUCTS ==================== -->
+        <div id="section-scraper" style="display:none">
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:16px">🕷️ Scrap Products from Marketplace</h3>
+          
+          <!-- URL Input -->
+          <div style="background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:20px">
+            <h4 style="font-size:14px;font-weight:700;margin-bottom:12px">Enter Marketplace URL</h4>
+            <p style="font-size:13px;color:#666;margin-bottom:16px">Paste a category, search, or store page URL from any supported marketplace. Products will be extracted automatically.</p>
+            <div style="display:flex;gap:8px;margin-bottom:12px">
+              <input type="text" class="form-control" id="scrapeUrlInput" placeholder="https://www.amazon.com/s?k=wireless+earbuds" style="flex:1;padding:14px 16px;font-size:14px;border-radius:8px">
+              <button class="btn btn-primary" id="scrapeBtn" style="padding:14px 28px;white-space:nowrap">🔍 Scrape</button>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-sm btn-outline platform-quick-btn" data-platform="Amazon" style="font-size:11px;padding:4px 10px">Amazon</button>
+              <button class="btn btn-sm btn-outline platform-quick-btn" data-platform="AliExpress" style="font-size:11px;padding:4px 10px">AliExpress</button>
+              <button class="btn btn-sm btn-outline platform-quick-btn" data-platform="eBay" style="font-size:11px;padding:4px 10px">eBay</button>
+              <button class="btn btn-sm btn-outline platform-quick-btn" data-platform="Shopee" style="font-size:11px;padding:4px 10px">Shopee</button>
+              <button class="btn btn-sm btn-outline platform-quick-btn" data-platform="Lazada" style="font-size:11px;padding:4px 10px">Lazada</button>
+              <button class="btn btn-sm btn-outline platform-quick-btn" data-platform="Temu" style="font-size:11px;padding:4px 10px">Temu</button>
+              <button class="btn btn-sm btn-outline platform-quick-btn" data-platform="Walmart" style="font-size:11px;padding:4px 10px">Walmart</button>
+              <button class="btn btn-sm btn-outline platform-quick-btn" data-platform="Alibaba" style="font-size:11px;padding:4px 10px">Alibaba</button>
+              <button class="btn btn-sm btn-outline platform-quick-btn" data-platform="SHEIN" style="font-size:11px;padding:4px 10px">SHEIN</button>
+              <button class="btn btn-sm btn-outline platform-quick-btn" data-platform="Banggood" style="font-size:11px;padding:4px 10px">Banggood</button>
+            </div>
+            <div id="scrapeStatus" style="margin-top:12px;font-size:13px;color:#666"></div>
+          </div>
+
+          <!-- Supported Platforms -->
+          <div style="background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:20px">
+            <h4 style="font-size:14px;font-weight:700;margin-bottom:12px">Supported Platforms (30+)</h4>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Amazon</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">AliExpress</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">eBay</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Shopee</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Lazada</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Temu</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Wish</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Alibaba</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Banggood</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">GearBest</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">SHEIN</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Zara</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">H&amp;M</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">ASOS</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Walmart</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Target</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Best Buy</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Etsy</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Shopify</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Tokopedia</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Bukalapak</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Blibli</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">JD.com</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Taobao</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Tmall</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Rakuten</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">MercadoLibre</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Flipkart</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Noon</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Jumia</span>
+              <span style="padding:4px 10px;background:#f0f0f0;border-radius:16px;font-size:11px;color:#444">Takealot</span>
+            </div>
+          </div>
+
+          <!-- Scraped Products -->
+          <div style="background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+              <h4 style="font-size:14px;font-weight:700">Scraped Products (<span id="scrapedCount">0</span>)</h4>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-sm btn-primary" id="importAllBtn" disabled>📥 Import All to Store</button>
+                <button class="btn btn-sm btn-outline" id="clearScrapedBtn" disabled style="color:#dc3545">🗑️ Clear All</button>
+              </div>
+            </div>
+            <div id="scrapedProductsList"></div>
+          </div>
+        </div>
+
         <div id="section-settings" style="display:none">
           <h3 style="font-size:16px;font-weight:700;margin-bottom:16px">⚙️ System Settings</h3>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
@@ -299,7 +380,7 @@ export function renderAdminPage(): void {
       const section = this.dataset.section!
       container.querySelectorAll('[id^="section-"]').forEach(s => (s as HTMLElement).style.display = 'none')
       ;(container.querySelector(`#section-${section}`) as HTMLElement).style.display = 'block'
-      const titles: Record<string, string> = { dashboard: 'Admin Dashboard', users: 'User Management', orders: 'Order Management', products: 'Product Management', sellers: 'Seller Management', reviews: 'Review Management', messages: 'Message Management', returns: 'Return Requests', vouchers: 'Vouchers', coupons: 'Coupons', notifications: 'Notifications', analytics: 'Analytics', settings: 'System Settings' }
+      const titles: Record<string, string> = { dashboard: 'Admin Dashboard', users: 'User Management', orders: 'Order Management', products: 'Product Management', sellers: 'Seller Management', reviews: 'Review Management', messages: 'Message Management', returns: 'Return Requests', vouchers: 'Vouchers', coupons: 'Coupons', notifications: 'Notifications', analytics: 'Analytics', scraper: 'Scrap Products', settings: 'System Settings' }
       container.querySelector('#adminTitle')!.textContent = titles[section] || 'Admin'
       if (section === 'users') renderUsersTable()
       if (section === 'orders') renderOrdersTable()
@@ -434,4 +515,149 @@ export function renderAdminPage(): void {
     orders.forEach(o => { csv += `${o.id},"${o.user}","${o.userEmail}",${o.items.length},${o.total},${o.payment},${o.status},${new Date(o.date).toLocaleDateString()}\n` })
     const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'orders.csv'; a.click(); showToast('Orders exported!')
   })
+
+
+  // ==================== SCRAP PRODUCTS ====================
+  function renderScrapedProducts() {
+    const products = getScrapedProducts()
+    const countEl = container.querySelector('#scrapedCount')
+    const listEl = container.querySelector('#scrapedProductsList')
+    const importBtn = container.querySelector('#importAllBtn') as HTMLButtonElement
+    const clearBtn = container.querySelector('#clearScrapedBtn') as HTMLButtonElement
+    
+    if (countEl) countEl.textContent = String(products.length)
+    if (importBtn) importBtn.disabled = products.length === 0
+    if (clearBtn) clearBtn.disabled = products.length === 0
+    
+    if (!listEl) return
+    
+    if (products.length === 0) {
+      listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#999"><div style="font-size:48px;margin-bottom:12px">🕷️</div><h3 style="font-size:16px;color:#666;margin-bottom:8px">No scraped products yet</h3><p style="font-size:13px">Enter a marketplace URL above to start scraping products</p></div>'
+      return
+    }
+    
+    listEl.innerHTML = products.map((p, i) => `
+      <div style="display:flex;gap:12px;padding:12px;border-bottom:1px solid #f0f0f0;align-items:center" data-scraped-id="${p.id}">
+        <img src="${p.images?.[0] || ''}" style="width:60px;height:60px;border-radius:8px;object-fit:cover;background:#f0f0f0" onerror="this.src='https://picsum.photos/seed/scraped${i}/60/60'">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.name}</div>
+          <div style="display:flex;gap:12px;font-size:11px;color:#999;margin-top:4px">
+            <span>${formatPrice(p.price)}</span>
+            <span style="text-decoration:line-through">${formatPrice(p.originalPrice)}</span>
+            <span style="color:#f39c12">★ ${p.rating}</span>
+            <span>${p.sold.toLocaleString()} sold</span>
+            <span style="color:#17a2b8">${p.sourcePlatform}</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-sm btn-primary import-single-btn" data-id="${p.id}">Import</button>
+          <button class="btn btn-sm btn-outline delete-scraped-btn" data-id="${p.id}" style="color:#dc3545">✕</button>
+        </div>
+      </div>
+    `).join('')
+    
+    // Single import
+    listEl.querySelectorAll('.import-single-btn').forEach(btn => {
+      btn.addEventListener('click', function(this: HTMLElement) {
+        const id = Number(this.dataset.id)
+        const product = products.find(p => p.id === id)
+        if (product) {
+          importToMarketplace(product)
+          deleteScrapedProduct(id)
+          renderScrapedProducts()
+          showToast('Product imported to store!')
+        }
+      })
+    })
+    
+    // Delete single
+    listEl.querySelectorAll('.delete-scraped-btn').forEach(btn => {
+      btn.addEventListener('click', function(this: HTMLElement) {
+        const id = Number(this.dataset.id)
+        deleteScrapedProduct(id)
+        renderScrapedProducts()
+        showToast('Product removed')
+      })
+    })
+  }
+  
+  // Scrape button
+  container.querySelector('#scrapeBtn')?.addEventListener('click', async () => {
+    const urlInput = container.querySelector('#scrapeUrlInput') as HTMLInputElement
+    const url = urlInput?.value.trim()
+    if (!url) { showToast('Enter a URL', 'error'); return }
+    
+    const statusEl = container.querySelector('#scrapeStatus')
+    if (statusEl) statusEl.innerHTML = '<span style="color:#f39c12">⏳ Scraping products...</span>'
+    
+    const platform = detectPlatform(url)
+    
+    try {
+      const result = await scrapeProducts(url)
+      
+      if (result.products.length > 0) {
+        saveScrapedProducts(result.products)
+        renderScrapedProducts()
+        
+        if (statusEl) {
+          statusEl.innerHTML = `<span style="color:#28a745">✅ Found ${result.products.length} products from ${platform}${result.error ? ' — ' + result.error : ''}</span>`
+        }
+        showToast(`Scraped ${result.products.length} products from ${platform}!`)
+      } else {
+        if (statusEl) statusEl.innerHTML = '<span style="color:#dc3545">❌ No products found. Try a different URL.</span>'
+      }
+    } catch (error) {
+      if (statusEl) statusEl.innerHTML = '<span style="color:#dc3545">❌ Scraping failed. Try again.</span>'
+      showToast('Scraping failed', 'error')
+    }
+  })
+  
+  // Quick platform buttons
+  container.querySelectorAll('.platform-quick-btn').forEach(btn => {
+    btn.addEventListener('click', function(this: HTMLElement) {
+      const platform = this.dataset.platform
+      const urls: Record<string, string> = {
+        'Amazon': 'https://www.amazon.com/s?k=electronics',
+        'AliExpress': 'https://www.aliexpress.com/w/wholesale-electronics.html',
+        'eBay': 'https://www.ebay.com/sch/i.html?_nkw=electronics',
+        'Shopee': 'https://shopee.com/search?keyword=electronics',
+        'Lazada': 'https://www.lazada.com/catalog/?q=electronics',
+        'Temu': 'https://www.temu.com/search_result.html?search_key=electronics',
+        'Walmart': 'https://www.walmart.com/search?q=electronics',
+        'Alibaba': 'https://www.alibaba.com/trade/search?SearchText=electronics',
+        'SHEIN': 'https://www.shein.com/search?q=electronics',
+        'Banggood': 'https://www.banggood.com/search/electronics.html',
+      }
+      const urlInput = container.querySelector('#scrapeUrlInput') as HTMLInputElement
+      if (urlInput && platform && urls[platform]) {
+        urlInput.value = urls[platform]
+        const scrapeBtn = container.querySelector('#scrapeBtn')
+        if (scrapeBtn) (scrapeBtn as HTMLElement).click()
+      }
+    })
+  })
+  
+  // Import all
+  container.querySelector('#importAllBtn')?.addEventListener('click', () => {
+    const products = getScrapedProducts()
+    if (!products.length) return
+    products.forEach(p => importToMarketplace(p))
+    clearScrapedProducts()
+    renderScrapedProducts()
+    showToast(`${products.length} products imported to store!`)
+  })
+  
+  // Clear all
+  container.querySelector('#clearScrapedBtn')?.addEventListener('click', () => {
+    if (confirm('Clear all scraped products?')) {
+      clearScrapedProducts()
+      renderScrapedProducts()
+      showToast('Scraped products cleared')
+    }
+  })
+  
+  // Init scraped products list
+  renderScrapedProducts()
+
+
 }
