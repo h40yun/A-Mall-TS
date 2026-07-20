@@ -1,5 +1,5 @@
 // ==================== CART PAGE ====================
-import { PRODUCTS } from '../utils/data'
+import { ALL_PRODUCTS as PRODUCTS } from '../utils/data'
 import { getCart, saveCart, formatPrice, getProductImage, getProductInitials, getProductColor, showToast, saveForLater, getSavedItems, moveToCart, removeSavedItem } from '../utils/helpers'
 import { renderProductCard, renderPage, renderEmptyState } from '../components'
 import { navigate } from '../router'

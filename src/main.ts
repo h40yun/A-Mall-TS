@@ -3,6 +3,7 @@ import { route, handleRoute, initRouter } from './router'
 import { initAdminData, setProductsCache } from './utils/helpers'
 import { PRODUCTS } from './utils/data'
 import { initDemoAccounts } from './utils/demo-accounts'
+import { generateMegaCatalog } from './utils/mega-catalog'
 import { renderHomePage } from './pages/home'
 import { renderProductPage } from './pages/product'
 import { renderCartPage } from './pages/cart'
@@ -29,7 +30,11 @@ import { ensureToastContainer } from './components'
 // Init
 initAdminData()
 initDemoAccounts()
-setProductsCache(PRODUCTS)
+
+// Generate mega catalog (20,000+ products) and merge with original 30
+const megaProducts = generateMegaCatalog(20000)
+const allProducts = [...PRODUCTS, ...megaProducts]
+setProductsCache(allProducts)
 ensureToastContainer()
 
 // Routes

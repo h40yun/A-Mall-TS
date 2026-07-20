@@ -1,6 +1,6 @@
 // ==================== UI COMPONENTS ====================
 import { getCurrentUser, getCartCount, isAdmin, isSeller, logout, formatPrice, renderStars, getDiscount, getProductImage, getProductInitials, getProductColor, isInWishlist, toggleWishlist, updateCartBadge, getSearchHistory, addSearchHistory, searchProducts, isLoggedIn, getUnreadMessageCount, getUnreadNotificationCount } from '../utils/helpers'
-import { PRODUCTS, CATEGORIES } from '../utils/data'
+import { ALL_PRODUCTS as PRODUCTS, CATEGORIES } from '../utils/data'
 import { navigate } from '../router'
 import { LANGUAGES, getCurrentLanguage, setLanguage } from '../utils/i18n'
 import type { Product } from '../types'

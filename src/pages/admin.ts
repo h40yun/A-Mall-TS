@@ -1,6 +1,6 @@
 // ==================== ADMIN DASHBOARD ====================
 import { getCurrentUser, isAdmin, getUsers, getOrders, getReviews, getMessages, getNotifications, getSellerStore, getSellerProducts, getReturnRequests, formatPrice, renderStars, showToast, addNotification } from '../utils/helpers'
-import { PRODUCTS, CATEGORIES, COUPONS, VOUCHERS } from '../utils/data'
+import { ALL_PRODUCTS as PRODUCTS, CATEGORIES, COUPONS, VOUCHERS } from '../utils/data'
 import { scrapeProducts, saveScrapedProducts, getScrapedProducts, deleteScrapedProduct, clearScrapedProducts, importToMarketplace, detectPlatform, type ScrapedProduct } from '../utils/scraper'
 import { isDemoAccount, getDemoAccounts } from '../utils/demo-accounts'
 import { adminConfirmDelivery, adminUpdateOrderStatus, autoUpdateOrderStatus } from '../utils/helpers'

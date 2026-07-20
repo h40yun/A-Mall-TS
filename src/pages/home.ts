@@ -1,5 +1,5 @@
 // ==================== HOME PAGE ====================
-import { PRODUCTS, CATEGORIES, BRAND_STORIES, TOP_SEARCHES, VOUCHERS } from '../utils/data'
+import { ALL_PRODUCTS as PRODUCTS, CATEGORIES, BRAND_STORIES, TOP_SEARCHES, VOUCHERS } from '../utils/data'
 import { formatPrice, getDiscount, startCountdown, getRecentlyViewed, getClaimedVouchers, claimVoucher } from '../utils/helpers'
 import { renderProductCard, renderPage, renderSection } from '../components'
 import { navigate } from '../router'

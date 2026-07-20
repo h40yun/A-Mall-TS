@@ -1,5 +1,5 @@
 // ==================== CHECKOUT PAGE ====================
-import { PRODUCTS, COUPONS, COUNTRIES } from '../utils/data'
+import { ALL_PRODUCTS as PRODUCTS, COUPONS, COUNTRIES } from '../utils/data'
 import { getCart, formatPrice, createOrder, saveCart, showToast, getProductInitials, getProductColor, getProductImage, getCurrentUser, getAddresses, applyVoucher, getCoins, useCoins } from '../utils/helpers'
 import { renderPage } from '../components'
 import { navigate } from '../router'

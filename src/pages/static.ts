@@ -1,6 +1,6 @@
 // ==================== STATIC PAGES ====================
 import { getComparisonItems, clearComparison, formatPrice, renderStars, toggleComparison, showToast, getCurrentUser, getOrders, getAddresses, saveAddress, isAdmin, getNotifications, markNotificationRead, isLoggedIn, getProductImage, isInWishlist, toggleWishlist, isSeller, registerSeller, getSellerApplication } from '../utils/helpers'
-import { PRODUCTS, CATEGORIES, COUPONS, VOUCHERS } from '../utils/data'
+import { ALL_PRODUCTS as PRODUCTS, CATEGORIES, COUPONS, VOUCHERS } from '../utils/data'
 import { renderPage, renderProductCard } from '../components'
 import { navigate, getParam } from '../router'
 import type { Address } from '../types'

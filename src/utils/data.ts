@@ -35,246 +35,300 @@ export const PRODUCTS: Product[] = [
 ]
 
 export const CATEGORIES: Category[] = [
-
   {name:"Electronics",icon:"📱",color:"#3498db",promoted:true,subcategories:[
     {name:"Audio",items:["Headphones","Speakers","Earbuds","Soundbars","Amplifiers"]},
     {name:"Wearables",items:["Smartwatches","Fitness Trackers","Smart Rings","VR Headsets"]},
     {name:"Peripherals",items:["Keyboards","Mice","Webcams","Monitors","USB Hubs"]},
     {name:"Accessories",items:["Cables","Chargers","Cases","Screen Protectors","Power Banks"]},
     {name:"Cameras",items:["DSLR","Mirrorless","Action Cameras","Drones","Lenses"]},
-    {name:"Gaming",items:["Consoles","Controllers","Gaming Chairs","VR Headsets","RGB Lighting"]}
+    {name:"Gaming",items:["Consoles","Controllers","Gaming Chairs","VR Headsets","RGB Lighting"]},
+    {name:"Smart Home",items:["Smart Bulbs","Smart Plugs","Smart Speakers","Sensors"]},
+    {name:"Drones",items:["Camera Drones","Racing Drones","Mini Drones","Drone Accessories"]}
   ]},
   {name:"Phones & Accessories",icon:"📲",color:"#00bcd4",promoted:true,subcategories:[
     {name:"Smartphones",items:["Android","iOS","Foldable","Rugged"]},
-    {name:"Phone Cases",items:["Silicone","Leather","Clear","Wallet","Armor"]},
+    {name:"Cases",items:["Silicone","Leather","Clear","Wallet","Armor"]},
     {name:"Screen Protectors",items:["Tempered Glass","Privacy","Anti-Glare"]},
-    {name:"Chargers",items:["Wireless","Car","Wall","Portable"]},
-    {name:"Holders & Mounts",items:["Car Mount","Ring Holder","Stand","Armband"]},
-    {name:"SIM & Memory",items:["SIM Cards","Memory Cards","SIM Tools"]}
+    {name:"Chargers",items:["Wireless","Car","Wall","Portable","Fast Charging"]},
+    {name:"Holders",items:["Car Mount","Ring Holder","Stand","Armband","Magnetic"]},
+    {name:"Cables",items:["USB-C","Lightning","Micro USB","HDMI","Adapter"]},
+    {name:"Power Banks",items:["10000mAh","20000mAh","30000mAh","Solar","Slim"]}
   ]},
   {name:"Computers & Tablets",icon:"💻",color:"#607d8b",promoted:true,subcategories:[
     {name:"Laptops",items:["Gaming","Ultrabook","Business","2-in-1","Chromebook"]},
     {name:"Desktops",items:["Gaming PC","Workstation","Mini PC","All-in-One"]},
-    {name:"Tablets",items:["Android","iOS","Drawing","Kids"]},
-    {name:"Monitors",items:["Gaming","4K","Ultrawide","Portable"]},
+    {name:"Tablets",items:["Android","iOS","Drawing","Kids","E-Reader"]},
+    {name:"Monitors",items:["Gaming","4K","Ultrawide","Portable","Curved"]},
     {name:"Storage",items:["SSD","HDD","USB Flash","Memory Cards","NAS"]},
-    {name:"Networking",items:["Router","Mesh","WiFi Extender","Ethernet","Modem"]}
+    {name:"Networking",items:["Router","Mesh","WiFi Extender","Ethernet","Modem"]},
+    {name:"Components",items:["CPU","GPU","RAM","Motherboard","PSU","Case"]},
+    {name:"Software",items:["Windows","Office","Antivirus","Design","Development"]}
   ]},
   {name:"Fashion",icon:"👗",color:"#e91e63",promoted:true,subcategories:[
-    {name:"Men's Clothing",items:["T-Shirts","Pants","Jackets","Suits","Hoodies"]},
-    {name:"Women's Clothing",items:["Dresses","Tops","Skirts","Activewear","Blouses"]},
-    {name:"Shoes",items:["Sneakers","Sandals","Boots","Formal","Slippers"]},
-    {name:"Bags",items:["Handbags","Backpacks","Wallets","Luggage","Crossbody"]},
-    {name:"Jewelry",items:["Necklaces","Rings","Bracelets","Earrings","Anklets"]},
-    {name:"Accessories",items:["Watches","Sunglasses","Hats","Scarves","Belts"]}
+    {name:"Men's Clothing",items:["T-Shirts","Pants","Jackets","Suits","Hoodies","Shorts"]},
+    {name:"Women's Clothing",items:["Dresses","Tops","Skirts","Activewear","Blouses","Pants"]},
+    {name:"Shoes",items:["Sneakers","Sandals","Boots","Formal","Slippers","Loafers"]},
+    {name:"Bags",items:["Handbags","Backpacks","Wallets","Luggage","Crossbody","Tote"]},
+    {name:"Jewelry",items:["Necklaces","Rings","Bracelets","Earrings","Anklets","Brooches"]},
+    {name:"Accessories",items:["Watches","Sunglasses","Hats","Scarves","Belts","Ties"]},
+    {name:"Kids Fashion",items:["Boys","Girls","Baby","Shoes","School"]},
+    {name:"Sportswear",items:["Gym","Running","Yoga","Swim","Cycling"]},
+    {name:"Underwear",items:["Men's","Women's","Socks","Thermal","Shapewear"]}
   ]},
   {name:"Home & Kitchen",icon:"🏠",color:"#4caf50",promoted:false,subcategories:[
-    {name:"Kitchen & Dining",items:["Cookware","Utensils","Storage","Appliances","Bakeware"]},
+    {name:"Kitchen",items:["Cookware","Utensils","Storage","Appliances","Bakeware","Knives"]},
     {name:"Lighting",items:["Lamps","LED Strips","Ceiling Lights","Smart Lights","Outdoor"]},
-    {name:"Home Decor",items:["Candles","Vases","Wall Art","Rugs","Clocks"]},
-    {name:"Furniture",items:["Chairs","Tables","Shelves","Beds","Sofas"]},
-    {name:"Storage",items:["Bins","Organizers","Hooks","Shoe Racks","Closet"]},
-    {name:"Bedding",items:["Sheets","Pillows","Blankets","Mattress Toppers","Duvet"]}
+    {name:"Decor",items:["Candles","Vases","Wall Art","Rugs","Clocks","Mirrors"]},
+    {name:"Furniture",items:["Chairs","Tables","Shelves","Beds","Sofas","Desks"]},
+    {name:"Storage",items:["Bins","Organizers","Hooks","Shoe Racks","Closet","Garage"]},
+    {name:"Bedding",items:["Sheets","Pillows","Blankets","Mattress Toppers","Duvet"]},
+    {name:"Bathroom",items:["Towels","Shower Curtains","Bath Mats","Soap Dispensers"]},
+    {name:"Cleaning",items:["Vacuum","Mop","Detergent","Broom","Organizers"]},
+    {name:"Laundry",items:["Hampers","Drying Racks","Ironing","Stain Remover","Bags"]}
   ]},
   {name:"Beauty & Personal Care",icon:"💄",color:"#9c27b0",promoted:true,subcategories:[
-    {name:"Skincare",items:["Serums","Moisturizers","Cleansers","Sunscreen","Masks"]},
-    {name:"Makeup",items:["Foundation","Lipstick","Mascara","Eyeshadow","Blush"]},
-    {name:"Hair Care",items:["Shampoo","Conditioner","Styling Tools","Hair Color","Oil"]},
+    {name:"Skincare",items:["Serums","Moisturizers","Cleansers","Sunscreen","Masks","Toners"]},
+    {name:"Makeup",items:["Foundation","Lipstick","Mascara","Eyeshadow","Blush","Concealer"]},
+    {name:"Hair Care",items:["Shampoo","Conditioner","Styling Tools","Hair Color","Oil","Serum"]},
     {name:"Fragrance",items:["Perfume","Body Mist","Cologne","Gift Sets","Roll-On"]},
     {name:"Tools",items:["Brushes","Mirrors","Hair Dryers","Straighteners","Curlers"]},
-    {name:"Bath & Body",items:["Body Wash","Lotion","Scrubs","Bath Bombs","Deodorant"]}
+    {name:"Bath & Body",items:["Body Wash","Lotion","Scrubs","Bath Bombs","Deodorant"]},
+    {name:"Men's Grooming",items:["Shaving","Beard Care","Skincare","Hair","Fragrance"]},
+    {name:"Nail Care",items:["Polish","Gel","Tools","Art","Press-On","Remover"]}
   ]},
   {name:"Health & Wellness",icon:"💊",color:"#009688",promoted:false,subcategories:[
-    {name:"Supplements",items:["Vitamins","Protein","Collagen","Probiotics","Omega"]},
-    {name:"Medical Supplies",items:["First Aid","Thermometers","Masks","Gloves","BP Monitor"]},
-    {name:"Fitness Nutrition",items:["Protein Powder","BCAA","Pre-Workout","Creatine"]},
-    {name:"Wellness",items:["Essential Oils","Aromatherapy","Massage","Acupuncture"]},
-    {name:"Vision Care",items:["Glasses","Contact Lens","Eye Drops","Reading Glasses"]},
-    {name:"Oral Care",items:["Toothbrush","Toothpaste","Mouthwash","Floss","Whitening"]}
+    {name:"Supplements",items:["Vitamins","Protein","Collagen","Probiotics","Omega","Multivitamin"]},
+    {name:"Medical",items:["First Aid","Thermometers","Masks","Gloves","BP Monitor","Pulse Ox"]},
+    {name:"Fitness Nutrition",items:["Protein Powder","BCAA","Pre-Workout","Creatine","Glutamine"]},
+    {name:"Wellness",items:["Essential Oils","Aromatherapy","Massage","Acupuncture","Meditation"]},
+    {name:"Vision Care",items:["Glasses","Contact Lens","Eye Drops","Reading Glasses","Blue Light"]},
+    {name:"Oral Care",items:["Toothbrush","Toothpaste","Mouthwash","Floss","Whitening","Water Flosser"]},
+    {name:"Mobility",items:["Wheelchair","Walker","Cane","Crutches","Knee Brace","Back Support"]}
   ]},
   {name:"Sports & Outdoors",icon:"⚽",color:"#ff9800",promoted:false,subcategories:[
-    {name:"Yoga",items:["Mats","Blocks","Straps","Clothing","Wheels"]},
-    {name:"Fitness",items:["Resistance Bands","Dumbbells","Jump Ropes","Kettlebells","Treadmills"]},
-    {name:"Outdoor",items:["Tents","Backpacks","Water Bottles","Camping Gear","Hammocks"]},
-    {name:"Running",items:["Shoes","Socks","Armbands","Hydration","GPS Watch"]},
-    {name:"Swimming",items:["Goggles","Swimsuits","Fins","Pool Accessories","Snorkel"]},
-    {name:"Cycling",items:["Bikes","Helmets","Lights","Locks","Jerseys"]}
+    {name:"Yoga",items:["Mats","Blocks","Straps","Clothing","Wheels","Bolsters"]},
+    {name:"Fitness",items:["Resistance Bands","Dumbbells","Jump Ropes","Kettlebells","Treadmills","Benches"]},
+    {name:"Outdoor",items:["Tents","Backpacks","Water Bottles","Camping Gear","Hammocks","Sleeping Bags"]},
+    {name:"Running",items:["Shoes","Socks","Armbands","Hydration","GPS Watch","Shorts"]},
+    {name:"Swimming",items:["Goggles","Swimsuits","Fins","Pool Accessories","Snorkel","Wetsuits"]},
+    {name:"Cycling",items:["Bikes","Helmets","Lights","Locks","Jerseys","Gloves"]},
+    {name:"Team Sports",items:["Soccer","Basketball","Tennis","Volleyball","Baseball","Cricket"]},
+    {name:"Winter Sports",items:["Skiing","Snowboarding","Ice Skating","Snowshoes","Gloves","Goggles"]}
   ]},
   {name:"Toys & Games",icon:"🧸",color:"#f44336",promoted:false,subcategories:[
-    {name:"Building Sets",items:["Blocks","LEGO","Magnetic Tiles","K'Nex"]},
-    {name:"RC Vehicles",items:["Cars","Drones","Boats","Helicopters","Planes"]},
-    {name:"Puzzles",items:["Jigsaw","3D Puzzles","Brain Teasers","Rubik's Cube"]},
-    {name:"Board Games",items:["Strategy","Party","Card Games","Educational","Chess"]},
-    {name:"Dolls",items:["Action Figures","Plush","Fashion Dolls","Collectibles"]},
-    {name:"Educational",items:["STEM Kits","Science Sets","Art Supplies","Coding Toys"]}
+    {name:"Building",items:["Blocks","LEGO","Magnetic Tiles","K'Nex","Marble Run"]},
+    {name:"RC Vehicles",items:["Cars","Drones","Boats","Helicopters","Planes","Robots"]},
+    {name:"Puzzles",items:["Jigsaw","3D Puzzles","Brain Teasers","Rubik's Cube","Wooden"]},
+    {name:"Board Games",items:["Strategy","Party","Card Games","Educational","Chess","Monopoly"]},
+    {name:"Dolls",items:["Action Figures","Plush","Fashion Dolls","Collectibles","Puppets"]},
+    {name:"Educational",items:["STEM Kits","Science Sets","Art Supplies","Coding Toys","Math"]},
+    {name:"Outdoor Play",items:["Swings","Slides","Water Guns","Bubbles","Kites","Sandbox"]},
+    {name:"Baby Toys",items:["Rattles","Teethers","Play Mats","Mobiles","Stacking","Sensory"]}
   ]},
   {name:"Books & Media",icon:"📚",color:"#795548",promoted:false,subcategories:[
-    {name:"Fiction",items:["Romance","Thriller","Fantasy","Sci-Fi","Mystery"]},
-    {name:"Non-Fiction",items:["Biography","Self-Help","History","Science","Business"]},
-    {name:"Technology",items:["Programming","AI","Web Dev","Data Science","Cybersecurity"]},
-    {name:"Children",items:["Picture Books","Early Learning","Activity Books","Comics"]},
-    {name:"Textbooks",items:["Math","Science","Language","Engineering","Medical"]},
-    {name:"Digital",items:["E-Books","Audiobooks","Magazines","Comics","PDF"]}
+    {name:"Fiction",items:["Romance","Thriller","Fantasy","Sci-Fi","Mystery","Horror"]},
+    {name:"Non-Fiction",items:["Biography","Self-Help","History","Science","Business","Psychology"]},
+    {name:"Technology",items:["Programming","AI","Web Dev","Data Science","Cybersecurity","DevOps"]},
+    {name:"Children",items:["Picture Books","Early Learning","Activity Books","Comics","Stories"]},
+    {name:"Textbooks",items:["Math","Science","Language","Engineering","Medical","Law"]},
+    {name:"Digital",items:["E-Books","Audiobooks","Magazines","Comics","PDF","Courses"]},
+    {name:"Comics",items:["Manga","Graphic Novels","Superhero","Webtoons","Indie"]},
+    {name:"Cooking",items:["Recipes","Baking","Healthy Eating","World Cuisine","BBQ","Vegan"]}
   ]},
   {name:"Food & Grocery",icon:"🍕",color:"#ff5722",promoted:false,subcategories:[
-    {name:"Tea & Coffee",items:["Green Tea","Black Tea","Matcha","Ground Coffee","Instant"]},
-    {name:"Snacks",items:["Chips","Cookies","Protein Bars","Dried Fruit","Nuts"]},
-    {name:"Pantry",items:["Rice","Pasta","Oil","Sauce","Spices"]},
-    {name:"Beverages",items:["Juice","Soda","Energy Drinks","Water","Smoothie"]},
-    {name:"Organic",items:["Superfoods","Honey","Seeds","Grains","Gluten-Free"]},
-    {name:"International",items:["Asian","Mexican","Italian","Indian","Mediterranean"]}
+    {name:"Tea & Coffee",items:["Green Tea","Black Tea","Matcha","Ground Coffee","Instant","Espresso"]},
+    {name:"Snacks",items:["Chips","Cookies","Protein Bars","Dried Fruit","Nuts","Crackers"]},
+    {name:"Pantry",items:["Rice","Pasta","Oil","Sauce","Spices","Flour"]},
+    {name:"Beverages",items:["Juice","Soda","Energy Drinks","Water","Smoothie","Kombucha"]},
+    {name:"Organic",items:["Superfoods","Honey","Seeds","Grains","Gluten-Free","Vegan"]},
+    {name:"Baking",items:["Flour","Sugar","Yeast","Chocolate Chips","Sprinkles","Mixes"]},
+    {name:"Condiments",items:["Ketchup","Mustard","Hot Sauce","Soy Sauce","Mayo","BBQ Sauce"]},
+    {name:"Baby Food",items:["Puree","Cereal","Snacks","Formula","Teething","Organic"]}
   ]},
   {name:"Automotive",icon:"🚗",color:"#455a64",promoted:false,subcategories:[
-    {name:"Car Electronics",items:["Dash Cam","GPS","Car Charger","Bluetooth FM","OBD2"]},
-    {name:"Interior",items:["Seat Covers","Floor Mats","Steering Wheel","Air Freshener"]},
-    {name:"Exterior",items:["Car Wax","Polish","Scratch Repair","Car Cover","Tire"]},
+    {name:"Car Electronics",items:["Dash Cam","GPS","Car Charger","Bluetooth FM","OBD2","Radar"]},
+    {name:"Interior",items:["Seat Covers","Floor Mats","Steering Wheel","Air Freshener","Sunshade"]},
+    {name:"Exterior",items:["Car Wax","Polish","Scratch Repair","Car Cover","Tire Shine","Wipers"]},
     {name:"Tools",items:["Wrench Set","Jack","Jump Starter","Tire Inflator","OBD Scanner"]},
-    {name:"Motorcycle",items:["Helmets","Gloves","Jackets","Accessories","Parts"]},
-    {name:"Car Parts",items:["Brake Pads","Filters","Spark Plugs","Belt","Battery"]}
+    {name:"Motorcycle",items:["Helmets","Gloves","Jackets","Accessories","Parts","Mirrors"]},
+    {name:"Car Parts",items:["Brake Pads","Filters","Spark Plugs","Belt","Battery","Alternator"]},
+    {name:"Tires",items:["All-Season","Winter","Summer","Off-Road","Performance","Spare"]},
+    {name:"Oils & Fluids",items:["Engine Oil","Transmission","Brake Fluid","Coolant","Power Steering"]}
   ]},
   {name:"Baby & Kids",icon:"👶",color:"#e91e63",promoted:false,subcategories:[
-    {name:"Diapers & Wipes",items:["Diapers","Baby Wipes","Diaper Cream","Changing Pad"]},
-    {name:"Feeding",items:["Bottles","Formula","High Chair","Bibs","Sippy Cups"]},
+    {name:"Diapers",items:["Diapers","Baby Wipes","Diaper Cream","Changing Pad","Diaper Bag"]},
+    {name:"Feeding",items:["Bottles","Formula","High Chair","Bibs","Sippy Cups","Breast Pump"]},
     {name:"Strollers",items:["Umbrella Stroller","Travel System","Jogging Stroller","Double"]},
-    {name:"Car Seats",items:["Infant","Convertible","Booster","All-in-One"]},
-    {name:"Nursery",items:["Crib","Changing Table","Glider","Mobile","Night Light"]},
-    {name:"Kids Fashion",items:["Boys","Girls","Shoes","Accessories","School Uniform"]}
+    {name:"Car Seats",items:["Infant","Convertible","Booster","All-in-One","Toddler"]},
+    {name:"Nursery",items:["Crib","Changing Table","Glider","Mobile","Night Light","Monitor"]},
+    {name:"Kids Fashion",items:["Boys","Girls","Shoes","Accessories","School Uniform"]},
+    {name:"Baby Safety",items:["Gates","Locks","Corner Guards","Outlet Covers","Monitors"]},
+    {name:"Health",items:["Thermometer","Nasal Aspirator","Medicine Dispenser","Grooming Kit"]}
   ]},
   {name:"Pet Supplies",icon:"🐾",color:"#795548",promoted:false,subcategories:[
-    {name:"Dogs",items:["Food","Treats","Toys","Beds","Collars"]},
-    {name:"Cats",items:["Food","Litter","Toys","Scratchers","Beds"]},
-    {name:"Fish",items:["Aquarium","Food","Filters","Plants","Decorations"]},
-    {name:"Birds",items:["Cages","Food","Toys","Perches","Nesting"]},
-    {name:"Small Animals",items:["Hamster","Rabbit","Guinea Pig","Food","Cages"]},
-    {name:"Reptiles",items:["Terrarium","Heating","Lighting","Food","Substrate"]}
+    {name:"Dogs",items:["Food","Treats","Toys","Beds","Collars","Leashes"]},
+    {name:"Cats",items:["Food","Litter","Toys","Scratchers","Beds","Trees"]},
+    {name:"Fish",items:["Aquarium","Food","Filters","Plants","Decorations","Heaters"]},
+    {name:"Birds",items:["Cages","Food","Toys","Perches","Nesting","Minerals"]},
+    {name:"Small Animals",items:["Hamster","Rabbit","Guinea Pig","Food","Cages","Bedding"]},
+    {name:"Reptiles",items:["Terrarium","Heating","Lighting","Food","Substrate","Décor"]},
+    {name:"Pet Health",items:["Flea & Tick","Dewormer","Vitamins","Dental","Joint","Skin"]},
+    {name:"Pet Tech",items:["GPS Tracker","Automatic Feeder","Pet Camera","Smart Bowl","Door"]}
   ]},
   {name:"Garden & Outdoor",icon:"🌿",color:"#4caf50",promoted:false,subcategories:[
-    {name:"Plants",items:["Indoor","Outdoor","Seeds","Succulents","Herbs"]},
-    {name:"Garden Tools",items:["Shovel","Rake","Pruner","Hose","Gloves"]},
-    {name:"Outdoor Furniture",items:["Patio Set","Hammock","Umbrella","Grill","Fire Pit"]},
-    {name:"Planters",items:["Hanging","Ceramic","Plastic","Self-Watering","Raised Bed"]},
-    {name:"Watering",items:["Sprinkler","Drip Irrigation","Watering Can","Rain Barrel"]},
-    {name:"Decor",items:["Solar Lights","Wind Chimes","Statues","Fountains","Bird Feeder"]}
+    {name:"Plants",items:["Indoor","Outdoor","Seeds","Succulents","Herbs","Trees"]},
+    {name:"Tools",items:["Shovel","Rake","Pruner","Hose","Gloves","Wheelbarrow"]},
+    {name:"Furniture",items:["Patio Set","Hammock","Umbrella","Grill","Fire Pit","Bench"]},
+    {name:"Planters",items:["Hanging","Ceramic","Plastic","Self-Watering","Raised Bed","Window Box"]},
+    {name:"Watering",items:["Sprinkler","Drip Irrigation","Watering Can","Rain Barrel","Timer"]},
+    {name:"Decor",items:["Solar Lights","Wind Chimes","Statues","Fountains","Bird Feeder","Pathway"]},
+    {name:"Lighting",items:["Solar","String Lights","Lanterns","Spotlights","Path Lights"]},
+    {name:"Fencing",items:["Wood","Metal","Vinyl","Bamboo","Netting","Gates"]}
   ]},
   {name:"Office Supplies",icon:"📎",color:"#607d8b",promoted:false,subcategories:[
     {name:"Paper",items:["Printer Paper","Notebooks","Sticky Notes","Envelopes","Cardstock"]},
-    {name:"Writing",items:["Pens","Pencils","Markers","Highlighters","Erasers"]},
-    {name:"Desk Accessories",items:["Organizer","Lamp","Mouse Pad","Monitor Stand","Cup"]},
+    {name:"Writing",items:["Pens","Pencils","Markers","Highlighters","Erasers","Crayons"]},
+    {name:"Desk",items:["Organizer","Lamp","Mouse Pad","Monitor Stand","Cup","Mat"]},
     {name:"Filing",items:["Folders","Binders","Labels","File Cabinet","Sheet Protectors"]},
-    {name:"Technology",items:["Printer","Scanner","Shredder","Laminator","Calculator"]},
-    {name:"Breakroom",items:["Coffee Maker","Mugs","Snacks","Water Cooler","Plates"]}
+    {name:"Technology",items:["Printer","Scanner","Shredder","Laminator","Calculator","Projector"]},
+    {name:"School",items:["Backpack","Lunch Box","Ruler","Scissors","Glue","Tape"]},
+    {name:"Presentation",items:["Whiteboard","Markers","Easel","Projector","Screen","Pointer"]}
   ]},
   {name:"Tools & Hardware",icon:"🔧",color:"#ff9800",promoted:false,subcategories:[
-    {name:"Hand Tools",items:["Hammer","Screwdriver","Pliers","Wrench","Tape Measure"]},
-    {name:"Power Tools",items:["Drill","Saw","Sander","Grinder","Router"]},
-    {name:"Electrical",items:["Wire","Switches","Outlets","Circuit Breaker","LED Bulbs"]},
-    {name:"Plumbing",items:["Pipes","Faucets","Shower Head","Toilet Parts","Drain"]},
-    {name:"Safety",items:["Goggles","Gloves","Helmets","Ear Protection","Masks"]},
-    {name:"Storage",items:["Toolbox","Workbench","Pegboard","Shelving","Cabinet"]}
+    {name:"Hand Tools",items:["Hammer","Screwdriver","Pliers","Wrench","Tape Measure","Level"]},
+    {name:"Power Tools",items:["Drill","Saw","Sander","Grinder","Router","Jigsaw"]},
+    {name:"Electrical",items:["Wire","Switches","Outlets","Circuit Breaker","LED Bulbs","Conduit"]},
+    {name:"Plumbing",items:["Pipes","Faucets","Shower Head","Toilet Parts","Drain","Valve"]},
+    {name:"Safety",items:["Goggles","Gloves","Helmets","Ear Protection","Masks","Vests"]},
+    {name:"Storage",items:["Toolbox","Workbench","Pegboard","Shelving","Cabinet","Hooks"]},
+    {name:"Adhesives",items:["Super Glue","Epoxy","Tape","Silicone","Wood Glue","Spray"]},
+    {name:"Fasteners",items:["Screws","Nails","Bolts","Anchors","Washers","Clamps"]},
+    {name:"Measuring",items:["Tape Measure","Level","Square","Caliper","Protractor","Laser"]},
+    {name:"Painting",items:["Brush","Roller","Spray","Painter's Tape","Drop Cloth","Primer"]}
   ]},
   {name:"Musical Instruments",icon:"🎸",color:"#9c27b0",promoted:false,subcategories:[
-    {name:"Guitar",items:["Acoustic","Electric","Bass","Ukulele","Strings"]},
-    {name:"Keyboard",items:["Piano","Synthesizer","MIDI","Organ","Accordion"]},
-    {name:"Drums",items:["Acoustic","Electronic","Cymbals","Sticks","Percussion"]},
-    {name:"Wind",items:["Flute","Saxophone","Trumpet","Clarinet","Harmonica"]},
-    {name:"DJ Equipment",items:["Controller","Turntable","Mixer","Headphones","Speakers"]},
-    {name:"Recording",items:["Microphone","Audio Interface","Mixer","Studio Monitor","Pop Filter"]}
+    {name:"Guitar",items:["Acoustic","Electric","Bass","Ukulele","Strings","Picks"]},
+    {name:"Keyboard",items:["Piano","Synthesizer","MIDI","Organ","Accordion","Keytar"]},
+    {name:"Drums",items:["Acoustic","Electronic","Cymbals","Sticks","Percussion","Pad"]},
+    {name:"Wind",items:["Flute","Saxophone","Trumpet","Clarinet","Harmonica","Trombone"]},
+    {name:"DJ",items:["Controller","Turntable","Mixer","Headphones","Speakers","Lights"]},
+    {name:"Recording",items:["Microphone","Audio Interface","Mixer","Studio Monitor","Pop Filter"]},
+    {name:"Strings",items:["Violin","Cello","Banjo","Mandolin","Harp","Double Bass"]}
   ]},
   {name:"Movies & TV",icon:"🎬",color:"#f44336",promoted:false,subcategories:[
-    {name:"Movies",items:["Action","Comedy","Drama","Horror","Sci-Fi"]},
-    {name:"TV Series",items:["Box Sets","Complete Series","New Releases","Classics"]},
-    {name:"Anime",items:["Series","Movies","Manga","Figures","Merchandise"]},
-    {name:"Documentary",items:["Nature","History","Science","Crime","Sports"]},
-    {name:"Fitness",items:["Yoga","Workout","Dance","Martial Arts","Meditation"]},
-    {name:"Kids",items:["Cartoons","Educational","Disney","Pixar","DreamWorks"]}
+    {name:"Movies",items:["Action","Comedy","Drama","Horror","Sci-Fi","Romance"]},
+    {name:"TV Series",items:["Box Sets","Complete Series","New Releases","Classics","K-Drama"]},
+    {name:"Anime",items:["Series","Movies","Manga","Figures","Merchandise","Blu-ray"]},
+    {name:"Documentary",items:["Nature","History","Science","Crime","Sports","Food"]},
+    {name:"Kids",items:["Cartoons","Educational","Disney","Pixar","DreamWorks","Nickelodeon"]},
+    {name:"Music",items:["CD","Vinyl","Digital","Box Set","Collector","Live"]}
   ]},
   {name:"Video Games",icon:"🎮",color:"#3f51b5",promoted:false,subcategories:[
-    {name:"Console Games",items:["PlayStation","Xbox","Nintendo","Retro"]},
-    {name:"PC Games",items:["Steam","Epic","GOG","MMO","Indie"]},
-    {name:"Gaming Gear",items:["Headset","Mouse","Keyboard","Controller","Chair"]},
-    {name:"Gaming Chairs",items:["Racing","Ergonomic","Rocking","Bean Bag","Floor"]},
-    {name:"Collectibles",items:["Figures","Posters","Clothing","Keychains","Art"]},
-    {name:"Gift Cards",items:["Steam","PlayStation","Xbox","Nintendo","Roblox"]}
+    {name:"Console Games",items:["PlayStation","Xbox","Nintendo","Retro","Portable"]},
+    {name:"PC Games",items:["Steam","Epic","GOG","MMO","Indie","VR"]},
+    {name:"Gaming Gear",items:["Headset","Mouse","Keyboard","Controller","Chair","Desk"]},
+    {name:"Collectibles",items:["Figures","Posters","Clothing","Keychains","Art","Plush"]},
+    {name:"Gift Cards",items:["Steam","PlayStation","Xbox","Nintendo","Roblox","Fortnite"]},
+    {name:"Retro",items:["NES","SNES","N64","Genesis","PS1","Arcade"]},
+    {name:"VR",items:["Headset","Games","Accessories","Controllers","Prescription","Face Cover"]}
   ]},
   {name:"Luggage & Travel",icon:"✈️",color:"#00bcd4",promoted:false,subcategories:[
-    {name:"Suitcases",items:["Carry-On","Checked","Hardside","Softside","Spinner"]},
-    {name:"Bags",items:["Duffel","Backpack","Messenger","Garment","Weekend"]},
-    {name:"Travel Accessories",items:["Pillow","Eye Mask","Packing Cubes","Lock","Tag"]},
-    {name:"Business Travel",items:["Laptop Bag","Briefcase","Rolling Bag","Portfolio"]},
-    {name:"Outdoor Travel",items:["Hiking Backpack","Travel Backpack","Daypack","Hydration"]},
-    {name:"Kids Travel",items:["Kids Suitcase","Travel Activity","Car Seat","Stroller"]}
+    {name:"Suitcases",items:["Carry-On","Checked","Hardside","Softside","Spinner","Set"]},
+    {name:"Bags",items:["Duffel","Backpack","Messenger","Garment","Weekend","Tote"]},
+    {name:"Accessories",items:["Pillow","Eye Mask","Packing Cubes","Lock","Tag","Scale"]},
+    {name:"Business",items:["Laptop Bag","Briefcase","Rolling Bag","Portfolio","Padfolio"]},
+    {name:"Outdoor",items:["Hiking Backpack","Travel Backpack","Daypack","Hydration","Waist Pack"]},
+    {name:"Kids",items:["Kids Suitcase","Travel Activity","Car Seat","Stroller","Harness"]},
+    {name:"Packing",items:["Cubes","Compression Bags","Toiletry Bag","Shoe Bag","Laundry Bag"]},
+    {name:"Security",items:["TSA Lock","Money Belt","RFID Wallet","Luggage Strap","Tracker"]}
   ]},
   {name:"Arts & Crafts",icon:"🎨",color:"#e91e63",promoted:false,subcategories:[
-    {name:"Painting",items:["Acrylic","Oil","Watercolor","Canvas","Brushes"]},
-    {name:"Drawing",items:["Pencils","Sketchbook","Charcoal","Pastels","Markers"]},
-    {name:"Crafting",items:["Glue Gun","Scissors","Tape","Beads","Fabric"]},
-    {name:"Sewing",items:["Machine","Thread","Needles","Patterns","Fabric"]},
-    {name:"Knitting",items:["Yarn","Needles","Hooks","Patterns","Accessories"]},
-    {name:"Scrapbooking",items:["Paper","Stickers","Albums","Tools","Embellishments"]}
+    {name:"Painting",items:["Acrylic","Oil","Watercolor","Canvas","Brushes","Easel"]},
+    {name:"Drawing",items:["Pencils","Sketchbook","Charcoal","Pastels","Markers","Ink"]},
+    {name:"Crafting",items:["Glue Gun","Scissors","Tape","Beads","Fabric","Wire"]},
+    {name:"Sewing",items:["Machine","Thread","Needles","Patterns","Fabric","Scissors"]},
+    {name:"Knitting",items:["Yarn","Needles","Hooks","Patterns","Accessories","Stitch Markers"]},
+    {name:"Jewelry Making",items:["Beads","Wire","Pliers","Findings","Charms","Chain"]},
+    {name:"Woodworking",items:["Chisels","Sandpaper","Stain","Varnish","Wood Glue","Clamps"]},
+    {name:"Pottery",items:["Clay","Wheel","Kiln","Glaze","Tools","Stains"]}
   ]},
   {name:"Industrial & Scientific",icon:"🔬",color:"#607d8b",promoted:false,subcategories:[
-    {name:"Lab Equipment",items:["Microscope","Centrifuge","Pipette","Beaker","Scale"]},
-    {name:"Safety",items:["Goggles","Gloves","Lab Coat","Face Shield","Respirator"]},
-    {name:"Measurement",items:["Caliper","Micrometer","Thermometer","Multimeter","Ruler"]},
-    {name:"Raw Materials",items:["Metal","Wood","Plastic","Rubber","Glass"]},
-    {name:"Adhesives",items:["Epoxy","Super Glue","Tape","Silicone","Cement"]},
-    {name:"Electrical",items:["Wire","Solder","PCB","Components","Tools"]}
+    {name:"Lab",items:["Microscope","Centrifuge","Pipette","Beaker","Scale","Test Tubes"]},
+    {name:"Safety",items:["Goggles","Gloves","Lab Coat","Face Shield","Respirator","Ear Muffs"]},
+    {name:"Measurement",items:["Caliper","Micrometer","Thermometer","Multimeter","Ruler","Gauge"]},
+    {name:"Raw Materials",items:["Metal","Wood","Plastic","Rubber","Glass","Ceramic"]},
+    {name:"Adhesives",items:["Epoxy","Super Glue","Tape","Silicone","Cement","Resin"]},
+    {name:"Electrical",items:["Wire","Solder","PCB","Components","Tools","Sensors"]},
+    {name:"Plumbing",items:["Pipes","Fittings","Valves","Tape","Wrench","Pump"]},
+    {name:"HVAC",items:["Filter","Thermostat","Duct","Vent","Refrigerant","Gauge"]},
+    {name:"Janitorial",items:["Mop","Broom","Chemicals","Trash Bags","Gloves","Dispensers"]}
   ]},
   {name:"Collectibles & Fine Art",icon:"🖼️",color:"#795548",promoted:false,subcategories:[
-    {name:"Coins",items:["Gold","Silver","Commemorative","Ancient","Sets"]},
-    {name:"Stamps",items:["Vintage","Modern","Collections","Supplies","Albums"]},
-    {name:"Art",items:["Paintings","Prints","Sculptures","Photography","Digital"]},
-    {name:"Antiques",items:["Furniture","Jewelry","Toys","Books","Pottery"]},
-    {name:"Trading Cards",items:["Sports","Pokemon","Magic","Yu-Gi-Oh","Lorcana"]},
-    {name:"Memorabilia",items:["Movie","Music","Sports","Historical","Celebrity"]}
+    {name:"Coins",items:["Gold","Silver","Commemorative","Ancient","Sets","Bullion"]},
+    {name:"Stamps",items:["Vintage","Modern","Collections","Supplies","Albums","First Day"]},
+    {name:"Art",items:["Paintings","Prints","Sculptures","Photography","Digital","Mixed Media"]},
+    {name:"Antiques",items:["Furniture","Jewelry","Toys","Books","Pottery","Glass"]},
+    {name:"Trading Cards",items:["Sports","Pokemon","Magic","Yu-Gi-Oh","Lorcana","NBA"]},
+    {name:"Memorabilia",items:["Movie","Music","Sports","Historical","Celebrity","Military"]},
+    {name:"Figurines",items:["Funko Pop","Action","Bobblehead","Miniature","Resin","Porcelain"]},
+    {name:"Vintage",items:["Toads","Signs","Tin","Advertising","Clothing","Electronics"]}
   ]},
-  {name:"Gift Cards & Vouchers",icon:"🎁",color:"#f39c12",promoted:false,subcategories:[
-    {name:"Digital Gift Cards",items:["Amazon","iTunes","Google Play","Steam","Netflix"]},
-    {name:"Restaurant",items:["Starbucks","McDonald's","Subway","Pizza","Sushi"]},
-    {name:"Retail",items:["Walmart","Target","Best Buy","Home Depot","Macy's"]},
-    {name:"Experience",items:["Spa","Travel","Adventure","Dining","Concert"]},
-    {name:"Prepaid Cards",items:["Visa","Mastercard","Amex","Discover","Vanilla"]},
-    {name:"Gaming",items:["PlayStation","Xbox","Nintendo","Roblox","Fortnite"]}
+  {name:"Gift Cards",icon:"🎁",color:"#f39c12",promoted:false,subcategories:[
+    {name:"Digital",items:["Amazon","iTunes","Google Play","Steam","Netflix","Spotify"]},
+    {name:"Restaurant",items:["Starbucks","McDonald's","Subway","Pizza","Sushi","Chipotle"]},
+    {name:"Retail",items:["Walmart","Target","Best Buy","Home Depot","Macy's","Nordstrom"]},
+    {name:"Experience",items:["Spa","Travel","Adventure","Dining","Concert","Escape Room"]},
+    {name:"Prepaid",items:["Visa","Mastercard","Amex","Discover","Vanilla","OneVanilla"]},
+    {name:"Gaming",items:["PlayStation","Xbox","Nintendo","Roblox","Fortnite","League"]}
   ]},
   {name:"Smart Home",icon:"🏡",color:"#4caf50",promoted:false,subcategories:[
-    {name:"Voice Assistants",items:["Alexa","Google Home","Siri","Smart Display"]},
-    {name:"Security",items:["Camera","Doorbell","Lock","Alarm","Sensor"]},
-    {name:"Lighting",items:["Smart Bulb","LED Strip","Switch","Dimmer","Motion"]},
-    {name:"Climate",items:["Thermostat","Heater","Fan","Humidifier","Purifier"]},
-    {name:"Cleaning",items:["Robot Vacuum","Mop","Air Purifier","Water Filter"]},
-    {name:"Entertainment",items:["Smart TV","Streaming","Speaker","Projector","Remote"]}
+    {name:"Voice Assistants",items:["Alexa","Google Home","Siri","Smart Display","Speaker Hub"]},
+    {name:"Security",items:["Camera","Doorbell","Lock","Alarm","Sensor","Safe"]},
+    {name:"Lighting",items:["Smart Bulb","LED Strip","Switch","Dimmer","Motion Sensor"]},
+    {name:"Climate",items:["Thermostat","Heater","Fan","Humidifier","Purifier","AC"]},
+    {name:"Cleaning",items:["Robot Vacuum","Mop","Air Purifier","Water Filter","Laundry"]},
+    {name:"Entertainment",items:["Smart TV","Streaming","Speaker","Projector","Remote","Soundbar"]},
+    {name:"Blinds",items:["Motorized","Roller","Cellular","Smart Curtains","Controller"]},
+    {name:"Doors",items:["Smart Lock","Garage Opener","Intercom","Keypad","Deadbolt"]}
   ]},
   {name:"Costumes & Party",icon:"🎉",color:"#9c27b0",promoted:false,subcategories:[
-    {name:"Costumes",items:["Halloween","Cosplay","Historical","Animal","Superhero"]},
-    {name:"Party Supplies",items:["Balloons","Banners","Tableware","Candles","Confetti"]},
-    {name:"Decoration",items:["Backdrop","Lights","Garland","Centerpiece","Signs"]},
-    {name:"Wedding",items:["Dress","Suit","Decoration","Favors","Cake Topper"]},
-    {name:"Birthday",items:["Cake Topper","Candles","Party Hats","Banners","Games"]},
-    {name:"Holiday",items:["Christmas","Easter","Valentine","Thanksgiving","New Year"]}
+    {name:"Costumes",items:["Halloween","Cosplay","Historical","Animal","Superhero","Funny"]},
+    {name:"Party Supplies",items:["Balloons","Banners","Tableware","Candles","Confetti","Streamers"]},
+    {name:"Decoration",items:["Backdrop","Lights","Garland","Centerpiece","Signs","Bunting"]},
+    {name:"Wedding",items:["Dress","Suit","Decoration","Favors","Cake Topper","Invitations"]},
+    {name:"Birthday",items:["Cake Topper","Candles","Party Hats","Banners","Games","Balloons"]},
+    {name:"Holiday",items:["Christmas","Easter","Valentine","Thanksgiving","New Year","Hanukkah"]},
+    {name:"Themed",items:["Superhero","Princess","Pirate","Space","Dinosaur","Unicorn"]}
   ]},
   {name:"Seasonal",icon:"🎄",color:"#f44336",promoted:false,subcategories:[
-    {name:"Summer",items:["Swimwear","Beach Gear","Cooler","Sunscreen","Sunglasses"]},
-    {name:"Winter",items:["Coat","Gloves","Scarf","Boots","Heater"]},
-    {name:"Spring",items:["Rain Jacket","Umbrella","Garden","Allergy","Light Layers"]},
-    {name:"Fall",items:["Sweater","Boots","Pumpkin","Candle","Warm Drinks"]},
-    {name:"Back to School",items:["Backpack","Supplies","Lunch Box","Uniform","Shoes"]},
-    {name:"Holiday Shopping",items:["Gift Sets","Stocking Stuffers","Decor","Wrapping","Cards"]}
+    {name:"Summer",items:["Swimwear","Beach Gear","Cooler","Sunscreen","Sunglasses","Inflatable"]},
+    {name:"Winter",items:["Coat","Gloves","Scarf","Boots","Heater","Thermal"]},
+    {name:"Spring",items:["Rain Jacket","Umbrella","Garden","Allergy","Light Layers","Pollen"]},
+    {name:"Fall",items:["Sweater","Boots","Pumpkin","Candle","Warm Drinks","Decoration"]},
+    {name:"Back to School",items:["Backpack","Supplies","Lunch Box","Uniform","Shoes","Tech"]},
+    {name:"Holiday",items:["Gift Sets","Stocking Stuffers","Decor","Wrapping","Cards","Lights"]},
+    {name:"Valentine",items:["Flowers","Chocolate","Cards","Gifts","Jewelry","Stuffed Animals"]},
+    {name:"Halloween",items:["Costumes","Decorations","Candy","Masks","Props","Makeup"]},
+    {name:"Christmas",items:["Tree","Ornaments","Lights","Gifts","Stockings","Wrapping Paper"]}
   ]},
   {name:"Watches & Luxury",icon:"⌚",color:"#ffc107",promoted:false,subcategories:[
-    {name:"Smartwatches",items:["Apple","Samsung","Garmin","Fitbit","Amazfit"]},
-    {name:"Luxury",items:["Rolex","Omega","Tag Heuer","Cartier","Breitling"]},
-    {name:"Fashion",items:["Casio","Fossil","Michael Kors","Seiko","Citizen"]},
-    {name:"Sports",items:["GPS Watch","Dive Watch","Running Watch","Heart Rate"]},
-    {name:"Accessories",items:["Watch Bands","Watch Boxes","Watch Tools","Watch Winder"]},
-    {name:"Kids",items:["Digital","Analog","Character","Fitness","Educational"]}
+    {name:"Smartwatches",items:["Apple","Samsung","Garmin","Fitbit","Amazfit","Huawei"]},
+    {name:"Luxury",items:["Rolex","Omega","Tag Heuer","Cartier","Breitling","IWC"]},
+    {name:"Fashion",items:["Casio","Fossil","Michael Kors","Seiko","Citizen","Tissot"]},
+    {name:"Sports",items:["GPS Watch","Dive Watch","Running Watch","Heart Rate","Pilot","Chronograph"]},
+    {name:"Accessories",items:["Watch Bands","Watch Boxes","Watch Tools","Watch Winder","Cases"]},
+    {name:"Kids",items:["Digital","Analog","Character","Fitness","Educational","Smart"]},
+    {name:"Vintage",items:["Antique","Pocket Watch","Mechanical","Retro","Military","Art Deco"]}
   ]},
   {name:"Digital Products",icon:"💾",color:"#2196f3",promoted:false,subcategories:[
-    {name:"Software",items:["Antivirus","Office","Design","Development","Utility"]},
-    {name:"E-Books",items:["Fiction","Non-Fiction","Textbooks","Comics","Audio"]},
-    {name:"Online Courses",items:["Programming","Business","Design","Language","Music"]},
-    {name:"Templates",items:["Website","Resume","Presentation","Social Media","Email"]},
-    {name:"Stock Media",items:["Photos","Videos","Music","Graphics","Fonts"]},
-    {name:"Game Items",items:["In-Game Currency","Skins","DLC","Gift Cards","Subscriptions"]}
+    {name:"Software",items:["Antivirus","Office","Design","Development","Utility","VPN"]},
+    {name:"E-Books",items:["Fiction","Non-Fiction","Textbooks","Comics","Audio","Cookbook"]},
+    {name:"Online Courses",items:["Programming","Business","Design","Language","Music","Photography"]},
+    {name:"Templates",items:["Website","Resume","Presentation","Social Media","Email","Invoice"]},
+    {name:"Stock Media",items:["Photos","Videos","Music","Graphics","Fonts","Icons"]},
+    {name:"Game Items",items:["In-Game Currency","Skins","DLC","Gift Cards","Subscriptions","Accounts"]},
+    {name:"Plugins",items:["WordPress","Shopify","Photoshop","Figma","Notion","VS Code"]},
+    {name:"Subscriptions",items:["Streaming","Cloud Storage","VPN","Email","Domain","Hosting"]}
   ]}
 ]
 
@@ -321,3 +375,182 @@ export const COUNTRIES = [
   'Spain', 'Sweden', 'Norway', 'Denmark', 'New Zealand',
   'South Africa', 'Egypt', 'Turkey', 'Russia', 'China'
 ]
+
+// ==================== MEGA CATALOG (20,000+ Products) ====================
+// Generated with varied subcategories per category (4-10 subs each)
+
+const CATEGORY_SUBS_MAP: Record<string, string[]> = {
+  'Electronics': ['Audio', 'Wearables', 'Peripherals', 'Accessories', 'Cameras', 'Gaming', 'Smart Home', 'Drones'],
+  'Phones & Accessories': ['Smartphones', 'Cases', 'Screen Protectors', 'Chargers', 'Holders', 'Cables', 'Power Banks'],
+  'Computers & Tablets': ['Laptops', 'Desktops', 'Tablets', 'Monitors', 'Storage', 'Networking', 'Components', 'Software'],
+  'Fashion': ["Men's Clothing", "Women's Clothing", 'Shoes', 'Bags', 'Jewelry', 'Accessories', 'Kids Fashion', 'Sportswear', 'Underwear'],
+  'Home & Kitchen': ['Kitchen', 'Lighting', 'Decor', 'Furniture', 'Storage', 'Bedding', 'Bathroom', 'Cleaning', 'Laundry'],
+  'Beauty & Personal Care': ['Skincare', 'Makeup', 'Hair Care', 'Fragrance', 'Tools', 'Bath & Body', "Men's Grooming", 'Nail Care'],
+  'Health & Wellness': ['Supplements', 'Medical', 'Fitness Nutrition', 'Wellness', 'Vision Care', 'Oral Care', 'Mobility'],
+  'Sports & Outdoors': ['Yoga', 'Fitness', 'Outdoor', 'Running', 'Swimming', 'Cycling', 'Team Sports', 'Winter Sports'],
+  'Toys & Games': ['Building', 'RC Vehicles', 'Puzzles', 'Board Games', 'Dolls', 'Educational', 'Outdoor Play', 'Baby Toys'],
+  'Books & Media': ['Fiction', 'Non-Fiction', 'Technology', 'Children', 'Textbooks', 'Digital', 'Comics', 'Cooking'],
+  'Food & Grocery': ['Tea & Coffee', 'Snacks', 'Pantry', 'Beverages', 'Organic', 'Baking', 'Condiments', 'Baby Food'],
+  'Automotive': ['Car Electronics', 'Interior', 'Exterior', 'Tools', 'Motorcycle', 'Car Parts', 'Tires', 'Oils & Fluids'],
+  'Baby & Kids': ['Diapers', 'Feeding', 'Strollers', 'Car Seats', 'Nursery', 'Kids Fashion', 'Baby Safety', 'Health'],
+  'Pet Supplies': ['Dogs', 'Cats', 'Fish', 'Birds', 'Small Animals', 'Reptiles', 'Pet Health', 'Pet Tech'],
+  'Garden & Outdoor': ['Plants', 'Tools', 'Furniture', 'Planters', 'Watering', 'Decor', 'Lighting', 'Fencing'],
+  'Office Supplies': ['Paper', 'Writing', 'Desk', 'Filing', 'Technology', 'School', 'Presentation'],
+  'Tools & Hardware': ['Hand Tools', 'Power Tools', 'Electrical', 'Plumbing', 'Safety', 'Storage', 'Adhesives', 'Fasteners', 'Measuring', 'Painting'],
+  'Musical Instruments': ['Guitar', 'Keyboard', 'Drums', 'Wind', 'DJ', 'Recording', 'Strings'],
+  'Movies & TV': ['Movies', 'TV Series', 'Anime', 'Documentary', 'Kids', 'Music'],
+  'Video Games': ['Console Games', 'PC Games', 'Gaming Gear', 'Collectibles', 'Gift Cards', 'Retro', 'VR'],
+  'Luggage & Travel': ['Suitcases', 'Bags', 'Accessories', 'Business', 'Outdoor', 'Kids', 'Packing', 'Security'],
+  'Arts & Crafts': ['Painting', 'Drawing', 'Crafting', 'Sewing', 'Knitting', 'Jewelry Making', 'Woodworking', 'Pottery'],
+  'Industrial & Scientific': ['Lab', 'Safety', 'Measurement', 'Raw Materials', 'Adhesives', 'Electrical', 'Plumbing', 'HVAC', 'Janitorial'],
+  'Collectibles & Fine Art': ['Coins', 'Stamps', 'Art', 'Antiques', 'Trading Cards', 'Memorabilia', 'Figurines', 'Vintage'],
+  'Gift Cards': ['Digital', 'Restaurant', 'Retail', 'Experience', 'Prepaid', 'Gaming'],
+  'Smart Home': ['Voice Assistants', 'Security', 'Lighting', 'Climate', 'Cleaning', 'Entertainment', 'Blinds', 'Doors'],
+  'Costumes & Party': ['Costumes', 'Party Supplies', 'Decoration', 'Wedding', 'Birthday', 'Holiday', 'Themed'],
+  'Seasonal': ['Summer', 'Winter', 'Spring', 'Fall', 'Back to School', 'Holiday', 'Valentine', 'Halloween', 'Christmas'],
+  'Watches & Luxury': ['Smartwatches', 'Luxury', 'Fashion', 'Sports', 'Accessories', 'Kids', 'Vintage'],
+  'Digital Products': ['Software', 'E-Books', 'Online Courses', 'Templates', 'Stock Media', 'Game Items', 'Plugins', 'Subscriptions'],
+}
+
+const BRANDS_MAP: Record<string, string[]> = {
+  'Electronics': ['TechSound', 'ProMax', 'EliteGear', 'SmartWave', 'DigiCore', 'VoltEdge', 'NexGen', 'PrimeAudio'],
+  'Phones & Accessories': ['PhoneGuard', 'ScreenShield', 'ChargePro', 'CaseMaster', 'DigiCase', 'PowerMax', 'GripTech'],
+  'Computers & Tablets': ['ByteCore', 'PixelMax', 'LogicPro', 'DataFlow', 'CircuitLab', 'ChipSet', 'RamBoost'],
+  'Fashion': ['UrbanStyle', 'LuxeWear', 'StreetVibe', 'ClassicFit', 'TrendSet', 'VogueLine', 'DenimCo'],
+  'Home & Kitchen': ['HomeElite', 'KitchenPro', 'CozyNest', 'BrightHome', 'CleanMax', 'CookStar', 'DecoLux'],
+  'Beauty & Personal Care': ['GlowSkin', 'LuxeGlam', 'PureBeauty', 'SkinScience', 'GlamPro', 'NatureGlow', 'DermaCare'],
+  'Health & Wellness': ['VitaLife', 'NutriMax', 'HealthPlus', 'PureBody', 'WellnessPro', 'FitFuel', 'NatureCure'],
+  'Sports & Outdoors': ['FlexFit', 'SportPeak', 'TrailMax', 'ActivePro', 'Endurance', 'SummitGear', 'AquaSport'],
+  'Toys & Games': ['PlaySmart', 'ToyWorld', 'FunFactory', 'KidZone', 'GameMaster', 'BuildPro', 'PuzzleKing'],
+  'Books & Media': ['BookWorld', 'PageTurner', 'CodePress', 'StoryCraft', 'LearnMore', 'ComicVault', 'AudioBook'],
+  'Food & Grocery': ['TasteGood', 'NatureHarvest', 'FreshFarm', 'OrganicLife', 'SpiceRoute', 'TeaGarden', 'CoffeeBean'],
+  'Automotive': ['AutoPro', 'CarTech', 'DriveMax', 'MechanicPro', 'RoadKing', 'TireTrack', 'OilMax'],
+  'Baby & Kids': ['BabyLove', 'TinyTots', 'KidsFirst', 'SafeNest', 'LittleStar', 'BabyJoy', 'MomCare'],
+  'Pet Supplies': ['PetJoy', 'FurryFriend', 'PawPrint', 'AquaPet', 'BirdSong', 'ReptilePro', 'PetHealth'],
+  'Garden & Outdoor': ['GreenThumb', 'GardenPro', 'PlantLife', 'OutdoorLiving', 'FlowerPower', 'LawnCare', 'TreeHouse'],
+  'Office Supplies': ['OfficeMax', 'DeskPro', 'PaperPlus', 'WriteRight', 'FileSmart', 'PrintPro', 'SchoolKit'],
+  'Tools & Hardware': ['ToolMaster', 'BuildPro', 'FixIt', 'HandyTool', 'PowerGrip', 'Craftsman', 'ToughTool'],
+  'Musical Instruments': ['SoundCraft', 'MusicPro', 'StringMaster', 'BeatDrop', 'DJMix', 'StudioPro', 'GuitarHero'],
+  'Movies & TV': ['CinemaPlus', 'MovieMax', 'SeriesHub', 'AnimeWorld', 'DocuLife', 'ClassicFilm', 'HorrorVault'],
+  'Video Games': ['GameZone', 'PlayerOne', 'PixelHero', 'QuestMaster', 'LevelUp', 'BossFight', 'RetroPlay'],
+  'Luggage & Travel': ['TravelPro', 'JetSet', 'PackRight', 'WanderLust', 'GlobeTrot', 'TripMaster', 'BagPack'],
+  'Arts & Crafts': ['ArtSupply', 'CraftMaster', 'CreateIt', 'BrushStroke', 'ColorWheel', 'DesignPro', 'SketchPad'],
+  'Industrial & Scientific': ['LabPro', 'SciTools', 'MeasureMax', 'SafetyFirst', 'IndustrialGrade', 'PrecisionLab', 'BioTech'],
+  'Collectibles & Fine Art': ['RareFind', 'CollectPro', 'ArtVault', 'VintageGold', 'CoinMaster', 'StampCol', 'CardShop'],
+  'Gift Cards': ['GiftCard', 'SurpriseMe', 'GiftBox', 'TreatYourself', 'GiftVoucher', 'RewardCard', 'GiftIt'],
+  'Smart Home': ['SmartLife', 'HomeAuto', 'IntelliHome', 'ConnectedHome', 'SmartLiving', 'HomeHub', 'NestPro'],
+  'Costumes & Party': ['PartyTime', 'CostumeKing', 'FunDress', 'CelebrationBox', 'PartyPro', 'DressUp', 'ThemeParty'],
+  'Seasonal': ['SeasonPro', 'HolidayJoy', 'SummerFun', 'WinterWarm', 'SpringBloom', 'FallHarvest', 'BackToSchool'],
+  'Watches & Luxury': ['TimePiece', 'LuxWatch', 'ChronoMax', 'EliteTime', 'WatchCraft', 'PrecisionTime', 'ClassicWatch'],
+  'Digital Products': ['DigitalPro', 'CodeLib', 'TemplateHub', 'CourseMax', 'AssetVault', 'PluginPro', 'FontShop'],
+}
+
+const SELLER_NAMES = ['MegaStore', 'TopSeller', 'PrimeShop', 'ValueMart', 'EliteGoods', 'BestDeal', 'QuickShip', 'TrustSeller', 'GlobalTrade', 'DirectFactory']
+const SELLER_SUFFIXES = ['Store', 'Shop', 'Mall', 'Hub', 'Center', 'Direct', 'Outlet', 'Market']
+const COUNTRY_LIST = ['China', 'USA', 'Indonesia', 'Japan', 'Korea', 'UK', 'Germany', 'France', 'Italy', 'Spain', 'India', 'Thailand', 'Vietnam', 'Malaysia', 'Singapore', 'Australia', 'Canada', 'Brazil', 'Mexico', 'Turkey']
+const CITY_MAP: Record<string, string[]> = {
+  'China': ['Shenzhen', 'Guangzhou', 'Shanghai', 'Beijing', 'Hangzhou'],
+  'USA': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'San Francisco'],
+  'Indonesia': ['Jakarta', 'Surabaya', 'Bandung', 'Medan', 'Semarang'],
+  'Japan': ['Tokyo', 'Osaka', 'Yokohama', 'Nagoya', 'Sapporo'],
+  'Korea': ['Seoul', 'Busan', 'Incheon', 'Daegu', 'Daejeon'],
+  'UK': ['London', 'Manchester', 'Birmingham', 'Leeds', 'Glasgow'],
+  'Germany': ['Berlin', 'Hamburg', 'Munich', 'Cologne', 'Frankfurt'],
+  'France': ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+  'Italy': ['Rome', 'Milan', 'Naples', 'Turin', 'Florence'],
+  'Spain': ['Madrid', 'Barcelona', 'Valencia', 'Seville', 'Malaga'],
+  'India': ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai'],
+  'Thailand': ['Bangkok', 'Chiang Mai', 'Pattaya', 'Phuket', 'Hat Yai'],
+  'Vietnam': ['Ho Chi Minh', 'Hanoi', 'Da Nang', 'Hai Phong', 'Can Tho'],
+  'Malaysia': ['Kuala Lumpur', 'George Town', 'Johor Bahru', 'Ipoh', 'Shah Alam'],
+  'Singapore': ['Singapore'],
+  'Australia': ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide'],
+  'Canada': ['Toronto', 'Montreal', 'Vancouver', 'Calgary', 'Edmonton'],
+  'Brazil': ['São Paulo', 'Rio de Janeiro', 'Brasília', 'Salvador', 'Fortaleza'],
+  'Mexico': ['Mexico City', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana'],
+  'Turkey': ['Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya'],
+}
+
+const COLOR_POOL = ['#000', '#fff', '#1a73e8', '#e74c3c', '#27ae60', '#f39c12', '#9b59b6', '#3498db', '#e67e22', '#1abc9c', '#c0392b', '#2c3e50']
+
+function _rand(min: number, max: number): number { return Math.floor(Math.random() * (max - min + 1)) + min }
+function _randF(min: number, max: number): number { return Math.round((Math.random() * (max - min) + min) * 100) / 100 }
+function _pick<T>(arr: T[]): T { return arr[Math.floor(Math.random() * arr.length)] }
+function _pickN<T>(arr: T[], n: number): T[] { return [...arr].sort(() => Math.random() - 0.5).slice(0, n) }
+
+function _genPrice(base: number): { price: number; original: number } {
+  const markup = _randF(1.3, 2.5)
+  const original = Math.round(base * markup * 100) / 100
+  const discount = _randF(0.5, 0.85)
+  const price = Math.round(original * discount * 100) / 100
+  return { price, original }
+}
+
+const _BASE_PRICES: Record<string, [number, number]> = {
+  'Electronics': [15, 200], 'Phones & Accessories': [5, 150], 'Computers & Tablets': [50, 500],
+  'Fashion': [8, 80], 'Home & Kitchen': [10, 120], 'Beauty & Personal Care': [5, 60],
+  'Health & Wellness': [10, 80], 'Sports & Outdoors': [10, 100], 'Toys & Games': [8, 60],
+  'Books & Media': [5, 40], 'Food & Grocery': [3, 30], 'Automotive': [10, 150],
+  'Baby & Kids': [8, 80], 'Pet Supplies': [5, 50], 'Garden & Outdoor': [10, 100],
+  'Office Supplies': [3, 30], 'Tools & Hardware': [10, 120], 'Musical Instruments': [15, 200],
+  'Movies & TV': [5, 30], 'Video Games': [10, 60], 'Luggage & Travel': [15, 120],
+  'Arts & Crafts': [5, 50], 'Industrial & Scientific': [10, 200], 'Collectibles & Fine Art': [10, 150],
+  'Gift Cards': [10, 100], 'Smart Home': [15, 150], 'Costumes & Party': [8, 50],
+  'Seasonal': [5, 60], 'Watches & Luxury': [20, 300], 'Digital Products': [5, 50],
+}
+
+function _genProducts(count: number): Product[] {
+  const prods: Product[] = []
+  let id = 50000
+  const cats = Object.keys(CATEGORY_SUBS_MAP)
+  
+  while (prods.length < count) {
+    for (const cat of cats) {
+      if (prods.length >= count) break
+      const subs = CATEGORY_SUBS_MAP[cat]
+      const brands = BRANDS_MAP[cat] || ['Generic', 'Premium', 'Value']
+      const [pMin, pMax] = _BASE_PRICES[cat] || [10, 80]
+      const batch = _rand(5, 20)
+      
+      for (let i = 0; i < batch; i++) {
+        if (prods.length >= count) break
+        const sub = _pick(subs)
+        const brand = _pick(brands)
+        const country = _pick(COUNTRY_LIST)
+        const city = _pick(CITY_MAP[country] || ['Unknown'])
+        const seller = _pick(SELLER_NAMES) + ' ' + _pick(SELLER_SUFFIXES)
+        const base = _rand(pMin, pMax)
+        const { price, original } = _genPrice(base)
+        const hasSizes = ['Fashion', 'Sports & Outdoors'].includes(cat) && Math.random() > 0.4
+        const hasColors = Math.random() > 0.3
+        
+        prods.push({
+          id: id++,
+          name: `${brand} ${sub} ${_rand(100, 9999)}`,
+          price, originalPrice: original,
+          category: cat, subcategory: sub,
+          brand, seller, sellerId: seller.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+          description: `High quality ${sub.toLowerCase()} from ${brand}. Premium materials, excellent durability. Perfect for everyday use.`,
+          specs: `Brand: ${brand} | Category: ${cat} | Sub: ${sub} | Origin: ${country}`,
+          colors: hasColors ? _pickN(COLOR_POOL, _rand(2, 5)) : [],
+          sizes: hasSizes ? _pickN(['S', 'M', 'L', 'XL', 'XXL', '36', '37', '38', '39', '40', '41', '42'], _rand(3, 6)) : [],
+          stock: _rand(50, 5000),
+          sku: `${brand.substring(0, 3).toUpperCase()}-${sub.substring(0, 3).toUpperCase()}-${id}`,
+          images: [`https://picsum.photos/seed/p${id}/600/600`, `https://picsum.photos/seed/p${id}b/600/600`],
+          weight: _rand(50, 3000) + 'g',
+          returnPolicy: Math.random() > 0.2 ? '30-day return policy.' : 'Non-returnable.',
+          rating: Math.round((_randF(3.5, 5.0)) * 10) / 10,
+          sold: _rand(10, 50000),
+          freeShipping: Math.random() > 0.4,
+          minOrder: _rand(1, 5),
+          location: `${city}, ${country}`,
+        })
+      }
+    }
+  }
+  return prods
+}
+
+// Generate and merge with original products
+const MEGA_CATALOG: Product[] = _genProducts(20000)
+export const ALL_PRODUCTS: Product[] = [...PRODUCTS, ...MEGA_CATALOG]

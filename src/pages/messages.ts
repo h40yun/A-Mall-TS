@@ -1,6 +1,6 @@
 // ==================== MESSAGES / LIVECHAT PAGE ====================
 import { getCurrentUser, isLoggedIn, getConversations, getConversation, sendMessage, markMessagesRead, showToast, formatPrice } from '../utils/helpers'
-import { PRODUCTS } from '../utils/data'
+import { ALL_PRODUCTS as PRODUCTS } from '../utils/data'
 import { renderPage, renderEmptyState } from '../components'
 import { navigate, getParam } from '../router'
 

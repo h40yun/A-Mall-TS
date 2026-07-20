@@ -1,5 +1,5 @@
 // ==================== WISHLIST PAGE ====================
-import { PRODUCTS } from '../utils/data'
+import { ALL_PRODUCTS as PRODUCTS } from '../utils/data'
 import { getWishlist } from '../utils/helpers'
 import { renderProductCard, renderPage, renderEmptyState } from '../components'
 

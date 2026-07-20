@@ -1,5 +1,5 @@
 // ==================== CATEGORY PAGE ====================
-import { PRODUCTS, CATEGORIES, LOCATIONS } from '../utils/data'
+import { ALL_PRODUCTS as PRODUCTS, CATEGORIES, LOCATIONS } from '../utils/data'
 import { formatPrice, paginate, getUrlParam, searchProducts } from '../utils/helpers'
 import { renderProductCard, renderPage } from '../components'
 import type { Product } from '../types'

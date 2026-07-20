@@ -1,6 +1,6 @@
 // ==================== SELLER DASHBOARD ====================
 import { getCurrentUser, isLoggedIn, getSellerStore, saveSellerStore, getSellerProducts, saveSellerProduct, deleteSellerProduct, getOrders, getMessages, getConversations, getConversation, markMessagesRead, showToast, formatPrice, renderStars, getReviews, addNotification } from '../utils/helpers'
-import { PRODUCTS, CATEGORIES } from '../utils/data'
+import { ALL_PRODUCTS as PRODUCTS, CATEGORIES } from '../utils/data'
 import { renderPage } from '../components'
 import { navigate } from '../router'
 
