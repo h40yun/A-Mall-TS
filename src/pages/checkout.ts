@@ -1,6 +1,6 @@
 // ==================== CHECKOUT PAGE ====================
-import { PRODUCTS } from '../utils/data'
-import { getCart, formatPrice, createOrder, saveCart, showToast, getProductInitials, getProductColor, getProductImage } from '../utils/helpers'
+import { PRODUCTS, COUPONS } from '../utils/data'
+import { getCart, formatPrice, createOrder, saveCart, showToast, getProductInitials, getProductColor, getProductImage, getCurrentUser, getAddresses, applyVoucher } from '../utils/helpers'
 import { renderPage } from '../components'
 import { navigate } from '../router'
 
@@ -8,19 +8,49 @@ export function renderCheckoutPage(): void {
   const cart = getCart()
   if (cart.length === 0) { navigate('/cart'); return }
 
+  const user = getCurrentUser()
+  const addresses = getAddresses()
   let selectedShipping = 'free'
   let shippingCost = 0
   let selectedPayment = 'credit-card'
+  let voucherDiscount = 0
+  let appliedVoucher = ''
 
   const container = document.createElement('div')
   container.innerHTML = `
     <div class="breadcrumb" style="max-width:1200px;margin:0 auto;padding:16px 20px 0"><a href="/">Home</a> / <a href="/cart">Cart</a> / <span>Checkout</span></div>
     <div class="checkout-page">
       <div>
-        <div class="checkout-section">
+        <!-- Saved Addresses -->
+        ${addresses.length ? `
+          <div class="checkout-section">
+            <h2>📍 Saved Addresses</h2>
+            <div id="savedAddresses">
+              ${addresses.map((addr, i) => `
+                <div class="address-card ${addr.isDefault ? 'selected' : ''}" data-id="${addr.id}">
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <div>
+                      <strong>${addr.label || 'Address ' + (i + 1)}</strong>
+                      ${addr.isDefault ? '<span class="badge badge-primary" style="margin-left:8px">Default</span>' : ''}
+                    </div>
+                    <input type="radio" name="savedAddress" value="${addr.id}" ${addr.isDefault ? 'checked' : ''}>
+                  </div>
+                  <div style="font-size:13px;color:#666;margin-top:8px">
+                    <div>${addr.name} · ${addr.phone}</div>
+                    <div>${addr.address}, ${addr.city}, ${addr.state} ${addr.zip}, ${addr.country}</div>
+                  </div>
+                </div>
+              `).join('')}
+              <button class="btn btn-sm btn-outline" id="useNewAddress" style="margin-top:8px">+ Use New Address</button>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Shipping Address Form -->
+        <div class="checkout-section" id="addressFormSection" ${addresses.length ? 'style="display:none"' : ''}>
           <h2>📍 Shipping Address</h2>
           <div class="form-row">
-            <div class="form-group"><label>Full Name</label><input type="text" class="form-control" id="shipName" placeholder="John Doe"></div>
+            <div class="form-group"><label>Full Name</label><input type="text" class="form-control" id="shipName" placeholder="John Doe" value="${user?.name || ''}"></div>
             <div class="form-group"><label>Phone</label><input type="tel" class="form-control" id="shipPhone" placeholder="+1 234 567 8900"></div>
           </div>
           <div class="form-group"><label>Address</label><input type="text" class="form-control" id="shipAddress" placeholder="123 Main Street"></div>
@@ -33,6 +63,8 @@ export function renderCheckoutPage(): void {
             <div class="form-group"><label>Country</label><select class="form-control" id="shipCountry"><option>United States</option><option>Canada</option><option>United Kingdom</option><option>Australia</option></select></div>
           </div>
         </div>
+
+        <!-- Shipping Method -->
         <div class="checkout-section">
           <h2>🚚 Shipping Method</h2>
           <div class="shipping-option active" data-method="free" data-cost="0">
@@ -51,13 +83,32 @@ export function renderCheckoutPage(): void {
             <div class="ship-price">$9.99</div>
           </div>
         </div>
+
+        <!-- Payment Method -->
         <div class="checkout-section">
           <h2>💳 Payment Method</h2>
           <div class="payment-option active" data-method="credit-card"><input type="radio" name="payment" value="credit-card" checked> 💳 <span>Credit / Debit Card</span></div>
           <div class="payment-option" data-method="paypal"><input type="radio" name="payment" value="paypal"> 🅿️ <span>PayPal</span></div>
           <div class="payment-option" data-method="bank-transfer"><input type="radio" name="payment" value="bank-transfer"> 🏦 <span>Bank Transfer</span></div>
         </div>
+
+        <!-- Voucher -->
+        <div class="checkout-section">
+          <h2>🎟️ Voucher / Coupon</h2>
+          <div style="display:flex;gap:8px">
+            <input type="text" class="form-control" id="voucherInput" placeholder="Enter voucher code" style="flex:1">
+            <button class="btn btn-primary" id="applyVoucherBtn">Apply</button>
+          </div>
+          <div id="voucherMessage" style="margin-top:8px;font-size:13px"></div>
+        </div>
+
+        <!-- Order Notes -->
+        <div class="checkout-section">
+          <h2>📝 Order Notes (Optional)</h2>
+          <textarea class="form-control" id="orderNotes" rows="3" placeholder="Special instructions for your order..."></textarea>
+        </div>
       </div>
+
       <div>
         <div class="checkout-section" style="position:sticky;top:80px">
           <h2>Order Summary</h2>
@@ -65,6 +116,7 @@ export function renderCheckoutPage(): void {
           <div style="margin-top:16px">
             <div class="summary-row"><span>Subtotal</span><span id="sumSubtotal">$0.00</span></div>
             <div class="summary-row"><span>Shipping</span><span id="sumShipping">$0.00</span></div>
+            <div class="summary-row" id="voucherRow" style="display:none;color:#28a745"><span>Voucher Discount</span><span id="sumDiscount">-$0.00</span></div>
             <div class="summary-row total"><span>Total</span><span id="sumTotal">$0.00</span></div>
           </div>
           <button class="btn btn-primary btn-block btn-lg" style="margin-top:20px" id="placeOrderBtn">Place Order</button>
@@ -75,7 +127,64 @@ export function renderCheckoutPage(): void {
 
   renderPage(container)
 
-  // Render order items
+  // Use saved address
+  if (addresses.length) {
+    container.querySelectorAll('input[name="savedAddress"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        const addrId = (radio as HTMLInputElement).value
+        const addr = addresses.find(a => a.id === addrId)
+        if (addr) {
+          ;(container.querySelector('#shipName') as HTMLInputElement).value = addr.name
+          ;(container.querySelector('#shipPhone') as HTMLInputElement).value = addr.phone
+          ;(container.querySelector('#shipAddress') as HTMLInputElement).value = addr.address
+          ;(container.querySelector('#shipCity') as HTMLInputElement).value = addr.city
+          ;(container.querySelector('#shipState') as HTMLInputElement).value = addr.state
+          ;(container.querySelector('#shipZip') as HTMLInputElement).value = addr.zip
+        }
+      })
+    })
+
+    container.querySelector('#useNewAddress')?.addEventListener('click', () => {
+      ;(container.querySelector('#addressFormSection') as HTMLElement).style.display = 'block'
+    })
+
+    // Auto-fill default address
+    const defaultAddr = addresses.find(a => a.isDefault)
+    if (defaultAddr) {
+      ;(container.querySelector('#shipName') as HTMLInputElement).value = defaultAddr.name
+      ;(container.querySelector('#shipPhone') as HTMLInputElement).value = defaultAddr.phone
+      ;(container.querySelector('#shipAddress') as HTMLInputElement).value = defaultAddr.address
+      ;(container.querySelector('#shipCity') as HTMLInputElement).value = defaultAddr.city
+      ;(container.querySelector('#shipState') as HTMLInputElement).value = defaultAddr.state
+      ;(container.querySelector('#shipZip') as HTMLInputElement).value = defaultAddr.zip
+    }
+  }
+
+  // Voucher
+  container.querySelector('#applyVoucherBtn')?.addEventListener('click', () => {
+    const code = (container.querySelector('#voucherInput') as HTMLInputElement).value.trim()
+    if (!code) { showToast('Please enter a voucher code', 'error'); return }
+    const currentCart = getCart()
+    const subtotal = currentCart.reduce((s, item) => {
+      const p = PRODUCTS.find(pr => pr.id === item.id)
+      return s + (p ? p.price * item.qty : 0)
+    }, 0)
+    const result = applyVoucher(code, subtotal, shippingCost)
+    const msgEl = container.querySelector('#voucherMessage')!
+    if (result.discount > 0 || result.newShipping < shippingCost) {
+      voucherDiscount = result.discount
+      appliedVoucher = code
+      if (result.newShipping < shippingCost) shippingCost = result.newShipping
+      msgEl.innerHTML = `<span style="color:#28a745">✅ ${result.message}</span>`
+      ;(container.querySelector('#voucherRow') as HTMLElement).style.display = 'flex'
+      container.querySelector('#sumDiscount')!.textContent = '-' + formatPrice(voucherDiscount)
+    } else {
+      msgEl.innerHTML = `<span style="color:#dc3545">❌ ${result.message}</span>`
+    }
+    renderOrderSummary()
+  })
+
+  // Render order summary
   function renderOrderSummary() {
     const currentCart = getCart()
     const itemsEl = container.querySelector('#orderItems')!
@@ -99,12 +208,9 @@ export function renderCheckoutPage(): void {
       itemsEl.appendChild(div)
     })
 
-    const sumSubtotal = container.querySelector('#sumSubtotal')!
-    const sumShipping = container.querySelector('#sumShipping')!
-    const sumTotal = container.querySelector('#sumTotal')!
-    sumSubtotal.textContent = formatPrice(subtotal)
-    sumShipping.textContent = shippingCost === 0 ? 'FREE' : formatPrice(shippingCost)
-    sumTotal.textContent = formatPrice(subtotal + shippingCost)
+    container.querySelector('#sumSubtotal')!.textContent = formatPrice(subtotal)
+    container.querySelector('#sumShipping')!.textContent = shippingCost === 0 ? 'FREE' : formatPrice(shippingCost)
+    container.querySelector('#sumTotal')!.textContent = formatPrice(subtotal + shippingCost - voucherDiscount)
   }
 
   renderOrderSummary()
@@ -141,7 +247,8 @@ export function renderCheckoutPage(): void {
     const currentCart = getCart()
     if (currentCart.length === 0) { showToast('Your cart is empty', 'error'); return }
     const fullAddress = `${name}, ${address}, ${(container.querySelector('#shipCity') as HTMLInputElement).value}, ${(container.querySelector('#shipState') as HTMLInputElement).value} ${(container.querySelector('#shipZip') as HTMLInputElement).value}, ${(container.querySelector('#shipCountry') as HTMLSelectElement).value}`
-    const order = createOrder(currentCart, fullAddress, selectedShipping, selectedPayment, PRODUCTS)
+    const notes = (container.querySelector('#orderNotes') as HTMLTextAreaElement).value.trim()
+    const order = createOrder(currentCart, fullAddress, selectedShipping, selectedPayment, PRODUCTS, notes, appliedVoucher, voucherDiscount)
     saveCart([])
     navigate(`/profile?tab=orders&order=${order.id}`)
   })

@@ -1,6 +1,6 @@
 // ==================== PRODUCT PAGE ====================
-import { PRODUCTS } from '../utils/data'
-import { formatPrice, renderStars, getDiscount, getProductImage, getProductInitials, getProductColor, isInWishlist, toggleWishlist, addToCart, getCurrentUser, getUrlParam, getReviews, getProductReviews, showToast, updateCartBadge } from '../utils/helpers'
+import { PRODUCTS, COUPONS } from '../utils/data'
+import { formatPrice, renderStars, getDiscount, getProductImages, getProductInitials, getProductColor, isInWishlist, toggleWishlist, addToCart, getCurrentUser, getUrlParam, getReviews, getProductReviews, showToast, updateCartBadge, addToRecentlyViewed, getRecentlyViewed } from '../utils/helpers'
 import { renderProductCard, renderPage } from '../components'
 import { navigate, getParam } from '../router'
 import type { Product, Review } from '../types'
@@ -11,34 +11,57 @@ export function renderProductPage(): void {
   const discount = getDiscount(product.price, product.originalPrice)
   const wishlisted = isInWishlist(product.id)
   const reviews = getProductReviews(product.id)
+  const images = getProductImages(product)
+  const sellerCoupons = COUPONS.filter(c => c.storeId === product.sellerId && c.status === 'active')
+
+  // Add to recently viewed
+  addToRecentlyViewed(product.id)
 
   document.title = `${product.name} - ALLIANCE MALL TK`
 
   const container = document.createElement('div')
 
-  // Product Detail
   container.innerHTML = `
     <div class="product-detail">
       <div class="gallery">
-        <div class="main-img">
-          <img src="${getProductImage(product)}" alt="${product.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="main-img" id="mainImage">
+          <img src="${images[0]}" alt="${product.name}" id="mainImg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="img-placeholder" style="display:none;background:${getProductColor(product)}">${getProductInitials(product)}</div>
           ${discount >= 40 ? `<span class="discount-badge" style="position:absolute;top:12px;right:12px;font-size:14px;padding:4px 12px">-${discount}%</span>` : ''}
+          ${images.length > 1 ? '<button class="gallery-zoom" id="zoomBtn">🔍</button>' : ''}
+        </div>
+        <div class="thumbs" id="thumbGallery">
+          ${images.map((img, i) => `<img src="${img}" class="thumb ${i === 0 ? 'active' : ''}" data-index="${i}" onerror="this.style.display='none'">`).join('')}
         </div>
       </div>
       <div class="product-info-section">
         <h1>${product.name}</h1>
         <div class="meta-row">
           <span><span class="stars">${renderStars(product.rating)}</span> ${product.rating}</span>
+          <span>${reviews.length} Reviews</span>
           <span>${product.sold.toLocaleString()} sold</span>
-          <span>⭐ ${reviews.length} Reviews</span>
+          ${product.sku ? `<span style="color:#999;font-size:12px">SKU: ${product.sku}</span>` : ''}
         </div>
         <div class="price-box">
           <span class="current">${formatPrice(product.price)}</span>
           <span class="original">${formatPrice(product.originalPrice)}</span>
           <span class="discount">-${discount}%</span>
         </div>
+
+        ${sellerCoupons.length ? `
+          <div class="seller-coupons">
+            ${sellerCoupons.map(c => `
+              <div class="coupon-tag">
+                <span class="coupon-label">${c.type === 'percentage' ? c.value + '% OFF' : c.type === 'fixed' ? formatPrice(c.value) + ' OFF' : 'Free Shipping'}</span>
+                <span class="coupon-min">Min. ${formatPrice(c.minSpend)}</span>
+                <button class="coupon-claim" data-code="${c.code}">Claim</button>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
         <hr class="divider">
+
         ${product.colors.length ? `
           <div class="variant-section">
             <h3>Color</h3>
@@ -47,23 +70,36 @@ export function renderProductPage(): void {
             </div>
           </div>
         ` : ''}
+
+        ${product.sizes?.length ? `
+          <div class="variant-section">
+            <h3>Size</h3>
+            <div class="variant-options">
+              ${product.sizes.map((s, i) => `<button class="variant-btn ${i === 0 ? 'active' : ''}" data-size="${s}">${s}</button>`).join('')}
+            </div>
+          </div>
+        ` : ''}
+
         <div class="variant-section">
           <h3>Brand</h3>
           <div class="variant-options"><span class="variant-btn active">${product.brand}</span></div>
         </div>
+
         <div class="qty-section">
           <span>Quantity:</span>
           <div class="qty-selector">
             <button id="qtyMinus">−</button>
-            <input type="number" id="qtyInput" value="1" min="1" max="${product.stock}">
+            <input type="number" id="qtyInput" value="1" min="${product.minOrder || 1}" max="${product.stock}">
             <button id="qtyPlus">+</button>
           </div>
           <span style="font-size:12px;color:#999">${product.stock} available</span>
         </div>
+
         <div class="action-buttons">
           <button class="btn btn-secondary" id="addToCartBtn">🛒 Add to Cart</button>
           <button class="btn btn-primary" id="buyNowBtn">⚡ Buy Now</button>
         </div>
+
         <div class="seller-card">
           <div class="seller-avatar">${product.seller[0]}</div>
           <div class="seller-info">
@@ -72,16 +108,36 @@ export function renderProductPage(): void {
           </div>
           <a href="/store/${encodeURIComponent(product.seller)}" class="btn btn-outline btn-sm" style="margin-left:auto">Visit Shop</a>
         </div>
-        <div style="display:flex;gap:12px">
+
+        <div style="display:flex;gap:12px;margin-bottom:16px">
           <button class="btn btn-outline btn-sm" id="wishlistBtn">${wishlisted ? '♥ In Wishlist' : '♡ Wishlist'}</button>
           <button class="btn btn-outline btn-sm" id="shareBtn">🔗 Share</button>
           <a href="/messages" class="btn btn-outline btn-sm">💬 Chat Seller</a>
         </div>
+
+        <!-- Shipping Calculator -->
+        <div class="shipping-calculator">
+          <h3>🚚 Shipping</h3>
+          <div class="ship-calc-row">
+            <input type="text" class="form-control" id="shipCalcInput" placeholder="Enter your ZIP code" style="max-width:200px">
+            <button class="btn btn-sm btn-outline" id="shipCalcBtn">Calculate</button>
+          </div>
+          <div id="shipCalcResult" style="display:none;margin-top:8px"></div>
+          ${product.freeShipping ? '<div style="color:#28a745;font-size:13px;margin-top:8px">✅ Free Shipping on this item</div>' : ''}
+        </div>
+
+        <!-- Return Policy -->
+        ${product.returnPolicy ? `
+          <div class="return-policy-info">
+            <h3>↩️ Return Policy</h3>
+            <p>${product.returnPolicy}</p>
+          </div>
+        ` : ''}
       </div>
     </div>
   `
 
-  // Tabs (Description, Specs, Reviews)
+  // Tabs
   const tabsSection = document.createElement('div')
   tabsSection.className = 'detail-tabs'
   tabsSection.innerHTML = `
@@ -98,8 +154,10 @@ export function renderProductPage(): void {
       <h3>Specifications</h3>
       <table class="specs-table">
         <tr><td>Brand</td><td>${product.brand}</td></tr>
-        <tr><td>Category</td><td>${product.category}</td></tr>
-        ${product.specs.split(' | ').map(s => { const [k, v] = s.split(': '); return `<tr><td>${k}</td><td>${v}</td></tr>` }).join('')}
+        <tr><td>Category</td><td>${product.category}${product.subcategory ? ' > ' + product.subcategory : ''}</td></tr>
+        ${product.sku ? `<tr><td>SKU</td><td>${product.sku}</td></tr>` : ''}
+        ${product.weight ? `<tr><td>Weight</td><td>${product.weight}</td></tr>` : ''}
+        ${product.specs.split(' | ').map(s => { const parts = s.split(': '); return parts.length === 2 ? `<tr><td>${parts[0]}</td><td>${parts[1]}</td></tr>` : '' }).join('')}
         <tr><td>Stock</td><td>${product.stock} units</td></tr>
       </table>
     </div>
@@ -108,6 +166,20 @@ export function renderProductPage(): void {
     </div>
   `
   container.appendChild(tabsSection)
+
+  // Recently Viewed
+  const recentIds = getRecentlyViewed().filter(id => id !== product.id).slice(0, 6)
+  const recentProducts = PRODUCTS.filter(p => recentIds.includes(p.id))
+  if (recentProducts.length) {
+    const recentSection = document.createElement('div')
+    recentSection.className = 'related-section'
+    recentSection.innerHTML = '<div class="section-header"><h2 class="section-title">Recently Viewed</h2></div>'
+    const recentGrid = document.createElement('div')
+    recentGrid.className = 'product-grid'
+    recentProducts.forEach(p => recentGrid.appendChild(renderProductCard(p)))
+    recentSection.appendChild(recentGrid)
+    container.appendChild(recentSection)
+  }
 
   // Related Products
   const related = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 6)
@@ -124,14 +196,65 @@ export function renderProductPage(): void {
 
   renderPage(container)
 
-  // Event Listeners
+  // === IMAGE GALLERY ===
+  let currentImageIndex = 0
+  const mainImg = container.querySelector('#mainImg') as HTMLImageElement
+  const thumbs = container.querySelectorAll('.thumb')
+
+  thumbs.forEach((thumb, i) => {
+    thumb.addEventListener('click', () => {
+      thumbs.forEach(t => t.classList.remove('active'))
+      thumb.classList.add('active')
+      mainImg.src = images[i]
+      currentImageIndex = i
+    })
+  })
+
+  // Zoom
+  container.querySelector('#zoomBtn')?.addEventListener('click', () => {
+    const overlay = document.createElement('div')
+    overlay.className = 'zoom-overlay'
+    overlay.innerHTML = `
+      <div class="zoom-container">
+        <button class="zoom-close">&times;</button>
+        <button class="zoom-prev">‹</button>
+        <img src="${images[currentImageIndex]}" class="zoom-image" id="zoomImage">
+        <button class="zoom-next">›</button>
+        <div class="zoom-thumbs">${images.map((img, i) => `<img src="${img}" class="zoom-thumb ${i === currentImageIndex ? 'active' : ''}" data-index="${i}">`).join('')}</div>
+      </div>
+    `
+    document.body.appendChild(overlay)
+    overlay.querySelector('.zoom-close')?.addEventListener('click', () => overlay.remove())
+    overlay.querySelector('.zoom-prev')?.addEventListener('click', () => {
+      currentImageIndex = (currentImageIndex - 1 + images.length) % images.length
+      ;(overlay.querySelector('#zoomImage') as HTMLImageElement).src = images[currentImageIndex]
+      overlay.querySelectorAll('.zoom-thumb').forEach((t, i) => t.classList.toggle('active', i === currentImageIndex))
+    })
+    overlay.querySelector('.zoom-next')?.addEventListener('click', () => {
+      currentImageIndex = (currentImageIndex + 1) % images.length
+      ;(overlay.querySelector('#zoomImage') as HTMLImageElement).src = images[currentImageIndex]
+      overlay.querySelectorAll('.zoom-thumb').forEach((t, i) => t.classList.toggle('active', i === currentImageIndex))
+    })
+    overlay.querySelectorAll('.zoom-thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        currentImageIndex = Number((thumb as HTMLElement).dataset.index)
+        ;(overlay.querySelector('#zoomImage') as HTMLImageElement).src = images[currentImageIndex]
+        overlay.querySelectorAll('.zoom-thumb').forEach((t, i) => t.classList.toggle('active', i === currentImageIndex))
+      })
+    })
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove() })
+  })
+
+  // === QUANTITY ===
   const qtyInput = document.getElementById('qtyInput') as HTMLInputElement
   document.getElementById('qtyMinus')?.addEventListener('click', () => {
-    qtyInput.value = String(Math.max(1, Number(qtyInput.value) - 1))
+    qtyInput.value = String(Math.max(product.minOrder || 1, Number(qtyInput.value) - 1))
   })
   document.getElementById('qtyPlus')?.addEventListener('click', () => {
     qtyInput.value = String(Math.min(product.stock, Number(qtyInput.value) + 1))
   })
+
+  // === CART ===
   document.getElementById('addToCartBtn')?.addEventListener('click', () => {
     addToCart(product.id, Number(qtyInput.value))
     updateCartBadge()
@@ -140,16 +263,20 @@ export function renderProductPage(): void {
     addToCart(product.id, Number(qtyInput.value))
     navigate('/checkout')
   })
+
+  // === WISHLIST ===
   document.getElementById('wishlistBtn')?.addEventListener('click', function(this: HTMLElement) {
     const isNow = toggleWishlist(product.id)
     this.textContent = isNow ? '♥ In Wishlist' : '♡ Wishlist'
   })
+
+  // === SHARE ===
   document.getElementById('shareBtn')?.addEventListener('click', () => {
     navigator.clipboard.writeText(window.location.href)
     showToast('Link copied!')
   })
 
-  // Tab switching
+  // === TABS ===
   tabsSection.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', function(this: HTMLElement) {
       tabsSection.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
@@ -159,7 +286,7 @@ export function renderProductPage(): void {
     })
   })
 
-  // Color buttons
+  // === COLOR BUTTONS ===
   container.querySelectorAll('[data-color]').forEach(btn => {
     btn.addEventListener('click', function(this: HTMLElement) {
       this.parentElement?.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'))
@@ -167,7 +294,43 @@ export function renderProductPage(): void {
     })
   })
 
-  // Review form
+  // === SIZE BUTTONS ===
+  container.querySelectorAll('[data-size]').forEach(btn => {
+    btn.addEventListener('click', function(this: HTMLElement) {
+      this.parentElement?.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'))
+      this.classList.add('active')
+    })
+  })
+
+  // === SELLER COUPONS ===
+  container.querySelectorAll('.coupon-claim').forEach(btn => {
+    btn.addEventListener('click', function(this: HTMLElement) {
+      const code = this.dataset.code!
+      const coupon = COUPONS.find(c => c.code === code)
+      if (coupon) {
+        coupon.usedCount++
+        this.textContent = 'Claimed ✓'
+        this.classList.add('claimed')
+        ;(this as HTMLButtonElement).disabled = true
+        showToast(`Coupon ${code} claimed!`)
+      }
+    })
+  })
+
+  // === SHIPPING CALCULATOR ===
+  container.querySelector('#shipCalcBtn')?.addEventListener('click', () => {
+    const zip = (container.querySelector('#shipCalcInput') as HTMLInputElement).value.trim()
+    if (!zip) { showToast('Please enter ZIP code', 'error'); return }
+    const resultEl = container.querySelector('#shipCalcResult')! as HTMLElement
+    const freeShip = product.freeShipping
+    const standardPrice = freeShip ? 'FREE' : formatPrice(4.99)
+    const expressPrice = freeShip ? formatPrice(4.99) : formatPrice(9.99)
+    const standardColor = freeShip ? '#28a745' : '#333'
+    resultEl.innerHTML = `<div style="font-size:13px;padding:8px 12px;background:#f8f8f8;border-radius:6px"><div>📍 Deliver to <strong>${zip}</strong></div><div style="margin-top:4px">Standard: <span style="color:${standardColor}">${standardPrice}</span> · 5-7 days</div><div>Express: ${expressPrice} · 2-3 days</div></div>`
+    resultEl.style.display = 'block'
+  })
+
+  // === REVIEW FORM ===
   let selectedRating = 0
   container.querySelectorAll('#starInput .star').forEach(star => {
     star.addEventListener('click', function(this: HTMLElement) {

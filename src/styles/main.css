@@ -396,3 +396,233 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #aaa; }
+
+/* ==================== NEW FEATURES STYLES ==================== */
+
+/* Free Shipping Banner */
+.free-shipping-banner {
+  background: #ee4d2d;
+  color: #fff;
+  text-align: center;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.free-shipping-banner a { color: #fff; text-decoration: underline; font-weight: 700; }
+
+/* Search Autocomplete */
+.search-wrapper { position: relative; flex: 1; max-width: 600px; }
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  z-index: 1001;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 13px;
+}
+.suggestion-item:hover { background: #f5f5f5; }
+.suggestion-img { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; }
+.suggestion-info { flex: 1; }
+.suggestion-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.suggestion-price { color: #ee4d2d; font-weight: 700; font-size: 12px; }
+.suggestion-icon { font-size: 16px; }
+.suggestion-header { display: flex; justify-content: space-between; padding: 8px 16px; font-size: 12px; color: #999; border-bottom: 1px solid #e0e0e0; }
+.suggestion-header a { color: #ee4d2d; }
+
+/* Search Category Select */
+.search-cat-select {
+  border: none;
+  background: #f5f5f5;
+  padding: 0 12px;
+  font-size: 13px;
+  border-right: 1px solid #e0e0e0;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Free Ship Badge */
+.free-ship-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: #28a745;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Image Gallery */
+.gallery-zoom {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 2;
+}
+.thumbs { display: flex; gap: 8px; overflow-x: auto; margin-top: 12px; }
+.thumbs .thumb { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; transition: border-color 0.3s; }
+.thumbs .thumb.active { border-color: #ee4d2d; }
+
+/* Zoom Overlay */
+.zoom-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.zoom-container { position: relative; max-width: 90vw; max-height: 90vh; }
+.zoom-image { max-width: 90vw; max-height: 80vh; object-fit: contain; border-radius: 8px; }
+.zoom-close { position: absolute; top: -40px; right: 0; background: none; border: none; color: #fff; font-size: 32px; cursor: pointer; }
+.zoom-prev, .zoom-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.zoom-prev { left: -60px; }
+.zoom-next { right: -60px; }
+.zoom-thumbs { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+.zoom-thumb { width: 60px; height: 60px; border-radius: 6px; object-fit: cover; cursor: pointer; border: 2px solid transparent; opacity: 0.6; }
+.zoom-thumb.active { border-color: #ee4d2d; opacity: 1; }
+
+/* Seller Coupons */
+.seller-coupons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.coupon-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: #fff5f3;
+  border: 1px dashed #ee4d2d;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.coupon-label { color: #ee4d2d; font-weight: 700; }
+.coupon-min { color: #999; }
+.coupon-claim {
+  background: #ee4d2d;
+  color: #fff;
+  border: none;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.coupon-claim.claimed { background: #ccc; cursor: default; }
+
+/* Shipping Calculator */
+.shipping-calculator {
+  background: #f8f8f8;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.shipping-calculator h3 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.ship-calc-row { display: flex; gap: 8px; }
+
+/* Return Policy Info */
+.return-policy-info {
+  background: #f0f8ff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.return-policy-info h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.return-policy-info p { font-size: 13px; color: #666; }
+
+/* Select All Bar */
+.select-all-bar {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 12px;
+}
+
+/* Checkbox Wrap */
+.checkbox-wrap { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; }
+.checkbox-wrap input[type="checkbox"] { width: 18px; height: 18px; accent-color: #ee4d2d; }
+
+/* Cart Item Unselected */
+.cart-item.unselected { opacity: 0.5; }
+
+/* Action Links */
+.action-link {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+.action-link:hover { color: #ee4d2d; }
+
+/* Address Card */
+.address-card {
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.address-card.selected { border-color: #ee4d2d; }
+.address-card:hover { border-color: #ee4d2d; }
+
+/* Mega Menu Subcategories */
+.mega-col a[href*="sub="] {
+  font-size: 12px;
+  color: #999;
+  padding-left: 8px;
+}
+.mega-col a[href*="sub="]:hover { color: #ee4d2d; }
+
+/* Subcategory link style */
+.mega-col > a:first-child {
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+  .search-cat-select { display: none; }
+  .free-shipping-banner { font-size: 11px; padding: 6px 12px; }
+  .product-detail { grid-template-columns: 1fr; }
+  .zoom-prev { left: 10px; }
+  .zoom-next { right: 10px; }
+}

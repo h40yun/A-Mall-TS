@@ -9,11 +9,13 @@ import { renderAuthPage } from './pages/auth'
 import { renderCategoryPage } from './pages/category'
 import { renderProfilePage } from './pages/profile'
 import { renderWishlistPage } from './pages/wishlist'
+import { renderTrackOrderPage } from './pages/track-order'
 import {
   renderAboutPage, renderContactPage, renderHelpPage, renderHowToBuyPage,
   renderShippingPage, renderReturnPolicyPage, renderPaymentMethodsPage,
   renderTermsPage, renderPrivacyPage, renderDealsPage, renderBlogPage,
-  renderStoresPage, renderNotificationsPage, renderMessagesPage
+  renderStoresPage, renderNotificationsPage, renderMessagesPage, renderStoreDetailPage,
+  renderSellerDashboardPage, renderAdminPage, renderSellPage
 } from './pages/static'
 import { ensureToastContainer } from './components'
 
@@ -31,6 +33,7 @@ route('/category', renderCategoryPage)
 route('/search', renderCategoryPage)
 route('/profile', renderProfilePage)
 route('/wishlist', renderWishlistPage)
+route('/track-order', renderTrackOrderPage)
 route('/about', renderAboutPage)
 route('/contact', renderContactPage)
 route('/help', renderHelpPage)
@@ -45,12 +48,10 @@ route('/blog', renderBlogPage)
 route('/stores', renderStoresPage)
 route('/notifications', renderNotificationsPage)
 route('/messages', renderMessagesPage)
-route('/sell', renderAboutPage)
-route('/store/:id', renderAboutPage)
-route('/admin', renderAboutPage)
-route('/seller', renderAboutPage)
-route('/admin-orders', renderAboutPage)
-route('/admin-scraper', renderAboutPage)
+route('/sell', renderSellPage)
+route('/store/:id', renderStoreDetailPage)
+route('/admin', renderAdminPage)
+route('/seller', renderSellerDashboardPage)
 
 // Start Router
 initRouter()
