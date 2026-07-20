@@ -30,22 +30,43 @@ import { ensureToastContainer } from './components'
 initAdminData()
 initDemoAccounts()
 
-// Load mega catalog from JSON (20,000+ products with real marketplace image URLs)
-fetch('/products.json')
-  .then(r => r.json())
-  .then((catalog: any[]) => {
-    const allProducts = [...PRODUCTS, ...catalog]
-    setProductsCache(allProducts)
-    console.log('Loaded ' + allProducts.length + ' products (' + PRODUCTS.length + ' original + ' + catalog.length + ' catalog)')
-  })
-  .catch(() => {
-    // Fallback: use original products only
-    setProductsCache(PRODUCTS)
-    console.log('Using original products only')
-  })
+// Global catalog data
+const CATALOG = { products: [...PRODUCTS] as any[], sellers: [] as any[], reviews: [] as any[] }
+;(window as any).__CATALOG__ = CATALOG
 
 // Set initial products immediately
 setProductsCache(PRODUCTS)
+
+// Load mega catalog, sellers, and reviews from JSON files
+Promise.all([
+  fetch('/products.json').then(r => r.json()).catch(() => []),
+  fetch('/sellers.json').then(r => r.json()).catch(() => []),
+  fetch('/reviews.json').then(r => r.json()).catch(() => []),
+]).then(([catalog, sellers, reviews]) => {
+  CATALOG.products = [...PRODUCTS, ...catalog]
+  CATALOG.sellers = sellers
+  CATALOG.reviews = reviews
+  setProductsCache(CATALOG.products)
+  console.log('Loaded ' + CATALOG.products.length + ' products, ' + sellers.length + ' sellers, ' + reviews.length + ' reviews')
+}).catch(() => {
+  console.log('Using original products only')
+})
+
+// Auto-replenish stock (check every 30 seconds)
+setInterval(() => {
+  const products = CATALOG.products
+  let replenished = 0
+  for (const p of products) {
+    if (p.stock < 10) {
+      p.stock = Math.floor(Math.random() * (999 - 24 + 1)) + 24
+      replenished++
+    }
+  }
+  if (replenished > 0) {
+    setProductsCache(products)
+  }
+}, 30000)
+
 ensureToastContainer()
 
 // Routes
