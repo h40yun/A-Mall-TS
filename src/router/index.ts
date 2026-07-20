@@ -65,6 +65,13 @@ export function getParam(name: string): string | null {
 }
 
 export function initRouter(): void {
+  // Handle SPA redirect from 404.html (GitHub Pages)
+  const spaRedirect = sessionStorage.getItem('spa-redirect')
+  if (spaRedirect) {
+    sessionStorage.removeItem('spa-redirect')
+    window.history.replaceState({}, '', spaRedirect)
+  }
+
   window.addEventListener('popstate', handleRoute)
   document.addEventListener('click', (e) => {
     const target = (e.target as HTMLElement).closest('a')

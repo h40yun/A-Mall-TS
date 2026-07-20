@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <script>
+    // SPA redirect for GitHub Pages
+    // This file catches 404s and redirects to index.html
+    // preserving the original URL path
+    var path = window.location.pathname;
+    var search = window.location.search;
+    var hash = window.location.hash;
+    
+    // Store the original path
+    sessionStorage.setItem('spa-redirect', path + search + hash);
+    
+    // Redirect to root
+    window.location.replace('/');
+  </script>
+</head>
+<body>
+  <p>Redirecting to Alliance Mall...</p>
+</body>
+</html>
