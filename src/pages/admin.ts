@@ -2,6 +2,8 @@
 import { getCurrentUser, isAdmin, getUsers, getOrders, getReviews, getMessages, getNotifications, getSellerStore, getSellerProducts, getReturnRequests, formatPrice, renderStars, showToast, addNotification } from '../utils/helpers'
 import { PRODUCTS, CATEGORIES, COUPONS, VOUCHERS } from '../utils/data'
 import { scrapeProducts, saveScrapedProducts, getScrapedProducts, deleteScrapedProduct, clearScrapedProducts, importToMarketplace, detectPlatform, type ScrapedProduct } from '../utils/scraper'
+import { isDemoAccount, getDemoAccounts } from '../utils/demo-accounts'
+import { adminConfirmDelivery, adminUpdateOrderStatus, autoUpdateOrderStatus } from '../utils/helpers'
 import { renderPage } from '../components'
 import { navigate } from '../router'
 
@@ -106,7 +108,7 @@ export function renderAdminPage(): void {
         <div id="section-users" style="display:none">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
             <h3 style="font-size:16px;font-weight:700">👥 User Management (${totalUsers})</h3>
-            <div style="display:flex;gap:8px"><input type="text" class="form-control" id="userSearch" placeholder="Search users..." style="width:200px;padding:6px 12px;font-size:13px"><select class="form-control" id="userRoleFilter" style="width:120px;padding:6px;font-size:13px"><option value="">All Roles</option><option>user</option><option>seller</option><option>admin</option></select></div>
+            <div style="display:flex;gap:8px"><input type="text" class="form-control" id="userSearch" placeholder="Search users..." style="width:200px;padding:6px 12px;font-size:13px"><select class="form-control" id="userRoleFilter" style="width:120px;padding:6px;font-size:13px"><option value="">All Roles</option><option>user</option><option>seller</option><option>admin</option></select><select class="form-control" id="userDemoFilter" style="width:120px;padding:6px;font-size:13px"><option value="">All Types</option><option value="real">Real Users</option><option value="demo">🟡 Demo Only</option></select></div>
           </div>
           <div style="background:#fff;border-radius:8px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
             <table style="width:100%;border-collapse:collapse">
@@ -392,21 +394,31 @@ export function renderAdminPage(): void {
   function renderUsersTable() {
     const search = (container.querySelector('#userSearch') as HTMLInputElement)?.value?.toLowerCase() || ''
     const roleFilter = (container.querySelector('#userRoleFilter') as HTMLSelectElement)?.value || ''
+    const demoFilter = (container.querySelector('#userDemoFilter') as HTMLSelectElement)?.value || ''
     const filtered = users.filter(u => {
       if (search && !u.name.toLowerCase().includes(search) && !u.email.toLowerCase().includes(search)) return false
       if (roleFilter && u.role !== roleFilter) return false
+      if (demoFilter === 'demo' && !(u as any).isDemo) return false
+      if (demoFilter === 'real' && (u as any).isDemo) return false
       return true
     })
-    container.querySelector('#usersTableBody')!.innerHTML = filtered.map(u => `<tr>
+    const demoCount = users.filter(u => (u as any).isDemo).length
+    const realCount = users.filter(u => !(u as any).isDemo).length
+    container.querySelector('#usersTableBody')!.innerHTML = filtered.map(u => {
+      const isDemo = (u as any).isDemo
+      const country = (u as any).demoCountry || ''
+      return `<tr style="${isDemo ? 'background:#fffde7' : ''}">
       <td style="padding:8px;font-size:13px;border-bottom:1px solid #f0f0f0">${u.id}</td>
-      <td style="padding:8px;font-size:13px;border-bottom:1px solid #f0f0f0"><strong>${u.name}</strong></td>
+      <td style="padding:8px;font-size:13px;border-bottom:1px solid #f0f0f0"><strong>${u.name}</strong> ${isDemo ? '<span style="background:#ffc107;color:#000;padding:1px 6px;border-radius:10px;font-size:10px;font-weight:700;margin-left:4px">DEMO</span>' : ''}</td>
       <td style="padding:8px;font-size:13px;border-bottom:1px solid #f0f0f0">${u.email}</td>
       <td style="padding:8px;border-bottom:1px solid #f0f0f0"><span class="badge badge-${u.role === 'admin' ? 'danger' : u.role === 'seller' ? 'warning' : 'info'}">${u.role}</span></td>
+      <td style="padding:8px;font-size:13px;border-bottom:1px solid #f0f0f0">${isDemo ? '🟡 ' : ''}${country || '-'}</td>
       <td style="padding:8px;font-size:13px;border-bottom:1px solid #f0f0f0">${(u as any).coins || 0}</td>
       <td style="padding:8px;font-size:13px;border-bottom:1px solid #f0f0f0">${(u as any).membership || 'basic'}</td>
       <td style="padding:8px;font-size:12px;color:#999;border-bottom:1px solid #f0f0f0">${new Date(u.joinDate).toLocaleDateString()}</td>
       <td style="padding:8px;border-bottom:1px solid #f0f0f0"><select class="form-control user-role-select" data-id="${u.id}" style="width:auto;padding:4px 8px;font-size:12px">${['user', 'seller', 'admin'].map(r => `<option ${u.role === r ? 'selected' : ''}>${r}</option>`).join('')}</select></td>
-    </tr>`).join('')
+    </tr>`
+    }).join('')
 
     container.querySelectorAll('.user-role-select').forEach(sel => {
       sel.addEventListener('change', function(this: HTMLSelectElement) {
@@ -432,7 +444,15 @@ export function renderAdminPage(): void {
       sel.addEventListener('change', function(this: HTMLSelectElement) {
         const orderId = this.dataset.id!; const newStatus = this.value
         const order = orders.find(o => o.id === orderId)
-        if (order) { order.status = newStatus as any; localStorage.setItem('am_orders', JSON.stringify(orders)); showToast(`Order ${orderId} → ${newStatus}`); addNotification('order', 'Order Updated', `Order ${orderId} status: ${newStatus}`, `/track-order?id=${orderId}`) }
+        if (order) { 
+          if (newStatus === 'delivered') {
+            adminConfirmDelivery(orderId)
+            showToast(`Order ${orderId} → Delivered (confirmed)`)
+          } else {
+            adminUpdateOrderStatus(orderId, newStatus)
+            showToast(`Order ${orderId} → ${newStatus}`)
+          }
+        }
       })
     })
   }
@@ -472,7 +492,15 @@ export function renderAdminPage(): void {
     sel.addEventListener('change', function(this: HTMLSelectElement) {
       const orderId = this.dataset.id!; const newStatus = this.value
       const order = orders.find(o => o.id === orderId)
-      if (order) { order.status = newStatus as any; localStorage.setItem('am_orders', JSON.stringify(orders)); showToast(`Order ${orderId} → ${newStatus}`) }
+      if (order) { 
+        if (newStatus === 'delivered') {
+          adminConfirmDelivery(orderId)
+          showToast(`Order ${orderId} → Delivered (confirmed)`)
+        } else {
+          adminUpdateOrderStatus(orderId, newStatus)
+          showToast(`Order ${orderId} → ${newStatus}`)
+        }
+      }
     })
   })
 
@@ -505,6 +533,7 @@ export function renderAdminPage(): void {
   // ==================== SEARCH/FILTER LISTENERS ====================
   container.querySelector('#userSearch')?.addEventListener('input', renderUsersTable)
   container.querySelector('#userRoleFilter')?.addEventListener('change', renderUsersTable)
+  container.querySelector('#userDemoFilter')?.addEventListener('change', renderUsersTable)
   container.querySelector('#orderSearch')?.addEventListener('input', () => renderOrdersTable())
   container.querySelector('#productSearch')?.addEventListener('input', renderProductsTable)
   container.querySelector('#productCatFilter')?.addEventListener('change', renderProductsTable)

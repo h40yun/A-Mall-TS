@@ -2,6 +2,7 @@
 import { route, handleRoute, initRouter } from './router'
 import { initAdminData, setProductsCache } from './utils/helpers'
 import { PRODUCTS } from './utils/data'
+import { initDemoAccounts } from './utils/demo-accounts'
 import { renderHomePage } from './pages/home'
 import { renderProductPage } from './pages/product'
 import { renderCartPage } from './pages/cart'
@@ -27,6 +28,7 @@ import { ensureToastContainer } from './components'
 
 // Init
 initAdminData()
+initDemoAccounts()
 setProductsCache(PRODUCTS)
 ensureToastContainer()
 

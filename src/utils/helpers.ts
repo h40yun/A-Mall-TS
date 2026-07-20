@@ -216,3 +216,107 @@ export function initAdminData(): void {
   if (!localStorage.getItem('am_notifications')) { localStorage.setItem('am_notifications', JSON.stringify([{ id: 1, type: 'order', title: 'Order Confirmed', message: 'Your order ORD-1001 has been confirmed', link: '/profile?tab=orders', isRead: false, createdAt: '2026-07-19T10:00:00.000Z' }, { id: 2, type: 'promo', title: 'Flash Sale!', message: 'Up to 50% off on Electronics', link: '/deals', isRead: false, createdAt: '2026-07-20T08:00:00.000Z' }])) }
   if (!localStorage.getItem('am_seller_store')) { localStorage.setItem('am_seller_store', JSON.stringify({ name: 'AudioWorld Store', id: 'audio-world', category: 'Electronics', description: 'Premium audio equipment and accessories. Authorized dealer for top brands.', bannerColor: '#667eea', logoInitial: 'A', location: 'Shenzhen, China', returnPolicy: '30-day return policy', shippingPolicy: 'Free shipping on orders over $50' })) }
 }
+
+// ==================== ORDER TRACKING - 3-7 DAY SHIPPING ====================
+export function getOrderTrackingTimeline(orderDate: string, shipping: string): any[] {
+  const orderTime = new Date(orderDate).getTime()
+  const days = shipping === 'express' ? 3 : shipping === 'standard' ? 5 : 7
+  
+  return [
+    { status: 'Order Placed', location: 'Processing Center', timestamp: new Date(orderTime).toISOString(), description: 'Your order has been received and is being processed.' },
+    { status: 'Payment Confirmed', location: 'Payment Gateway', timestamp: new Date(orderTime + 3600000).toISOString(), description: 'Payment has been verified successfully.' },
+    { status: 'Packed & Ready', location: 'Warehouse', timestamp: new Date(orderTime + 86400000).toISOString(), description: 'Your order has been packed and ready for pickup by courier.' },
+    { status: 'Shipped', location: 'Sorting Center', timestamp: new Date(orderTime + 172800000).toISOString(), description: 'Package has been picked up by courier and is in transit.' },
+    { status: 'In Transit', location: 'Transit Hub', timestamp: new Date(orderTime + 259200000).toISOString(), description: 'Package is moving through the logistics network toward your area.' },
+    { status: 'Out for Delivery', location: 'Local Delivery Hub', timestamp: new Date(orderTime + (days - 1) * 86400000).toISOString(), description: 'Package is out for delivery to your address.' },
+    { status: 'Delivered', location: 'Destination', timestamp: null, description: 'Package has been delivered. Please confirm receipt.' },
+  ]
+}
+
+export function autoUpdateOrderStatus(orderId: string): void {
+  const orders = getOrders()
+  const order = orders.find(o => o.id === orderId)
+  if (!order) return
+  
+  const now = Date.now()
+  const orderTime = new Date(order.date).getTime()
+  const elapsed = now - orderTime
+  const days = order.shipping === 'express' ? 3 : order.shipping === 'standard' ? 5 : 7
+  
+  // Auto-update based on time elapsed
+  if (elapsed >= 3600000 && order.status === 'pending') {
+    order.status = 'processing'
+    if (!order.trackingHistory) order.trackingHistory = []
+    order.trackingHistory!.push({ status: 'Payment Confirmed', location: 'Payment Gateway', timestamp: new Date().toISOString(), description: 'Payment verified.' })
+  }
+  
+  if (elapsed >= 86400000 && order.status === 'processing') {
+    order.status = 'processing'
+    order.trackingHistory!.push({ status: 'Packed & Ready', location: 'Warehouse', timestamp: new Date().toISOString(), description: 'Order packed and ready.' })
+  }
+  
+  if (elapsed >= 172800000 && (order.status === 'processing' || order.status === 'pending')) {
+    order.status = 'shipped'
+    order.trackingHistory!.push({ status: 'Shipped', location: 'Sorting Center', timestamp: new Date().toISOString(), description: 'Package picked up by courier.' })
+  }
+  
+  if (elapsed >= 259200000 && order.status === 'shipped') {
+    order.trackingHistory!.push({ status: 'In Transit', location: 'Transit Hub', timestamp: new Date().toISOString(), description: 'Package in transit to destination.' })
+  }
+  
+  if (elapsed >= (days - 1) * 86400000 && order.status === 'shipped') {
+    order.trackingHistory!.push({ status: 'Out for Delivery', location: 'Local Hub', timestamp: new Date().toISOString(), description: 'Out for delivery.' })
+  }
+  
+  localStorage.setItem('am_orders', JSON.stringify(orders))
+}
+
+export function adminConfirmDelivery(orderId: string): boolean {
+  const orders = getOrders()
+  const order = orders.find(o => o.id === orderId)
+  if (!order) return false
+  
+  order.status = 'delivered'
+  if (!order.trackingHistory) order.trackingHistory = []
+  order.trackingHistory!.push({ 
+    status: 'Delivered', 
+    location: order.address.split(',')[0], 
+    timestamp: new Date().toISOString(), 
+    description: 'Package delivered. Confirmed by admin.' 
+  })
+  
+  localStorage.setItem('am_orders', JSON.stringify(orders))
+  
+  // Notify seller
+  addNotification('order', 'Order Delivered', `Order ${orderId} has been delivered to the buyer.`, `/track-order?id=${orderId}`)
+  
+  return true
+}
+
+export function adminUpdateOrderStatus(orderId: string, newStatus: string, note?: string): boolean {
+  const orders = getOrders()
+  const order = orders.find(o => o.id === orderId)
+  if (!order) return false
+  
+  const oldStatus = order.status
+  order.status = newStatus as any
+  if (!order.trackingHistory) order.trackingHistory = []
+  order.trackingHistory!.push({ 
+    status: newStatus.charAt(0).toUpperCase() + newStatus.slice(1), 
+    location: 'Admin Update', 
+    timestamp: new Date().toISOString(), 
+    description: note || `Status updated from ${oldStatus} to ${newStatus} by admin.` 
+  })
+  
+  localStorage.setItem('am_orders', JSON.stringify(orders))
+  
+  // Notify seller
+  addNotification('order', 'Order Status Updated', `Order ${orderId}: ${oldStatus} → ${newStatus}`, `/track-order?id=${orderId}`)
+  
+  return true
+}
+
+export function getSellerOrderNotifications(sellerId: string): any[] {
+  return getNotifications().filter((n: any) => n.type === 'order')
+}
+
