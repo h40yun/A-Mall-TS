@@ -3,7 +3,6 @@ import { route, handleRoute, initRouter } from './router'
 import { initAdminData, setProductsCache } from './utils/helpers'
 import { PRODUCTS } from './utils/data'
 import { initDemoAccounts } from './utils/demo-accounts'
-import { generateMegaCatalog } from './utils/mega-catalog'
 import { renderHomePage } from './pages/home'
 import { renderProductPage } from './pages/product'
 import { renderCartPage } from './pages/cart'
@@ -31,10 +30,22 @@ import { ensureToastContainer } from './components'
 initAdminData()
 initDemoAccounts()
 
-// Generate mega catalog (20,000+ products) and merge with original 30
-const megaProducts = generateMegaCatalog(20000)
-const allProducts = [...PRODUCTS, ...megaProducts]
-setProductsCache(allProducts)
+// Load mega catalog from JSON (20,000+ products with real marketplace image URLs)
+fetch('/products.json')
+  .then(r => r.json())
+  .then((catalog: any[]) => {
+    const allProducts = [...PRODUCTS, ...catalog]
+    setProductsCache(allProducts)
+    console.log('Loaded ' + allProducts.length + ' products (' + PRODUCTS.length + ' original + ' + catalog.length + ' catalog)')
+  })
+  .catch(() => {
+    // Fallback: use original products only
+    setProductsCache(PRODUCTS)
+    console.log('Using original products only')
+  })
+
+// Set initial products immediately
+setProductsCache(PRODUCTS)
 ensureToastContainer()
 
 // Routes
