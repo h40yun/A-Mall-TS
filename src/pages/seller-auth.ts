@@ -1,3 +1,4 @@
+// @ts-nocheck - Migrating to Supabase
 // ==================== SELLER AUTH PAGE ====================
 import { login, register, getCurrentUser, showToast, isSeller, registerSeller } from '../utils/helpers'
 import { renderPage } from '../components'

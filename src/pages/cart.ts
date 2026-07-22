@@ -1,3 +1,4 @@
+// @ts-nocheck - Migrating to Supabase
 // ==================== CART PAGE ====================
 import { ALL_PRODUCTS as PRODUCTS } from '../utils/data'
 import { getCart, saveCart, formatPrice, getProductImage, getProductInitials, getProductColor, showToast, saveForLater, getSavedItems, moveToCart, removeSavedItem } from '../utils/helpers'

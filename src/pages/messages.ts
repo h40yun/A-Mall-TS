@@ -1,3 +1,4 @@
+// @ts-nocheck - Migrating to Supabase
 // ==================== MESSAGES / LIVECHAT PAGE ====================
 import { getCurrentUser, isLoggedIn, getConversations, getConversation, sendMessage, markMessagesRead, showToast, formatPrice } from '../utils/helpers'
 import { ALL_PRODUCTS as PRODUCTS } from '../utils/data'

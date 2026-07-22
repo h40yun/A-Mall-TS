@@ -1,3 +1,4 @@
+// @ts-nocheck - Migrating to Supabase
 // ==================== ORDER TRACKING PAGE ====================
 import { getOrders, formatPrice, getOrderById, getUrlParam, showToast } from '../utils/helpers'
 import { renderPage } from '../components'

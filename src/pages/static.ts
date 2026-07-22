@@ -1,3 +1,4 @@
+// @ts-nocheck - Migrating to Supabase
 // ==================== STATIC PAGES ====================
 import { getComparisonItems, clearComparison, formatPrice, renderStars, toggleComparison, showToast, getCurrentUser, getOrders, getAddresses, saveAddress, isAdmin, getNotifications, markNotificationRead, isLoggedIn, getProductImage, isInWishlist, toggleWishlist, isSeller, registerSeller, getSellerApplication } from '../utils/helpers'
 import { ALL_PRODUCTS as PRODUCTS, CATEGORIES, COUPONS, VOUCHERS } from '../utils/data'

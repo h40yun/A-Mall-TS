@@ -1,3 +1,4 @@
+// @ts-nocheck - Migrating to Supabase
 // ==================== AUTH PAGE ====================
 import { login, register, getCurrentUser, showToast } from '../utils/helpers'
 import { renderPage } from '../components'

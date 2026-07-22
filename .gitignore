@@ -1,5 +1,29 @@
+# Dependencies
 node_modules/
-dist/
+
+# Environment
 .env
-*.log
-.wrangler/
+.env.local
+.env.production
+
+# Build
+dist/
+dist-ssr/
+*.local
+
+# Supabase
+supabase/.temp/
+
+# Large data files (use Supabase DB instead)
+products_catalog.json
+scrape_products.py
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

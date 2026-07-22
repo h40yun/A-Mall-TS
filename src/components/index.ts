@@ -1,6 +1,8 @@
 // ==================== UI COMPONENTS ====================
-import { getCurrentUser, getCartCount, isAdmin, isSeller, logout, formatPrice, renderStars, getDiscount, getProductImage, getProductInitials, getProductColor, isInWishlist, toggleWishlist, updateCartBadge, getSearchHistory, addSearchHistory, searchProducts, isLoggedIn, getUnreadMessageCount, getUnreadNotificationCount } from '../utils/helpers'
-import { ALL_PRODUCTS as PRODUCTS, CATEGORIES } from '../utils/data'
+import { getCurrentProfile, isLoggedIn, isAdmin, isSeller, logout } from '../utils/auth'
+import { getCartCount, getUnreadNotificationCount, fetchWishlist } from '../utils/db'
+import { formatPrice, renderStars, getDiscount, getProductImage, getProductInitials, getProductColor } from '../utils/helpers'
+import { CATEGORIES } from '../utils/data'
 import { navigate } from '../router'
 import { LANGUAGES, getCurrentLanguage, setLanguage } from '../utils/i18n'
 import type { Product } from '../types'
@@ -13,13 +15,14 @@ export function renderFreeShippingBanner(): HTMLElement {
 }
 
 export function renderHeader(): HTMLElement {
-  const user = getCurrentUser()
-  const cartCount = getCartCount()
-  const unreadMsgs = isLoggedIn() ? getUnreadMessageCount() : 0
-  const unreadNotifs = isLoggedIn() ? getUnreadNotificationCount() : 0
-
+  const profile = getCurrentProfile()
   const header = document.createElement('header')
   header.className = 'header'
+
+  // Cart count & notifications (async, update after render)
+  let cartCount = 0
+  let unreadNotifs = 0
+
   header.innerHTML = `
     <div class="header-top">
       <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
@@ -38,22 +41,22 @@ export function renderHeader(): HTMLElement {
       <div class="header-actions">
         <a href="/track-order" title="Track Order">📦 <span class="text">Track</span></a>
         ${isLoggedIn() ? `
-          <a href="/messages" title="Messages">💬 <span class="text">Messages</span>${unreadMsgs > 0 ? `<span class="notif-badge">${unreadMsgs}</span>` : ''}</a>
-          <a href="/notifications" title="Notifications">🔔 <span class="text">Notifications</span>${unreadNotifs > 0 ? `<span class="notif-badge">${unreadNotifs}</span>` : ''}</a>
+          <a href="/messages" title="Messages">💬 <span class="text">Messages</span></a>
+          <a href="/notifications" title="Notifications">🔔 <span class="text">Notifications</span><span class="notif-badge" id="notifBadge" style="display:none"></span></a>
         ` : `
           <a href="/auth" title="Messages">💬 <span class="text">Messages</span></a>
           <a href="/auth" title="Notifications">🔔 <span class="text">Notifications</span></a>
         `}
-        <a href="/cart" title="Cart">🛒 <span class="text">Cart</span><span class="cart-badge" style="display:${cartCount > 0 ? 'flex' : 'none'}">${cartCount}</span></a>
+        <a href="/cart" title="Cart">🛒 <span class="text">Cart</span><span class="cart-badge" id="cartBadge" style="display:none">0</span></a>
         <a href="/wishlist" title="Wishlist">♥ <span class="text">Wishlist</span></a>
-        ${user ? `
+        ${profile ? `
           <div class="user-dropdown">
-            <a href="/profile">👤 <span class="text">${user.name.split(' ')[0]}</span></a>
+            <a href="/profile">👤 <span class="text">${profile.name.split(' ')[0]}</span></a>
             <div class="dropdown-menu">
               <div style="padding:12px 16px;border-bottom:1px solid #e0e0e0">
-                <strong>${user.name}</strong>
-                <div style="font-size:11px;color:#999">${user.email}</div>
-                ${(user as any).coins !== undefined ? `<div style="font-size:12px;color:#f39c12;margin-top:4px">🪙 ${(user as any).coins || 0} coins</div>` : ''}
+                <strong>${profile.name}</strong>
+                <div style="font-size:11px;color:#999">${profile.email}</div>
+                <div style="font-size:12px;color:#f39c12;margin-top:4px">🪙 ${profile.coins || 0} coins</div>
               </div>
               <a href="/profile?tab=orders">📦 My Orders</a>
               <a href="/track-order">🚚 Track Order</a>
@@ -64,8 +67,7 @@ export function renderHeader(): HTMLElement {
               <a href="/profile?tab=settings">⚙️ Account Settings</a>
               <hr style="margin:6px 0;border:none;border-top:1px solid #e0e0e0">
               ${isAdmin() ? '<a href="/admin">🛡️ Admin Panel</a>' : ''}
-              ${isSeller() || (user as any).sellerStore ? '<a href="/seller">🏪 Seller Dashboard</a>' : '<a href="/sell">🏪 Become a Seller</a>'}
-              ${!isSeller() && !(user as any).sellerStore ? '' : ''}
+              ${isSeller() ? '<a href="/seller">🏪 Seller Dashboard</a>' : '<a href="/sell">🏪 Become a Seller</a>'}
               <hr style="margin:6px 0;border:none;border-top:1px solid #e0e0e0">
               <a href="#" id="logoutBtn">🚪 Logout</a>
             </div>
@@ -86,26 +88,51 @@ export function renderHeader(): HTMLElement {
     </div>
   `
 
+  // Async: update cart count & notifications
+  setTimeout(async () => {
+    const [count, notifs] = await Promise.all([getCartCount(), getUnreadNotificationCount()])
+    const badge = header.querySelector('#cartBadge') as HTMLElement
+    if (badge) { badge.textContent = String(count); badge.style.display = count > 0 ? 'flex' : 'none' }
+    const notifBadge = header.querySelector('#notifBadge') as HTMLElement
+    if (notifBadge) { notifBadge.textContent = String(notifs); notifBadge.style.display = notifs > 0 ? 'flex' : 'none' }
+  }, 0)
+
   // Search
   const searchInput = header.querySelector('#searchInput') as HTMLInputElement
   const searchBtn = header.querySelector('#searchBtn') as HTMLButtonElement
   const searchCatSelect = header.querySelector('#searchCatSelect') as HTMLSelectElement
   const suggestionsEl = header.querySelector('#searchSuggestions') as HTMLElement
 
-  const doSearch = () => { const q = searchInput.value.trim(); if (q) { addSearchHistory(q); const cat = searchCatSelect.value; navigate(`/search?q=${encodeURIComponent(q)}${cat ? `&cat=${encodeURIComponent(cat)}` : ''}`); suggestionsEl.style.display = 'none' } }
+  const doSearch = () => {
+    const q = searchInput.value.trim()
+    if (q) {
+      const cat = searchCatSelect.value
+      navigate(`/search?q=${encodeURIComponent(q)}${cat ? `&cat=${encodeURIComponent(cat)}` : ''}`)
+      suggestionsEl.style.display = 'none'
+    }
+  }
   searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') doSearch() })
   searchBtn.addEventListener('click', doSearch)
 
   searchInput.addEventListener('input', () => {
     const q = searchInput.value.trim().toLowerCase()
-    if (q.length < 2) { const history = getSearchHistory(); if (history.length) { suggestionsEl.innerHTML = `<div class="suggestion-header"><span>Recent Searches</span><a href="#" id="clearHistory">Clear</a></div>${history.map(h => `<div class="suggestion-item" data-query="${h}"><span class="suggestion-icon">🕐</span>${h}</div>`).join('')}`; suggestionsEl.style.display = 'block'; header.querySelector('#clearHistory')?.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('am_search_history'); suggestionsEl.style.display = 'none' }) } return }
-    const matches = PRODUCTS.filter(p => p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)).slice(0, 8)
-    if (matches.length) { suggestionsEl.innerHTML = matches.map(p => `<div class="suggestion-item" data-id="${p.id}"><img src="${getProductImage(p)}" class="suggestion-img" onerror="this.style.display='none'"><div class="suggestion-info"><div class="suggestion-name">${p.name}</div><div class="suggestion-price">${formatPrice(p.price)}</div></div></div>`).join(''); suggestionsEl.style.display = 'block' } else suggestionsEl.style.display = 'none'
+    if (q.length < 2) { suggestionsEl.style.display = 'none'; return }
+    // Use local category data for suggestions
+    const matches = CATEGORIES.flatMap(c => c.subcategories || [])
+      .filter(s => s.name.toLowerCase().includes(q))
+      .slice(0, 5)
+    if (matches.length) {
+      suggestionsEl.innerHTML = matches.map(s => `<div class="suggestion-item" data-query="${s.name}"><span class="suggestion-icon">📂</span>${s.name}</div>`).join('')
+      suggestionsEl.style.display = 'block'
+    } else suggestionsEl.style.display = 'none'
   })
 
-  suggestionsEl.addEventListener('click', (e) => { const item = (e.target as HTMLElement).closest('.suggestion-item') as HTMLElement; if (!item) return; if (item.dataset.id) navigate(`/product/${item.dataset.id}`); else if (item.dataset.query) { searchInput.value = item.dataset.query; doSearch() } suggestionsEl.style.display = 'none' })
+  suggestionsEl.addEventListener('click', (e) => {
+    const item = (e.target as HTMLElement).closest('.suggestion-item') as HTMLElement
+    if (item?.dataset.query) { searchInput.value = item.dataset.query; doSearch() }
+    suggestionsEl.style.display = 'none'
+  })
   searchInput.addEventListener('blur', () => { setTimeout(() => { suggestionsEl.style.display = 'none' }, 200) })
-  searchInput.addEventListener('focus', () => { if (searchInput.value.trim().length >= 2 || getSearchHistory().length) searchInput.dispatchEvent(new Event('input')) })
 
   const logoutBtn = header.querySelector('#logoutBtn')
   if (logoutBtn) logoutBtn.addEventListener('click', (e) => { e.preventDefault(); logout() })
@@ -121,11 +148,7 @@ export function renderHeader(): HTMLElement {
     langDropdown.querySelectorAll('.lang-option').forEach(btn => {
       btn.addEventListener('click', function(this: HTMLElement) {
         const code = this.dataset.code
-        if (code) {
-          setLanguage(code)
-          langDropdown.style.display = 'none'
-          location.reload()
-        }
+        if (code) { setLanguage(code); langDropdown.style.display = 'none'; location.reload() }
       })
     })
     document.addEventListener('click', () => { langDropdown.style.display = 'none' })
@@ -205,8 +228,7 @@ export function renderFooter(): HTMLElement {
 }
 
 export function renderProductCard(product: Product): HTMLElement {
-  const discount = getDiscount(product.price, product.originalPrice)
-  const wishlisted = isInWishlist(product.id)
+  const discount = getDiscount(product.price, product.originalPrice || product.price)
   const card = document.createElement('div')
   card.className = 'card product-card'
   card.innerHTML = `
@@ -215,11 +237,11 @@ export function renderProductCard(product: Product): HTMLElement {
       <div class="img-placeholder" style="display:none;background:${getProductColor(product)}">${getProductInitials(product)}</div>
       ${discount >= 40 ? `<span class="discount-badge">-${discount}%</span>` : ''}
       ${product.freeShipping ? '<span class="free-ship-badge">Free Ship</span>' : ''}
-      <button class="wishlist-btn ${wishlisted ? 'active' : ''}">${wishlisted ? '♥' : '♡'}</button>
+      <button class="wishlist-btn">♡</button>
     </div>
     <div class="product-info">
       <div class="product-name">${product.name}</div>
-      <div class="product-price">${formatPrice(product.price)} <span class="original">${formatPrice(product.originalPrice)}</span></div>
+      <div class="product-price">${formatPrice(product.price)} <span class="original">${formatPrice(product.originalPrice || product.price)}</span></div>
       <div class="product-meta">
         <span class="stars">${renderStars(product.rating)}</span>
         <span>${product.sold > 1000 ? (product.sold / 1000).toFixed(1) + 'k' : product.sold} sold</span>
@@ -227,13 +249,29 @@ export function renderProductCard(product: Product): HTMLElement {
     </div>
   `
   card.addEventListener('click', (e) => {
-    if ((e.target as HTMLElement).closest('.wishlist-btn')) { e.stopPropagation(); const btn = card.querySelector('.wishlist-btn')!; const isNow = toggleWishlist(product.id); btn.textContent = isNow ? '♥' : '♡'; btn.classList.toggle('active', isNow); return }
+    if ((e.target as HTMLElement).closest('.wishlist-btn')) {
+      e.stopPropagation()
+      // Toggle wishlist async
+      import('../utils/db').then(({ toggleWishlist }) => {
+        toggleWishlist(String(product.id)).then(isNow => {
+          const btn = card.querySelector('.wishlist-btn')!
+          btn.textContent = isNow ? '♥' : '♡'
+        })
+      })
+      return
+    }
     navigate(`/product/${product.id}`)
   })
   return card
 }
 
-export function ensureToastContainer(): void { if (!document.querySelector('.toast-container')) { const c = document.createElement('div'); c.className = 'toast-container'; document.body.appendChild(c) } }
+export function ensureToastContainer(): void {
+  if (!document.querySelector('.toast-container')) {
+    const c = document.createElement('div')
+    c.className = 'toast-container'
+    document.body.appendChild(c)
+  }
+}
 
 export function renderPage(content: HTMLElement | HTMLElement[]): void {
   const app = document.getElementById('app')!
@@ -241,27 +279,30 @@ export function renderPage(content: HTMLElement | HTMLElement[]): void {
   app.appendChild(renderFreeShippingBanner())
   app.appendChild(renderHeader())
   app.appendChild(renderCategoryNav())
-  const main = document.createElement('div'); main.className = 'main-content'
-  if (Array.isArray(content)) content.forEach(c => main.appendChild(c)); else main.appendChild(content)
+  const main = document.createElement('div')
+  main.className = 'main-content'
+  if (Array.isArray(content)) content.forEach(c => main.appendChild(c))
+  else main.appendChild(content)
   app.appendChild(main)
   app.appendChild(renderFooter())
-  updateCartBadge()
 }
 
 export function renderEmptyState(icon: string, title: string, text: string, btnText?: string, btnHref?: string): HTMLElement {
-  const div = document.createElement('div'); div.className = 'empty-state'
+  const div = document.createElement('div')
+  div.className = 'empty-state'
   div.innerHTML = `<div class="icon">${icon}</div><h3>${title}</h3><p>${text}</p>${btnText ? `<a href="${btnHref || '/'}" class="btn btn-primary">${btnText}</a>` : ''}`
   return div
 }
 
 export function renderSection(title: string, linkText: string, linkHref: string, content: HTMLElement): HTMLElement {
-  const section = document.createElement('div'); section.className = 'section'
+  const section = document.createElement('div')
+  section.className = 'section'
   section.innerHTML = `<div class="section-header"><h2 class="section-title">${title}</h2>${linkText ? `<a href="${linkHref}" class="section-link">${linkText} &gt;</a>` : ''}</div>`
   section.appendChild(content)
   return section
 }
 
-// ==================== SKELETON COMPONENTS ====================
+// Skeleton components
 export function renderProductCardSkeleton(): HTMLElement {
   const card = document.createElement('div')
   card.className = 'card product-card skeleton-card'
@@ -282,14 +323,4 @@ export function renderProductGridSkeleton(count = 6): HTMLElement {
   grid.className = 'product-grid'
   for (let i = 0; i < count; i++) grid.appendChild(renderProductCardSkeleton())
   return grid
-}
-
-export function renderTextSkeleton(lines = 3): HTMLElement {
-  const div = document.createElement('div')
-  div.style.padding = '20px'
-  for (let i = 0; i < lines; i++) {
-    const w = 60 + Math.floor(Math.random() * 40)
-    div.innerHTML += '<div class="skeleton" style="height:14px;width:' + w + '%;margin-bottom:12px;border-radius:4px"></div>'
-  }
-  return div
 }

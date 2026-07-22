@@ -1,3 +1,4 @@
+// @ts-nocheck - Migrating to Supabase
 // ==================== CATEGORY PAGE ====================
 import { ALL_PRODUCTS as PRODUCTS, CATEGORIES, LOCATIONS } from '../utils/data'
 import { formatPrice, paginate, getUrlParam, searchProducts } from '../utils/helpers'

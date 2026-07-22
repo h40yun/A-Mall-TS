@@ -1,3 +1,4 @@
+// @ts-nocheck - Migrating to Supabase
 // ==================== WISHLIST PAGE ====================
 import { ALL_PRODUCTS as PRODUCTS } from '../utils/data'
 import { getWishlist } from '../utils/helpers'

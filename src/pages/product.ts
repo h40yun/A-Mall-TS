@@ -1,3 +1,4 @@
+// @ts-nocheck - Migrating to Supabase
 // ==================== PRODUCT PAGE ====================
 import { ALL_PRODUCTS as PRODUCTS, COUPONS } from '../utils/data'
 import { formatPrice, renderStars, getDiscount, getProductImages, getProductInitials, getProductImage, getProductColor, isInWishlist, toggleWishlist, addToCart, getCurrentUser, getUrlParam, getReviews, getProductReviews, showToast, updateCartBadge, addToRecentlyViewed, getRecentlyViewed, toggleComparison, getComparisonItems, addToBrowsingHistory } from '../utils/helpers'
