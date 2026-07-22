@@ -178,3 +178,15 @@ export function detectPlatform(_url: string): string { return 'unknown' }
 export function isDemoAccount(_email: string): boolean { return false }
 export function getDemoAccounts(): any[] { return [] }
 export { fetchProducts as getAllProducts } from './db'
+
+// ---- New service re-exports ----
+export { fullTextSearch, getSearchSuggestions, clearSearchHistory } from './search'
+export { uploadProductImage, uploadProductImages, uploadAvatar } from './storage'
+export { requestPushPermission, subscribePush, fetchNotifications as fetchPushNotifications, markAllNotificationsRead, createNotification } from './notifications'
+export { getCurrency, setCurrency, convertPrice, formatCurrency, CURRENCIES, fetchLiveRates } from './currency'
+export { calculateShipping, trackShipment, generateShippingLabel, estimateDelivery, getTrackingUrl, CARRIERS } from './shipping'
+export { getPersonalizedRecommendations, getTrendingProducts, getSimilarProducts, getFrequentlyBoughtTogether, getNewArrivals, getTopRated } from './recommendations'
+export { subscribeToMessages, sendRealtimeMessage, getChatConversations, markConversationRead, sendTypingIndicator, getUnreadMessageCount as getRealtimeUnreadCount } from './chat'
+export { generateReferralCode, applyReferralCode, getReferralStats, getReferralLink, getSellerCommission } from './referral'
+export { sendOrderConfirmation, sendShippingNotification, sendDeliveryConfirmation, sendWelcomeEmail, subscribeNewsletter } from './email'
+export { createPaymentIntent, confirmPayment, processRefund, holdPayment, releasePayment, STRIPE_PK } from './payment'
